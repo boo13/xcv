@@ -20,6 +20,7 @@ pylint = "*"
 xcv = {path = ".",editable = true}
 click = "*"
 black = "*"
+pyserial = "*"
 
 [pipenv]
 allow_prereleases = true

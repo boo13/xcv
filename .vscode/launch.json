@@ -13,11 +13,20 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Python: xcv/__main__.py",
+            "name": "Press A",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/xcv/__main__.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "args": ["--push", "A"]
+        },
+        {
+            "name": "Python: --help",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/xcv/__main__.py",
+            "console": "integratedTerminal",
+            "args": ["--help"]
         }
     ]
 }
