@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fboo13%2Fxcv.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fboo13%2Fxcv?ref=badge_shield)
+
 ===
 xcv
 ===
@@ -36,3 +38,7 @@ This package was created with Cookiecutter_ and the `elgertam/cookiecutter-pipen
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`elgertam/cookiecutter-pipenv`: https://github.com/elgertam/cookiecutter-pipenv
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fboo13%2Fxcv.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fboo13%2Fxcv?ref=badge_large)
