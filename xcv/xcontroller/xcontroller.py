@@ -5,11 +5,17 @@ import pickle
 # PYSERIAL - connects via serial (ie. hardwared USB) to teensy/arduino/whatever-you-want
 import serial
 
-# LOCAL SETTINGS - we use these to set (and mostly forget) the Serial connection config
-from xcv.settings import Settings
-
+# DATACLASSES - req. python 3.7^
 from dataclasses import dataclass
 from typing import List
+
+# LOCAL SETTINGS - we use these to set (and mostly forget) the Serial connection config
+@dataclass
+class Settings:
+    timerFlag: int = 10
+    verbose: bool = False
+    serialPort: str = "/dev/cu.usbmodem58290301"
+    serialBaud: int = 9600
 
 
 @dataclass(order=True)
