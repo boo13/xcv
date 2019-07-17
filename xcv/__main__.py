@@ -10,30 +10,30 @@ from xcontroller import xcontroller
 import cli
 from settings import Settings
 
-# ASCII lookup table
-on = 49  # '1'
-off = 48  # '0'
+# # ASCII lookup table
+# on = 49  # '1'
+# off = 48  # '0'
 
 
-def start_btn_press_sequence():
-    cli.countdown(Settings.timerFlag)
-    count = itertools.count(48)
+# def start_btn_press_sequence():
+#     cli.countdown(Settings.timerFlag)
+#     count = itertools.count(48)
 
-    while True:
-        next(count)
+#     while True:
+#         next(count)
 
-        if Settings.verbose:
-            print(f"Sending command set: {count}")
+#         if Settings.verbose:
+#             print(f"Sending command set: {count}")
 
-        btns = xcontroller.Buttons()
-        btns.aBtn = on
-        xcontroller.serial_send(btns)
-        sleep(0.2)
+#         btns = xcontroller.Buttons()
+#         btns.aBtn = on
+#         xcontroller.serial_send(btns)
+#         sleep(0.2)
 
 
 def single_btn_press(btnInput):
     cli.countdown(Settings.timerFlag)
-    btns = xcontroller.Buttons()
+    # btns = xcontroller.Buttons()
 
     if btnInput == "A":
         btns.aBtn = on
