@@ -1,5 +1,6 @@
 # Personal VS Code Settings
 .vscode/
+xcv.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
