@@ -2,6 +2,8 @@ from time import sleep
 from dataclasses import dataclass
 import click
 
+from . import xcontroller
+
 
 @click.command()
 @click.option("--verbose", "-v", is_flag=True, help="Display debug information")
@@ -30,7 +32,10 @@ def main_input(
 ):
     """🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
     
-    \n\n\tThe project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking intro controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
+    \n\n\tThe project's goal is to make OpenCV experiments easier, by avoiding controller-driver 
+    nonsense and just hacking intro controllers and connecting the buttons to an arduino/teensy/whatever. 
+    On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals
+    to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
 
     \n\n\t\t( - - - - - - - | _ _Xbox Commands_ _ | - - - - - - - -)
       \n\t\t                     ⒳ box                       
@@ -49,13 +54,16 @@ def main_input(
         click.echo("\n\t\t👾 🕹 🎮 XCV is about to do things... ✨ 💫 🐍 \n\n \n")
 
     # local imports
+    import xcv
     import __main__
-    from settings import Settings
+
+    # from settings import Settings
 
     # Set our CLI dataclass to match the input parameters
-    Settings.verbose = verbose
-    Settings.port = port
-    Settings.timerFlag = count
+    xcontroller.xcontroller.Settings.verbose = verbose
+    # Settings.verbose = verbose
+    # Settings.port = port
+    # Settings.timerFlag = count
 
     if dryrun:
         print("WIP feature")
