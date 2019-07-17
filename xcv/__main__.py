@@ -6,7 +6,7 @@ import itertools
 from xcontroller import xcontroller
 
 # Local
-import cli
+from cli import cli
 from settings import Settings
 
 # def start_btn_press_sequence():
