@@ -77,11 +77,26 @@ def countdown(secs):
     if secs is 0:
         print("🚀")
     else:
-        print("  🧨  Starting in...")
+        print("LAUNCHING 🧨")
 
         for i in range(secs + 1):
             sleep(1)
-            if i == (secs):
-                print("........💨 XCV Go! 🚀\n")
+
+            if i == (secs - 3):
+                print(f"\t    🔥 ... {secs - i}")
+
+            elif i == (secs - 2):
+                print(f"\t     🔥 .. {secs - i}")
+
+            elif i == (secs - 1):
+                print(f"\t      🔥 . {secs - i}")
+
+            elif i == (secs):
+                print("\t         💨  XCV 🚀\n")
+
             else:
-                print(f"\t🔥...{secs - i}...")
+                print(f"\t    🔥 ... {secs - i}")
+
+
+if __name__ == "__main__":
+    print("\n\t\t 👟 ️Exiting... 🥵 \n\t\t Not an entry point! ⚠️  Use main xcv module")

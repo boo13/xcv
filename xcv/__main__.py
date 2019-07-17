@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from time import sleep
@@ -9,11 +8,6 @@ from xcontroller import xcontroller
 # Local
 import cli
 from settings import Settings
-
-# # ASCII lookup table
-# on = 49  # '1'
-# off = 48  # '0'
-
 
 # def start_btn_press_sequence():
 #     cli.countdown(Settings.timerFlag)
@@ -33,30 +27,30 @@ from settings import Settings
 
 def single_btn_press(btnInput):
     cli.countdown(Settings.timerFlag)
-    # btns = xcontroller.Buttons()
+    btns = xcontroller.Buttons()
 
     if btnInput == "A":
-        btns.aBtn = on
+        btns.aBtn = 1
     elif btnInput == "B":
-        btns.bBtn = on
+        btns.bBtn = 1
     elif btnInput == "X":
-        btns.xBtn = on
+        btns.xBtn = 1
     elif btnInput == "Y":
-        btns.yBtn = on
+        btns.yBtn = 1
     elif btnInput == "S":
-        btns.startBtn = on
+        btns.startBtn = 1
     elif btnInput == "l":
-        btns.lbBtn = on
+        btns.lbBtn = 1
     elif btnInput == "r":
-        btns.rbBtn = on
+        btns.rbBtn = 1
     elif btnInput == "w":
-        btns.duBtn = on
+        btns.duBtn = 1
     elif btnInput == "a":
-        btns.dlBtn = on
+        btns.dlBtn = 1
     elif btnInput == "s":
-        btns.ddBtn = on
+        btns.ddBtn = 1
     elif btnInput == "d":
-        btns.drBtn = on
+        btns.drBtn = 1
     else:
         print(
             "\n\t🛑 Error - Couldn't find that button.\n\t\t ⚠️ To list the buttons accepted use --help \n"

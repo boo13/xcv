@@ -42,17 +42,17 @@ class Buttons:
         return str(list(self.__dict__.values()))
 
 
-def serial_send():
+def serial_send(btns_sending):
     """ ⚠️ Order matters! ⚠️ 
     The command string is an order that is parsed out in a hardcoded way in the arduino script. """
 
-    b2 = Buttons()
-
     # Be safe kids - use a Context Manager
     with serial.Serial(Settings.serialPort, Settings.serialBaud) as ser:
-        pickle.dump(b2.make_string(), ser)
+        pickle.dump(btns_sending.make_string(), ser)
 
 
 # In case we're just testing the controller...
 if __name__ == "__main__":
-    serial_send()
+    testButtons = Buttons()
+    testButtons.xBtn = 1
+    serial_send(testButtons)
