@@ -15,11 +15,11 @@ PyInstaller = "*"
 Sphinx = "*"
 twine = "*"
 pylint = "*"
+black = "*"
 
 [packages]
 xcv = {path = ".",editable = true}
 click = "*"
-black = "*"
 pyserial = "*"
 
 [pipenv]
