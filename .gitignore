@@ -1,3 +1,7 @@
+# Photoshop files
+*.psd
+
+
 # Personal VS Code Settings
 .vscode/
 xcv.code-workspace
