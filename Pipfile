@@ -24,6 +24,7 @@ pyserial = "*"
 pysimpleguiqt = "*"
 pyqt5 = "*"
 opencv-contrib-python = "*"
+imutils = "*"
 
 [pipenv]
 allow_prereleases = true
