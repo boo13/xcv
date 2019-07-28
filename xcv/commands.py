@@ -18,6 +18,9 @@ from xcv.util import (
     print_all_constants,
 )
 
+class XcvError(Exception):
+    pass
+
 class HUD:
     from collections import namedtuple
 

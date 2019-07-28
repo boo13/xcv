@@ -2,7 +2,7 @@ from time import sleep
 from dataclasses import dataclass
 import click
 import xcv.constants
-from xcv.util import WINDOWS
+from xcv.constants import WINDOWS
 
 
 # Emoji handling
@@ -148,23 +148,23 @@ def countdown(secs):
     else:
         print(launch)
 
-        for i in range(secs + 1):
-            sleep(1)
+        # for i in range(secs + 1):
+        #     sleep(1)
 
-            if i == (secs - 3):
-                print(rocketLaunchList[0])
+        #     if i == (secs - 3):
+        #         print(rocketLaunchList[0])
 
-            elif i == (secs - 2):
-                print(rocketLaunchList[1])
+        #     elif i == (secs - 2):
+        #         print(rocketLaunchList[1])
 
-            elif i == (secs - 1):
-                print(rocketLaunchList[2])
+        #     elif i == (secs - 1):
+        #         print(rocketLaunchList[2])
 
-            elif i == (secs):
-                print(rocketLaunchList[3])
+        #     elif i == (secs):
+        #         print(rocketLaunchList[3])
 
-            else:
-                print(f"\t    🔥 ... {secs - i}")
+        #     else:
+        #         print(f"\t    🔥 ... {secs - i}")
 
 
 

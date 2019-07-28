@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import List
 
 from xcv.constants import SERIAL_BAUD, SERIAL_PORT
-from xcv.util import XcvError
+from xcv.commands import XcvError
 
 from xcv.cli.cli import hazard, sleep, warning, exiting
 
