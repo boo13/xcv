@@ -21,6 +21,9 @@ black = "*"
 xcv = {path = ".",editable = true}
 click = "*"
 pyserial = "*"
+pysimpleguiqt = "*"
+pyqt5 = "*"
+opencv-contrib-python = "*"
 
 [pipenv]
 allow_prereleases = true
