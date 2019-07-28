@@ -19,18 +19,19 @@ ___
 
 # In-Game Tracking
 ![sampleImage.png](/blog/images/sampleImage.png)
-
-### Template Matching
+___
+![myTeamBadge.jpg](/templates/myTeamBadge.jpg)
 
 **My Team Badge**
-![myTeamBadge.jpg](/templates/myTeamBadge.jpg)
 Matching this template image shows me...
 * which side of the game sreen I am defending
 
 _24px X 24px_
+
 ___
-**My Scoreboard Name**
 ![myTeamScoreboardName.png](/templates/myTeamScoreboardName.png)
+
+**My Scoreboard Name**
 Matching this template image shows me...
 * which side of the scoreboard I'm on
 * if I'm `Game.HomeTeam` or `Game.AwayTeam`
@@ -50,6 +51,7 @@ _25px X 8px_
 Indicates the Squad Management Screen
 
 _22px X 13px_
+
 ___
 ![InGameMenu_ResumeMatch_Off.png](/templates/Menu/InGameMenu_ResumeMatch_Off.png) Off ![InGameMenu_ResumeMatch_On.png](/templates/Menu/InGameMenu_ResumeMatch_On.png) On
 
@@ -59,6 +61,7 @@ Indicates the InGameMenu Screen
 Also indicates if we are `off` or `on` the `ResumeMatch` button
 
 _30px X 30px_
+
 ___
 ![45min.png](/templates/45min.png)
 
@@ -66,6 +69,7 @@ ___
 Indicates the InGameMenu Screen is at `45.00`, it's not a perfect method for indicating if we are at Half-time (since pausing the game in stoppage time will send a false indication), but it's good-enough for now. 
 
 _31px X 14px_
+
 ___
 
 ![90min.png](/templates/90min.png)
@@ -75,6 +79,7 @@ Indicates the InGameMenu Screen is at `90.00`, it's not perfect (see above.)
 
 
 _31px X 14px_
+
 ___
 ![StartBtn.png](/templates/StartBtn.png)
 
@@ -86,6 +91,7 @@ Matching this template image shows me...
 * Indicates we need to send `xcontroller.Start`
 
 _128px X 27px_
+
 ___
 ![HomeMenu_Cart.png](/templates/HomeMenu_Cart.png)
 
@@ -99,11 +105,9 @@ _16px X 13px_
 
 
 
-To Do
+# To Do
 -------
 ## General To Do
-- [ ] Get caught up on documenting the README
-- [ ] Add photos
 - [ ] Re-implement HUD
 - [ ] Implement GUI
 - [ ] Implement Button Press Received by Game Controller script (via Martin O'Hanlon)
@@ -115,10 +119,14 @@ To Do
 
 ## DONE
 - [X] Reliably detect FIFA's game mode (In Menu, In Game, etc.)  
-
+- [X] Add photos
+- [X] Get caught up on documenting the README
 
 Credits
 -------
-* <https://github.com/elgertam/cookiecutter-pipenv> - _This package was created with a version of this Cookiecutter project template_
-* <https://github.com/Sentdex/pygta5> - _I just loved this project and tutorial series Sentdex put together. He's helped me learn python over the years, but this project felt like something I wanted to do my own version of, with a different game, and that started me on this journey._
-* <https://github.com/nefarius/ViGEm> - _I first tried to implement virtual controllers, such as this solution. Truth be told this project idea came from my inability to get ViGEm to work._
+* <https://github.com/elgertam/cookiecutter-pipenv>
+ _This package was created with a version of this Cookiecutter project template_
+* <https://github.com/Sentdex/pygta5>
+ _I just loved this project and tutorial series Sentdex put together. He's helped me learn python over the years, but this project felt like something I wanted to do my own version of, with a different game, and that started me on this journey._
+* <https://github.com/nefarius/ViGEm>
+ _I first tried to implement virtual controllers, such as this solution. Truth be told this project idea came from my inability to get ViGEm to work._
