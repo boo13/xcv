@@ -27,8 +27,10 @@
 **_The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.**\ *
 
 
-* Free software: MIT license
-* Documentation: https://xcv.readthedocs.io.
+:Authors: 👻
+:Version: 0.1.0
+:License: MIT
+:Documentation: Thttps://xcv.readthedocs.io
 
 ----
 
@@ -60,25 +62,14 @@ In-Game Tracking
 
 Menu Tracking
 =============
++------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| Template Image                                 | Template Name                      | Usage                                                                                                                                                                                                  | Size           | ROI |
++================================================+====================================+========================================================================================================================================================================================================+================+=====+
+| .. image:: templates/SquadManagement.png       | **Squad Management Menu**          | Indicates the Squad Management Screen                                                                                                                                                                  | *22px X 13px*  |     |
++------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 
-.. list-table::
-   :header-rows: 1
 
-   * - Template Image
-     - Template Name
-     - Usage
-     - Size
-     - ROI
-   * - 
-     .. image:: /templates/SquadManagement.png
-        :target: /templates/SquadManagement.png
-        :alt: SquadManagement.png
-     
-     - **Squad Management Menu**
-     - Indicates the Squad Management Screen
-     - *22px X 13px*
-     - 
-   * - 
+
      .. image:: /templates/Menu/InGameMenu_ResumeMatch_Off.png
         :target: /templates/Menu/InGameMenu_ResumeMatch_Off.png
         :alt: InGameMenu_ResumeMatch_Off.png
