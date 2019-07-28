@@ -26,6 +26,7 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
 .. image:: https://img.shields.io/github/repo-size/boo13/xcv
    :alt: GitHub repo size
 
+
 :Authors: 👻
 :Version: 0.1.0
 :Documentation: https://xcv.readthedocs.io
@@ -48,7 +49,7 @@ In-Game Tracking
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 | .. image:: templates/HomeScore/0.png                           | **Home Score**                     | Digits 0-11 currently used, matched via template matching with moderate success                                                                                                                        | *25px X 8px*   |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| .. image:: templates/AwayScore/0.png                           | **Away Score**                     | Digits 0-1 currently used, matched via template matching with not-so-great success                                                                                                                     | *25px X 8px*   |     |
+| .. image:: templates/HomeScore/0.png                           | **Away Score**                     | Digits 0-1 currently used, matched via template matching with not-so-great success                                                                                                                     | *25px X 8px*   |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 
 .. image:: blog/images/screenshot_SinglePlayerMenu.png
@@ -96,6 +97,7 @@ Options:
   --help                               Show this message and exit.
   --debug                              List USB ports and check the serial connection
 
+
 TO-DO
 =====
 
@@ -108,27 +110,26 @@ TO-DO
 - [ ] **CLI** - Fix problem with Start button not responding (check wiring)
 - [ ] **GAME** - In-Game Player Tracking
 
-DONE
-----
-
-- [X] Reliably detect FIFA's game mode (In Menu, In Game, etc.)  
-- [X] Get caught up on documenting the README
-
 
 Thanks
 =======
 
 https://github.com/Sentdex/pygta5
-I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.*
+
+I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.
 
 https://github.com/jrosebr1/imutils
+
 I use his FPS class from imutils. Also - I've learned a ton from @jrosebr1 and his site: http://www.pyimagesearch.com 
 
 https://github.com/nefarius/ViGEm
+
 I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.
 
 https://github.com/elgertam/cookiecutter-pipenv
+
 This package was created with a version of this Cookiecutter project template
 
 https://www.stuffaboutcode.com
+
 Martin O'Hanlon - For his class ``XboxController``, which I use for reading values from an xbox controller
