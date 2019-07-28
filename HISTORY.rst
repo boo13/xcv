@@ -28,7 +28,7 @@ At some point I mapped out a good-enough amount of the pins
 -----------
 An early proof-of-concept for object-detection on players (I _think_ this was some out-of-the-box YOLO setup from some tutorial - I remember being plesantly surprised by the drag-and-drop results)
 
-.. image:: blog/images/800pxWide/2019-02-18 22.02.21.jpg
+.. image:: blog/images/800pxWide/2019-02-18.jpg
 
 
 2018-12-31
