@@ -13,3 +13,15 @@ History
 ------------------
 
 * Initial Commit
+
+
+==============
+A Pre-History
+==============
+
+.. image:: blog/images/400pxWide/Pins_Image_400px.jpg
+
+2018-12-31
+------------------
+
+.. image:: blog/images/400pxWide/2018_10_31_20.31.14_400px.jpg
