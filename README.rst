@@ -20,6 +20,7 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
    :alt: Read the Docs
  
 .. image:: https://img.shields.io/github/license/boo13/xcv
+   :target: https://github.com/boo13/xcv/blob/master/LICENSE
    :alt: GitHub
  
 .. image:: https://img.shields.io/github/repo-size/boo13/xcv
