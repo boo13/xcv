@@ -34,19 +34,19 @@ Features
 ---
 
 #In-Game Tracking
-![sampleImage.png](templates/9AE59C7D0382C17C2FF7161FD6CCEAF8.png =640x480)
+![sampleImage.png](templates/9AE59C7D0382C17C2FF7161FD6CCEAF8.png)
 
 ###Template Matching
 
 **My Team Badge**
-![myTeamBadge.jpg](https://github.com/boo13/xcv/blob/master/templates/myTeamBadge.jpg =24x24)
+![myTeamBadge.jpg](/templates/myTeamBadge.jpg)
 Matching this template image shows me...
 * which side of the game sreen I am defending
 
 _24px X 24px_
 ___
 **My Scoreboard Name**
-![myTeamScoreboardName.png](https://github.com/boo13/xcv/blob/master/templates/myTeamScoreboardName.png =25x8)
+![myTeamScoreboardName.png](/templates/myTeamScoreboardName.png)
 Matching this template image shows me...
 * which side of the scoreboard I'm on
 * if I'm `Game.HomeTeam` or `Game.AwayTeam`
@@ -61,14 +61,14 @@ _25px X 8px_
 
 ###Template Matching
 
-![SquadManagement.png](https://github.com/boo13/xcv/blob/master/templates/SquadManagement.png =22x13)
+![SquadManagement.png](https://github.com/boo13/xcv/blob/master/templates/SquadManagement.png)
 
 **Squad Management Menu**
 Indicates the Squad Management Screen
 
 _22px X 13px_
 ___
-![InGameMenu_ResumeMatch_Off.png](https://github.com/boo13/xcv/blob/master/templates/Menu/InGameMenu_ResumeMatch_Off.png =30x30) Off ![InGameMenu_ResumeMatch_On.png](https://github.com/boo13/xcv/blob/master/templates/Menu/InGameMenu_ResumeMatch_On.png =30x30) On
+![InGameMenu_ResumeMatch_Off.png](https://github.com/boo13/xcv/blob/master/templates/Menu/InGameMenu_ResumeMatch_Off.png) Off ![InGameMenu_ResumeMatch_On.png](https://github.com/boo13/xcv/blob/master/templates/Menu/InGameMenu_ResumeMatch_On.png) On
 
 **In-Game Menu**
 Indicates the InGameMenu Screen
@@ -77,7 +77,7 @@ Also indicates if we are `off` or `on` the `ResumeMatch` button
 
 _30px X 30px_
 ___
-![45min.png](https://github.com/boo13/xcv/blob/master/templates/45min.png =31x14)
+![45min.png](https://github.com/boo13/xcv/blob/master/templates/45min.png)
 
 **In-Game Menu - Half-Time**
 Indicates the InGameMenu Screen is at `45.00`, it's not a perfect method for indicating if we are at Half-time (since pausing the game in stoppage time will send a false indication), but it's good-enough for now. 
@@ -85,7 +85,7 @@ Indicates the InGameMenu Screen is at `45.00`, it's not a perfect method for ind
 _31px X 14px_
 ___
 
-![90min.png](https://github.com/boo13/xcv/blob/master/templates/90min.png =31x14)
+![90min.png](https://github.com/boo13/xcv/blob/master/templates/90min.png)
 
 **In-Game Menu - Full-Time**
 Indicates the InGameMenu Screen is at `90.00`, it's not perfect (see above.)
@@ -93,7 +93,7 @@ Indicates the InGameMenu Screen is at `90.00`, it's not perfect (see above.)
 
 _31px X 14px_
 ___
-![StartBtn.png](https://github.com/boo13/xcv/blob/master/templates/StartBtn.png =128x27)
+![StartBtn.png](https://github.com/boo13/xcv/blob/master/templates/StartBtn.png)
 
 **Pre-Game Start Menu**
 _We see this screen in FUT>Single-Player Season>Pre-Game Menu. It is one of the rare instances that a menu screen requires pressing the `Start` button to continue._
@@ -104,7 +104,7 @@ Matching this template image shows me...
 
 _128px X 27px_
 ___
-![HomeMenu_Cart.png](https://github.com/boo13/xcv/blob/master/templates/HomeMenu_Cart.png =16x13)
+![HomeMenu_Cart.png](https://github.com/boo13/xcv/blob/master/templates/HomeMenu_Cart.png)
 
 **FUT Home Menu**
 _We use the little shopping-cart icon in the top-right corner of the screen as our Main Menu indicator._
@@ -113,7 +113,6 @@ Matching this template image shows me...
 * Indicates we are in `GameState.FUTMainMenu`
 
 _16px X 13px_
-
 
 
 
@@ -137,8 +136,4 @@ To Do
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `elgertam/cookiecutter-pipenv`_ project template, based on `audreyr/cookiecutter-pypackage`_.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`elgertam/cookiecutter-pipenv`: https://github.com/elgertam/cookiecutter-pipenv
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+This package was created with Cookiecutter https://github.com/elgertam/cookiecutter-pipenv project template.
