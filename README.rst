@@ -69,9 +69,9 @@ Menu Tracking
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 | .. image:: templates/90min.png                                 | **In-Game Menu - Full-Time**       | Matching this template indicates the InGameMenu Screen is at ``90.00``\ , it's not perfect (see above.)                                                                                                                                                                                    | *31px X 14px*  |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| .. image:: templates/StartBtn.png                              | **Pre-Game Start Menu**            | *We see this screen in FUT>Single-Player Season>Pre-Game Menu. It is one of the rare instances that a menu screen requires pressing the ``Start`` button to continue.* Matching this template indicates we are in ``GameState.PreGameStartMenu`` and we need to send ``xcontroller.Start`` | *128px X 27px* |     |
+| .. image:: templates/StartBtn.png                              | **Pre-Game Start Menu**            | We see this screen in FUT>Single-Player Season>Pre-Game Menu. It is one of the rare instances that a menu screen requires pressing the ``Start`` button to continue. Matching this template indicates we are in ``GameState.PreGameStartMenu`` and we need to send ``xcontroller.Start`` | *128px X 27px* |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| .. image:: templates/HomeMenu_Cart.png                         | **FUT Home Menu**                  | *We use the little shopping-cart icon in the top-right corner of the screen as our Main Menu indicator.* Matching this template image indicates we are in ``GameState.FUTMainMenu``                                                                                                        | *16px X 13px*  |     |
+| .. image:: templates/HomeMenu_Cart.png                         | **FUT Home Menu**                  | We use the little shopping-cart icon in the top-right corner of the screen as our Main Menu indicator. Matching this template image indicates we are in ``GameState.FUTMainMenu``                                                                                                        | *16px X 13px*  |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 
 Hardware
@@ -80,6 +80,22 @@ Hardware
 .. image:: blog/images/Pins_Image.jpg
    :alt: Pins_Image
  
+
+
+CLI
+=============
+
+``python3 xcv``
+
+Options:
+  -v, --verbose                        Display debug information
+  --port TEXT                          Controller port, default is /dev/cu.SLAB_USBtoUART
+  -auto, --autopilot                   Initiate xcv sequence
+  --push [A|B|X|Y|S|l|r|w|a|s|d|o|p]   Enter button to push
+  --count INTEGER                      Time in seconds before commands
+  -dry, --dryrun                       For testing without xbox controller connected
+  --help                               Show this message and exit.
+
 
 TO-DO
 =====
