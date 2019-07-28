@@ -94,7 +94,7 @@ Options:
   --count INTEGER                      Time in seconds before commands
   -dry, --dryrun                       For testing without xbox controller connected
   --help                               Show this message and exit.
-
+  --debug                              List USB ports and check the serial connection
 
 TO-DO
 =====

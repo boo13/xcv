@@ -13,7 +13,7 @@ def serialSend(charToSend, port='COM21', baudrate=115200):
 
     return send
 
-if __name__ == "__main__":
+def checkSerial():
     a = serialSend('A')
     b = serialSend('B')
     x = serialSend('X')
@@ -28,3 +28,7 @@ if __name__ == "__main__":
     logger.info("Sending y command")
     y()
 
+
+
+if __name__ == "__main__":
+    checkSerial()

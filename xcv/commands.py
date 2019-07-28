@@ -8,8 +8,9 @@ import serial
 from xcv.constants import (
     SERIAL_BAUD, 
     SERIAL_PORT,
+    print_all_constants,
 )
-from xcv.looney import hazard, sleep, stars
+from xcv.cli.cli import hazard, sleep, stars
 from xcv.util import (
     WINDOWS,
     XcvError,
@@ -161,4 +162,4 @@ class HUD:
         return frame
 
 if __name__ == "__main__":
-    print_info()
+    print_all_constants()

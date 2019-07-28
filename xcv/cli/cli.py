@@ -48,6 +48,7 @@ else:
 _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
 _defaultUSBport = "/dev/cu.SLAB_USBtoUART"
 
+_docstring = f""
 
 @click.command()
 @click.option(
@@ -80,24 +81,30 @@ _defaultUSBport = "/dev/cu.SLAB_USBtoUART"
     is_flag=True,
     help="For testing without xbox controller connected",
 )
+@click.option(
+    "--debug",
+    is_flag=True,
+    help="List USB ports and check the serial connection",
+)
 def main_input(
-    verbose=False, port=None, autopilot=False, push=None, count=None, dryrun=None
+    verbose=False, port=None, autopilot=False, push=None, count=None, dryrun=None, debug=None
 ):
-    """🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
-    \n\n
-    The project's goal is to make OpenCV experiments easier, by avoiding controller-driver 
+    """The project's goal is to make OpenCV experiments easier, by avoiding controller-driver 
     nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. 
     On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals
     to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
 
     \n
-    \n\t\t____________________ Xbox Commands ____________________                               
-    \n\t\t                 ⒮ tart   ⒳ box    s⒠ lect               
-    \n\t\t                    Ⓐ =A Ⓑ =B Ⓧ =X Ⓨ =Y                               
-    \n\t\t      𝗗⬆ =w   
-    \n\t\t𝗗⬅ =a      𝗗➡ =d   Ⓛ Stick          Ⓡ Stick
-    \n\t\t      𝗗⬇ =s 
-    \n\t\t_____________________________________________________  """
+    \n\t____________________ Xbox Commands ____________________                               
+    \n\t                 ⒮ tart   ⒳ box    s⒠ lect               
+    \n\t                    Ⓐ =A Ⓑ =B Ⓧ =X Ⓨ =Y                               
+    \n\t      𝗗⬆ =w   
+    \n\t𝗗⬅ =a      𝗗➡ =d   Ⓛ Stick          Ⓡ Stick
+    \n\t      𝗗⬇ =s 
+    \n\t_____________________________________________________  """
+
+    if not WINDOWS:
+        print("🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller")
 
     if verbose:
         # click.echo(f"Successfully connected to port: {port}"))
@@ -113,6 +120,11 @@ def main_input(
             f"{exiting}{debug_indent}{hazard}Sorry! - This is actually a WIP Feature. {suggest}Try usinsg --help to find something that actually works, or make it work by contributing on github! \n"
         )
 
+    elif debug:
+        from xcv.tools import checkSerial, list_ports
+        list_ports.list_ports()
+        checkSerial.checkSerial()
+
     elif push:
         xcontroller.single_btn_press(push)
 
@@ -122,7 +134,7 @@ def main_input(
     
     else:
         click.echo(
-            f"{exiting}{debug_indent}You need to choose an option. ⚠️ Try using --help \n"
+            f"{exiting}{debug_indent}{hazard}You need to choose an option. {suggest}Try using --help \n"
         )
 
     
