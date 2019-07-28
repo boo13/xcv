@@ -24,21 +24,17 @@
 
 🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
 
-**_The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.**\ *
+**The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.**
 
 
-:Authors: 👻
-:Version: 0.1.0
-:License: MIT
-:Documentation: Thttps://xcv.readthedocs.io
+  :Authors: 👻
+  :Version: 0.1.0
+  :Documentation: https://xcv.readthedocs.io
 
 ----
 
 What does XCV do?
 =================
-
-----
-
 
 .. image:: blog/images/sampleImage.png
    :target: blog/images/sampleImage.png
@@ -46,81 +42,39 @@ What does XCV do?
 
 In-Game Tracking
 ================
-+------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| Template Image                                 | Template Name                      | Usage                                                                                                                                                                                                  | Size           | ROI |
-+================================================+====================================+========================================================================================================================================================================================================+================+=====+
-| .. image:: templates/myTeamScoreboardName.png  | **My Team Badge**                  | Determine which side of the game sreen I am defending                                                                                                                                                  | *24px X 24px*  |     |
-+------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| .. image:: templates/myTeamScoreboardName.png  | **My Team Scoreboard Name**        | Determine which side of the scoreboard we're on, ``Game.HomeTeam`` or ``Game.AwayTeam`` And is currently the first indication that we are ``GameState.InGame``                                         | *25px X 8px*   |     |
-+------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| .. image:: templates/HomeScore/0.png           | **Home Score**                     | Digits 0-11 currently used, matched via template matching with moderate success                                                                                                                        | *25px X 8px*   |     |
-+------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| .. image:: templates/AwayScore/0.png           | **Away Score**                     | Digits 0-1 currently used, matched via template matching with not-so-great success                                                                                                                     | *25px X 8px*   |     |
-+------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| Template Image                                                 | Template Name                      | Usage                                                                                                                                                                                                  | Size           | ROI |
++================================================================+====================================+========================================================================================================================================================================================================+================+=====+
+| .. image:: templates/myTeamScoreboardName.png                  | **My Team Badge**                  | Determine which side of the game sreen I am defending                                                                                                                                                  | *24px X 24px*  |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/myTeamScoreboardName.png                  | **My Team Scoreboard Name**        | Determine which side of the scoreboard we're on, ``Game.HomeTeam`` or ``Game.AwayTeam`` And is currently the first indication that we are ``GameState.InGame``                                         | *25px X 8px*   |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/HomeScore/0.png                           | **Home Score**                     | Digits 0-11 currently used, matched via template matching with moderate success                                                                                                                        | *25px X 8px*   |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/AwayScore/0.png                           | **Away Score**                     | Digits 0-1 currently used, matched via template matching with not-so-great success                                                                                                                     | *25px X 8px*   |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 
 ----
 
 Menu Tracking
 =============
-+------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-| Template Image                                 | Template Name                      | Usage                                                                                                                                                                                                  | Size           | ROI |
-+================================================+====================================+========================================================================================================================================================================================================+================+=====+
-| .. image:: templates/SquadManagement.png       | **Squad Management Menu**          | Indicates the Squad Management Screen                                                                                                                                                                  | *22px X 13px*  |     |
-+------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-
-
-
-     .. image:: /templates/Menu/InGameMenu_ResumeMatch_Off.png
-        :target: /templates/Menu/InGameMenu_ResumeMatch_Off.png
-        :alt: InGameMenu_ResumeMatch_Off.png
-     
-     - **In-Game Menu - OFF**
-     - Indicates the InGameMenu Screen. Also indicates if we are ``off`` the ``ResumeMatch`` button.
-     - *30px X 30px*
-     - 
-   * - 
-     .. image:: /templates/Menu/InGameMenu_ResumeMatch_On.png
-        :target: /templates/Menu/InGameMenu_ResumeMatch_On.png
-        :alt: InGameMenu_ResumeMatch_On.png
-     
-     - **In-Game Menu - OFF**
-     - Indicates the InGameMenu Screen. Also indicates if we are ``on`` the ``ResumeMatch`` button.
-     - *30px X 30px*
-     - 
-   * - 
-     .. image:: /templates/45min.png
-        :target: /templates/45min.png
-        :alt: 45min.png
-     
-     - **In-Game Menu - Half-Time**
-     - Matching this template indicates the InGameMenu Screen is at ``45.00``\ , it's not a perfect method for indicating if we are at Half-time (since pausing the game in stoppage time will send a false indication), but it's good-enough for now.
-     - *31px X 14px*
-   * - 
-     .. image:: /templates/90min.png
-        :target: /templates/90min.png
-        :alt: 90min.png
-     
-     - **In-Game Menu - Full-Time**
-     - Matching this template indicates the InGameMenu Screen is at ``90.00``\ , it's not perfect (see above.)
-     - *31px X 14px*
-     - 
-   * - 
-     .. image:: /templates/StartBtn.png
-        :target: /templates/StartBtn.png
-        :alt: StartBtn.png
-     
-     - **Pre-Game Start Menu**
-     - *We see this screen in FUT>Single-Player Season>Pre-Game Menu. It is one of the rare instances that a menu screen requires pressing the ``Start`` button to continue.* Matching this template indicates we are in ``GameState.PreGameStartMenu`` and we need to send ``xcontroller.Start``
-     - *128px X 27px*
-     - 
-   * - 
-     .. image:: /templates/HomeMenu_Cart.png
-        :target: /templates/HomeMenu_Cart.png
-        :alt: HomeMenu_Cart.png
-     
-     - **FUT Home Menu**
-     - *We use the little shopping-cart icon in the top-right corner of the screen as our Main Menu indicator.* Matching this template image indicates we are in ``GameState.FUTMainMenu``
-     - *16px X 13px*
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| Template Image                                                 | Template Name                      | Usage                                                                                                                                                                                                                                                                                      | Size           | ROI |
++================================================================+====================================+============================================================================================================================================================================================================================================================================================+================+=====+
+| .. image:: templates/SquadManagement.png                       | **Squad Management Menu**          | Indicates the Squad Management Screen                                                                                                                                                                                                                                                      | *22px X 13px*  |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/Menu/InGameMenu_ResumeMatch_Off.png       | **In-Game Menu - OFF**             | Indicates the InGameMenu Screen. Also indicates if we are ``off`` the ``ResumeMatch`` button.                                                                                                                                                                                              | *30px X 30px*  |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/Menu/InGameMenu_ResumeMatch_On.png        | **In-Game Menu - ON**              | Indicates the InGameMenu Screen. Also indicates if we are ``on`` the ``ResumeMatch`` button.                                                                                                                                                                                               | *30px X 30px*  |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/45min.png                                 | **In-Game Menu - Half-Time**       | Matching this template indicates the InGameMenu Screen is at ``45.00``\ , it's not a perfect method for indicating if we are at Half-time (since pausing the game in stoppage time will send a false indication), but it's good-enough for now.                                            | *31px X 14px*  |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/90min.png                                 | **In-Game Menu - Full-Time**       | Matching this template indicates the InGameMenu Screen is at ``90.00``\ , it's not perfect (see above.)                                                                                                                                                                                    | *31px X 14px*  |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/StartBtn.png                              | **Pre-Game Start Menu**            | *We see this screen in FUT>Single-Player Season>Pre-Game Menu. It is one of the rare instances that a menu screen requires pressing the ``Start`` button to continue.* Matching this template indicates we are in ``GameState.PreGameStartMenu`` and we need to send ``xcontroller.Start`` | *128px X 27px* |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/HomeMenu_Cart.png                         | **FUT Home Menu**                  | *We use the little shopping-cart icon in the top-right corner of the screen as our Main Menu indicator.* Matching this template image indicates we are in ``GameState.FUTMainMenu``                                                                                                        | *16px X 13px*  |     |
++----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 
 
 TO-DO
