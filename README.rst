@@ -22,7 +22,7 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
 .. image:: https://img.shields.io/github/license/boo13/xcv
    :target: https://github.com/boo13/xcv/blob/master/LICENSE
    :alt: GitHub
- 
+    
 .. image:: https://img.shields.io/github/repo-size/boo13/xcv
    :alt: GitHub repo size
 
@@ -36,8 +36,6 @@ What does XCV do?
 =================
 
 .. image:: blog/images/sampleImage.png
-   :target: blog/images/sampleImage.png
-
 
 In-Game Tracking
 ================
@@ -52,6 +50,8 @@ In-Game Tracking
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 | .. image:: templates/AwayScore/0.png                           | **Away Score**                     | Digits 0-1 currently used, matched via template matching with not-so-great success                                                                                                                     | *25px X 8px*   |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+
+.. image:: blog/images/screenshot_SinglePlayerMenu.png
 
 Menu Tracking
 =============
