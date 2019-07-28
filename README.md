@@ -1,9 +1,8 @@
 
 # xcv
+
+![Travis](https://img.shields.io/travis/boo13/xcv.svg) ![Read the Docs](https://readthedocs.org/projects/xcv/badge/?version=latest) ![GitHub](https://img.shields.io/github/license/boo13/xcv) ![GitHub repo size](https://img.shields.io/github/repo-size/boo13/xcv)
 ___
-
-
-![PyPI](https://img.shields.io/pypi/v/xcv) ![Travis](https://img.shields.io/travis/boo13/xcv.svg) ![Read the Docs](https://readthedocs.org/projects/xcv/badge/?version=latest) ![GitHub](https://img.shields.io/github/license/boo13/xcv) ![GitHub repo size](https://img.shields.io/github/repo-size/boo13/xcv)
 
 🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
 
@@ -15,14 +14,11 @@ ___
 * Documentation: https://xcv.readthedocs.io.
 
 
-Features
+# Features
 --------
 
-# XCV - Features
----
-
 # In-Game Tracking
-![sampleImage.png](templates/9AE59C7D0382C17C2FF7161FD6CCEAF8.png)
+![sampleImage.png](/blog/images/sampleImage.png)
 
 ### Template Matching
 
@@ -48,14 +44,14 @@ _25px X 8px_
 
 ### Template Matching
 
-![SquadManagement.png](https://github.com/boo13/xcv/blob/master/templates/SquadManagement.png)
+![SquadManagement.png](/templates/SquadManagement.png)
 
 **Squad Management Menu**
 Indicates the Squad Management Screen
 
 _22px X 13px_
 ___
-![InGameMenu_ResumeMatch_Off.png](https://github.com/boo13/xcv/blob/master/templates/Menu/InGameMenu_ResumeMatch_Off.png) Off ![InGameMenu_ResumeMatch_On.png](https://github.com/boo13/xcv/blob/master/templates/Menu/InGameMenu_ResumeMatch_On.png) On
+![InGameMenu_ResumeMatch_Off.png](/templates/Menu/InGameMenu_ResumeMatch_Off.png) Off ![InGameMenu_ResumeMatch_On.png](/templates/Menu/InGameMenu_ResumeMatch_On.png) On
 
 **In-Game Menu**
 Indicates the InGameMenu Screen
@@ -64,7 +60,7 @@ Also indicates if we are `off` or `on` the `ResumeMatch` button
 
 _30px X 30px_
 ___
-![45min.png](https://github.com/boo13/xcv/blob/master/templates/45min.png)
+![45min.png](/templates/45min.png)
 
 **In-Game Menu - Half-Time**
 Indicates the InGameMenu Screen is at `45.00`, it's not a perfect method for indicating if we are at Half-time (since pausing the game in stoppage time will send a false indication), but it's good-enough for now. 
@@ -72,7 +68,7 @@ Indicates the InGameMenu Screen is at `45.00`, it's not a perfect method for ind
 _31px X 14px_
 ___
 
-![90min.png](https://github.com/boo13/xcv/blob/master/templates/90min.png)
+![90min.png](/templates/90min.png)
 
 **In-Game Menu - Full-Time**
 Indicates the InGameMenu Screen is at `90.00`, it's not perfect (see above.)
@@ -80,7 +76,7 @@ Indicates the InGameMenu Screen is at `90.00`, it's not perfect (see above.)
 
 _31px X 14px_
 ___
-![StartBtn.png](https://github.com/boo13/xcv/blob/master/templates/StartBtn.png)
+![StartBtn.png](/templates/StartBtn.png)
 
 **Pre-Game Start Menu**
 _We see this screen in FUT>Single-Player Season>Pre-Game Menu. It is one of the rare instances that a menu screen requires pressing the `Start` button to continue._
@@ -91,7 +87,7 @@ Matching this template image shows me...
 
 _128px X 27px_
 ___
-![HomeMenu_Cart.png](https://github.com/boo13/xcv/blob/master/templates/HomeMenu_Cart.png)
+![HomeMenu_Cart.png](/templates/HomeMenu_Cart.png)
 
 **FUT Home Menu**
 _We use the little shopping-cart icon in the top-right corner of the screen as our Main Menu indicator._
