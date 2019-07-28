@@ -1,7 +1,7 @@
 
 **XCV**
+🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
 ===========
-
 
 .. image:: https://img.shields.io/travis/boo13/xcv.svg
    :target: https://img.shields.io/travis/boo13/xcv.svg
@@ -22,7 +22,7 @@
 
 ----
 
-🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
+
 
 **The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.**
 
