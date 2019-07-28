@@ -52,7 +52,7 @@ def print_animation(meta: Dict[str, bool]):
 
 if __name__ == "__main__":
     print(__doc__)
-    print("Testing the animation a loop for 10 seconds.")
+    print("Testing the animation loop for 10 seconds.")
 
     with animate(f"Animation here: ", True):
         sleep(10)

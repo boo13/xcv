@@ -119,6 +119,7 @@ DONE
 Credits
 =======
 
-* https://github.com/Sentdex/pygta5 - *I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.*
-* https://github.com/nefarius/ViGEm - *I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.*
-* https://github.com/elgertam/cookiecutter-pipenv - *This package was created with a version of this Cookiecutter project template*
+* https://github.com/Sentdex/pygta5 - I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.*
+* https://github.com/jrosebr1/imutils - I've learned a ton from @jrosebr1 and his site: http://www.pyimagesearch.com - Here I also use his FPS class from imutils.
+* https://github.com/nefarius/ViGEm - I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.
+* https://github.com/elgertam/cookiecutter-pipenv - This package was created with a version of this Cookiecutter project template
