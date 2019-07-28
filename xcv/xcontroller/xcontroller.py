@@ -5,10 +5,14 @@ import pickle
 # PYSERIAL - connects via serial (ie. hardwared USB) to teensy/arduino/whatever-you-want
 import serial
 
-
 # DATACLASSES - req. python 3.7^
 from dataclasses import dataclass
 from typing import List
+
+from xcv.constants import SERIAL_BAUD, SERIAL_PORT
+from xcv.util import XcvError
+
+from xcv.cli.cli import hazard, sleep, warning, exiting
 
 # LOCAL SETTINGS - we use these to set (and mostly forget) the Serial connection config
 @dataclass
@@ -119,7 +123,7 @@ def single_btn_press(btnInput: object, cnt_down: int = 2):
         btns.drBtn = 1
     else:
         print(
-            "\n\t🛑 Error - Couldn't find that button.\n\t\t ⚠️ To list the buttons accepted use --help \n"
+            f"\n\t{warning} Error - Couldn't find that button.\n\t\t {suggest}To list the buttons accepted use --help \n"
         )
         return
 
@@ -132,8 +136,6 @@ def single_btn_press(btnInput: object, cnt_down: int = 2):
     sleep(0.2)
 
 
-from xcv.constants import SERIAL_BAUD, SERIAL_PORT
-from xcv.util import XcvError
 
 
 def serial_send(btns_sending, serialPort=SERIAL_PORT, serialBaud=SERIAL_BAUD):
@@ -152,10 +154,10 @@ def serial_send(btns_sending, serialPort=SERIAL_PORT, serialBaud=SERIAL_BAUD):
             pickle.dump(btns_sending.make_string(), ser)
     except serial.serialutil.SerialException as e:
         raise XcvError(
-            f"\n\n💥  🔌 - No Serial Communication\n\t⚠️  CHECK your serial port in 'constants.py'\n\t✏️  TRY checking the wiring and the port, is port {str(SERIAL_PORT)} correct for your setup?"
+            f"\n\n{warning} - No Serial Communication\n\t{hazard}  CHECK your serial port in 'constants.py'\n\t{suggest}  TRY checking the wiring and the port, is port {str(SERIAL_PORT)} correct for your setup?"
         )
     except Exception as e:
-        raise XcvError(f"\n\n💥 I have no idea - ⚠️ CHECK the logs\n\n{str(e)}")
+        raise XcvError(f"\n\n{exiting} I have no idea - {hazard} CHECK the logs\n\n{str(e)}")
 
 
 # In case we're just testing the controller...
