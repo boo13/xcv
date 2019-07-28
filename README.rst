@@ -16,15 +16,13 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
    :alt: Travis
  
 .. image:: https://readthedocs.org/projects/xcv/badge/?version=latest
-   :target: https://readthedocs.org/projects/xcv/badge/?version=latest
+   :target: https://xcv.readthedocs.io
    :alt: Read the Docs
  
 .. image:: https://img.shields.io/github/license/boo13/xcv
-   :target: https://img.shields.io/github/license/boo13/xcv
    :alt: GitHub
  
 .. image:: https://img.shields.io/github/repo-size/boo13/xcv
-   :target: https://img.shields.io/github/repo-size/boo13/xcv
    :alt: GitHub repo size
 
 :Authors: 👻
@@ -119,7 +117,14 @@ DONE
 Credits
 =======
 
-* https://github.com/Sentdex/pygta5 - I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.*
-* https://github.com/jrosebr1/imutils - I've learned a ton from @jrosebr1 and his site: http://www.pyimagesearch.com - Here I also use his FPS class from imutils.
-* https://github.com/nefarius/ViGEm - I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.
-* https://github.com/elgertam/cookiecutter-pipenv - This package was created with a version of this Cookiecutter project template
+https://github.com/Sentdex/pygta5
+I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.*
+
+https://github.com/jrosebr1/imutils
+I use his FPS class from imutils. Also - I've learned a ton from @jrosebr1 and his site: http://www.pyimagesearch.com 
+
+https://github.com/nefarius/ViGEm
+I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.
+
+https://github.com/elgertam/cookiecutter-pipenv
+This package was created with a version of this Cookiecutter project template
