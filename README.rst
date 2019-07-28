@@ -13,10 +13,12 @@ xcv
         :target: https://xcv.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-
-
-
-xcv is a project that pushes buttons on a controller.
+🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
+\n\n
+The project's goal is to make OpenCV experiments easier, by avoiding controller-driver 
+nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. 
+On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals
+to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
 
 
 * Free software: MIT license
