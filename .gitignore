@@ -1,10 +1,17 @@
 # Photoshop files
 *.psd
 
+# Word Doc files
+*.docx
+*.doc
+
+# Scratch folder
+scratch/*
 
 # Personal VS Code Settings
 .vscode/
 xcv.code-workspace
+*.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
