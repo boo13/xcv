@@ -1,7 +1,13 @@
 
 **XCV**
-🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
 ===========
+🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
+
+----
+
+**The project's goal is to make game-based OpenCV experiments easier.**
+By avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
+
 
 .. image:: https://img.shields.io/travis/boo13/xcv.svg
    :target: https://img.shields.io/travis/boo13/xcv.svg
@@ -19,17 +25,9 @@
    :target: https://img.shields.io/github/repo-size/boo13/xcv
    :alt: GitHub repo size
 
-
-----
-
-
-
-**The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.**
-
-
-  :Authors: 👻
-  :Version: 0.1.0
-  :Documentation: https://xcv.readthedocs.io
+:Authors: 👻
+:Version: 0.1.0
+:Documentation: https://xcv.readthedocs.io
 
 ----
 
@@ -53,8 +51,6 @@ In-Game Tracking
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 | .. image:: templates/AwayScore/0.png                           | **Away Score**                     | Digits 0-1 currently used, matched via template matching with not-so-great success                                                                                                                     | *25px X 8px*   |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
-
-----
 
 Menu Tracking
 =============
@@ -97,22 +93,23 @@ CLI To Do
 * [ ] Implement Dry-Run
 * [ ] Fix problem with Start button not responding (check wiring)
 
+
 Game To Do
 ^^^^^^^^^^
 
 
 * [ ] In-Game Player Tracking
 
+
 DONE
 ----
-
 
 * [X] Reliably detect FIFA's game mode (In Menu, In Game, etc.)  
 * [X] Get caught up on documenting the README
 
+
 Credits
 =======
-
 
 * https://github.com/Sentdex/pygta5 - *I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.*
 * https://github.com/nefarius/ViGEm - *I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.*
