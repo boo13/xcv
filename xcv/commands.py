@@ -8,11 +8,10 @@ import serial
 from xcv.constants import (
     SERIAL_BAUD, 
     SERIAL_PORT,
+    WINDOWS,
 )
 from xcv.cli.cli import hazard, sleep, stars
-from xcv.util import (
-    WINDOWS,
-    XcvError,
+from xcv.tools import (
     print_version,
     print_info,
     print_all_constants,
