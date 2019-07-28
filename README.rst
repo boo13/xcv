@@ -38,48 +38,23 @@ What does XCV do?
 ----
 
 
-.. image:: /blog/images/sampleImage.png
-   :target: /blog/images/sampleImage.png
-   :alt: sampleImage.png
+.. image:: blog/images/sampleImage.png
+   :target: blog/images/sampleImage.png
 
 
 In-Game Tracking
 ================
-
-.. list-table::
-   :header-rows: 1
-
-   * - Template Image
-     - Template Name
-     - Usage
-     - Size
-     - ROI
-   * - 
-     .. image:: /templates/myTeamBadge.jpg
-        :target: /templates/myTeamBadge.jpg
-        :alt: myTeamBadge.jpg
-     
-     - **My Team Badge**
-     - Determine which side of the game sreen I am defending
-     - *24px X 24px*
-   * - 
-     .. image:: /templates/myTeamScoreboardName.png
-        :target: /templates/myTeamScoreboardName.png
-        :alt: myTeamScoreboardName.png
-     
-     - **My Scoreboard Name**
-     - Determine which side of the scoreboard we're on, ``Game.HomeTeam`` or ``Game.AwayTeam`` And is currently the first indication that we are ``GameState.InGame``
-     - *25px X 8px*
-   * - 
-     - **Home Score**
-     - Digits 0-11 currently used, matched via template matching with moderate success
-     - 
-     - 
-   * - 
-     - **Away Score**
-     - Digits 0-1 currently used, matched via template matching with not-so-great success
-     - 
-
++------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| Template Image                                 | Template Name                      | Usage                                                                                                                                                                                                  | Size           | ROI |
++================================================+====================================+========================================================================================================================================================================================================+================+=====+
+| .. image:: templates/myTeamScoreboardName.png  | **My Team Badge**                  | Determine which side of the game sreen I am defending                                                                                                                                                  | *24px X 24px*  |     |
++------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/myTeamScoreboardName.png  | **My Team Scoreboard Name**        | Determine which side of the scoreboard we're on, ``Game.HomeTeam`` or ``Game.AwayTeam`` And is currently the first indication that we are ``GameState.InGame``                                         | *25px X 8px*   |     |
++------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/HomeScore/0.png           | **Home Score**                     | Digits 0-11 currently used, matched via template matching with moderate success                                                                                                                        | *25px X 8px*   |     |
++------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
+| .. image:: templates/AwayScore/0.png           | **Away Score**                     | Digits 0-1 currently used, matched via template matching with not-so-great success                                                                                                                     | *25px X 8px*   |     |
++------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 
 ----
 
