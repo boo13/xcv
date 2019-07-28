@@ -27,10 +27,12 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
    :alt: GitHub repo size
 
 
-:Authors: 👻
+:Authors: 👻_
 :Version: 0.1.0
 :Documentation: https://xcv.readthedocs.io
 :History: HISTORY.rst_
+
+.. _👻: https://github.com/boo13/xcv/blob/master/AUTHORS.rst
 
 .. _HISTORY.rst: https://github.com/boo13/xcv/blob/master/HISTORY.rst
 
