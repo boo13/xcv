@@ -81,7 +81,7 @@ Hardware
 
 .. image:: blog/images/Pins_Image.jpg
    :alt: Pins_Image
-   :width: 400pt
+   :width: 200pt
 
 
 CLI
