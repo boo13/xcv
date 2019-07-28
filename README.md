@@ -1,17 +1,17 @@
-===
+
 xcv
-===
+___
 
 
-.. image:: https://img.shields.io/pypi/v/xcv.svg
-        :target: https://pypi.python.org/pypi/xcv
+![PyPI](https://img.shields.io/pypi/v/xcv)
 
-.. image:: https://img.shields.io/travis/boo13/xcv.svg
-        :target: https://travis-ci.org/boo13/xcv
+![Travis](https://img.shields.io/travis/boo13/xcv.svg)
 
-.. image:: https://readthedocs.org/projects/xcv/badge/?version=latest
-        :target: https://xcv.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+![Read the Docs](https://readthedocs.org/projects/xcv/badge/?version=latest)
+
+![GitHub](https://img.shields.io/github/license/boo13/xcv)
+
+![GitHub repo size](https://img.shields.io/github/repo-size/boo13/xcv)
 
 🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
 
@@ -29,7 +29,7 @@ to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display
 Features
 --------
 
-#XCV - Features
+#XCV - Features#
 
 ---
 
@@ -136,4 +136,6 @@ To Do
 Credits
 -------
 
-This package was created with Cookiecutter https://github.com/elgertam/cookiecutter-pipenv project template.
+* <https://github.com/elgertam/cookiecutter-pipenv> - _This package was created with a version of this Cookiecutter project template_
+* <https://github.com/Sentdex/pygta5> - _I just loved this project and tutorial series Sentdex put together. He's helped me learn python over the years, but this project felt like something I wanted to do my own version of, with a different game, and that started me on this journey._
+* <https://github.com/nefarius/ViGEm> - _I first tried to implement virtual controllers, such as this solution. Truth be told this project idea came from my inability to get ViGEm to work._
