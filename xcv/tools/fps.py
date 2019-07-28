@@ -1,7 +1,8 @@
 
 # FPS class is mostly courtesy of imutils
 class FPS:
-    ''' Frames Per Second for OpenCV Videos. Code is courtesy of https://github.com/jrosebr1/imutils, with a few minor changes.
+    '''Frames Per Second for OpenCV Videos. 
+    Code is courtesy of https://github.com/jrosebr1/imutils, with a few minor changes.
     '''
     def __init__(self):
         # store the start time, end time, and total number of frames
