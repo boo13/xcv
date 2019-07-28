@@ -8,6 +8,7 @@
 **The project's goal is to make game-based OpenCV experiments easier.**
 By avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
 
+-----------------------
 
 .. image:: https://img.shields.io/travis/boo13/xcv.svg
    :target: https://img.shields.io/travis/boo13/xcv.svg
@@ -76,36 +77,20 @@ Menu Tracking
 TO-DO
 =====
 
-General To Do
-^^^^^^^^^^^^^
-
-
-* [ ] Re-implement HUD
-* [ ] Implement GUI
-* [ ] Implement Button Press Received by Game Controller script (via Martin O'Hanlon)
-* [ ] Add more photos
-* [ ] Get tests working again
-
-CLI To Do
-^^^^^^^^^
-
-
-* [ ] Implement Dry-Run
-* [ ] Fix problem with Start button not responding (check wiring)
-
-
-Game To Do
-^^^^^^^^^^
-
-
-* [ ] In-Game Player Tracking
-
+- [ ] **GUI** - Re-implement HUD
+- [ ] **GUI** - Implement new, framed, GUI (using PysimpleGui)
+- [ ] **GUI** - Implement Button Press Received by Game Controller script (via Martin O'Hanlon)
+- [ ] **README** - Add more screenshots
+- [ ] **TESTS** - Get tests working again
+- [ ] **CLI** - Implement Dry-Run
+- [ ] **CLI** - Fix problem with Start button not responding (check wiring)
+- [ ] **GAME** - In-Game Player Tracking
 
 DONE
 ----
 
-* [X] Reliably detect FIFA's game mode (In Menu, In Game, etc.)  
-* [X] Get caught up on documenting the README
+- [X] Reliably detect FIFA's game mode (In Menu, In Game, etc.)  
+- [X] Get caught up on documenting the README
 
 
 Credits
