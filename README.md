@@ -20,18 +20,16 @@ ___
 # In-Game Tracking
 ![sampleImage.png](/blog/images/sampleImage.png)
 ___
-![myTeamBadge.jpg](/templates/myTeamBadge.jpg)
+![myTeamBadge.jpg](/templates/myTeamBadge.jpg) **My Team Badge**
 
-**My Team Badge**
 Matching this template image shows me...
 * which side of the game sreen I am defending
 
 _24px X 24px_
 
 ___
-![myTeamScoreboardName.png](/templates/myTeamScoreboardName.png)
+![myTeamScoreboardName.png](/templates/myTeamScoreboardName.png) **My Scoreboard Name**
 
-**My Scoreboard Name**
 Matching this template image shows me...
 * which side of the scoreboard I'm on
 * if I'm `Game.HomeTeam` or `Game.AwayTeam`
@@ -106,27 +104,35 @@ _16px X 13px_
 
 
 # To Do
--------
-## General To Do
+---
+### General To Do
 - [ ] Re-implement HUD
 - [ ] Implement GUI
 - [ ] Implement Button Press Received by Game Controller script (via Martin O'Hanlon)
+- [ ] Add more photos
+- [ ] Get tests working again
 
 ### CLI To Do
 - [ ] Implement Dry-Run
 - [ ] Fix problem with Start button not responding (check wiring)
-- [ ] .
+
+### Game To Do
+- [ ] In-Game Player Tracking
 
 ## DONE
 - [X] Reliably detect FIFA's game mode (In Menu, In Game, etc.)  
-- [X] Add photos
 - [X] Get caught up on documenting the README
 
 Credits
 -------
 * <https://github.com/elgertam/cookiecutter-pipenv>
+  
  _This package was created with a version of this Cookiecutter project template_
+
 * <https://github.com/Sentdex/pygta5>
+  
  _I just loved this project and tutorial series Sentdex put together. He's helped me learn python over the years, but this project felt like something I wanted to do my own version of, with a different game, and that started me on this journey._
+   
 * <https://github.com/nefarius/ViGEm>
+  
  _I first tried to implement virtual controllers, such as this solution. Truth be told this project idea came from my inability to get ViGEm to work._
