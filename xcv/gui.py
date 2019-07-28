@@ -5,6 +5,7 @@ try:
     import numpy as np
     from xcv.constants import XCV_VERSION, SERIAL_PORT, SERIAL_BAUD
     import datetime
+    import imutils
 except:
     raise
 
@@ -24,42 +25,110 @@ enhance:    applies local contrast enhancement on the luma channel to make the i
 
 
 def mainGUI():
-    sg.ChangeLookAndFeel('DarkBlue')
+    sg.SetOptions(element_padding=(0, 0))
+    # sg.ChangeLookAndFeel('Black')  
+    _recordingColor = ("white", "black")
 
     # define the window layout
-    layout = [[sg.Text('XCV', font='Helvetica 16', justification='center')],
-              [sg.Text( f'Vers: {XCV_VERSION}    USB: {SERIAL_PORT}    Baud: {SERIAL_BAUD}\n', font='Helvetica 10', justification='center')],
-              [sg.Image(filename='', key='image')],
-              [sg.Radio('Standby', 'GameMode', default=True, key='GM_standby'), sg.Radio('AutoPilot', 'GameMode',key='GM_autoPilot'), sg.Radio('SinglePress', 'GameMode',key='GM_singlePress'),  sg.Radio('Debug', 'GameMode',key='GM_debug')],
-              [sg.Checkbox('None', default=True, size=(10, 1))],
-              [sg.Checkbox('threshold', size=(10, 1), key='thresh'),
-               sg.Slider((0, 255), 128, 1, orientation='h', size=(40, 15), key='thresh_slider')],
-              [sg.Checkbox('canny', size=(10, 1), key='canny'),
-               sg.Slider((0, 255), 128, 1, orientation='h', size=(20, 15), key='canny_slider_a'),
-               sg.Slider((0, 255), 128, 1, orientation='h', size=(20, 15), key='canny_slider_b')],
-              [sg.Checkbox('contour', size=(10, 1), key='contour'),
-               sg.Slider((0, 255), 128, 1, orientation='h', size=(20, 15), key='contour_slider'),
-               sg.Slider((0, 255), 80, 1, orientation='h', size=(20, 15), key='base_slider')],
-              [sg.Checkbox('blur', size=(10, 1), key='blur'),
-               sg.Slider((1, 11), 1, 1, orientation='h', size=(40, 15), key='blur_slider')],
-              [sg.Checkbox('hue', size=(10, 1), key='hue'),
-               sg.Slider((0, 225), 0, 1, orientation='h', size=(40, 15), key='hue_slider')],
-              [sg.Checkbox('enhance', size=(10, 1), key='enhance'),
-               sg.Slider((1, 255), 128, 1, orientation='h', size=(40, 15), key='enhance_slider')],
-              [sg.Button('Record', size=(10, 1)), sg.Button('Screenshot', size=(10, 1)), sg.Output(size=(440, 150))],
-              [sg.Button('Exit', size=(10, 1))]]
+    maintab_layout = [
+        [sg.T("")],
+        [sg.Text("XCV", font=("Helvetica", 16), justification="center")],
+        [
+            sg.Text(
+                f"Vers: {XCV_VERSION}    USB: {SERIAL_PORT}    Baud: {SERIAL_BAUD}\n",
+                font="Helvetica 10",
+                justification="center",
+            )
+        ],
+        [sg.Image(filename="", size=(40, 15), key="image")],
+        [
+            sg.Radio("Standby", "GameMode", default=True, key="GM_standby"),
+            sg.Radio("AutoPilot", "GameMode", key="GM_autoPilot"),
+            sg.Radio("SinglePress", "GameMode", key="GM_singlePress"),
+            sg.Radio("Debug", "GameMode", key="GM_debug"),
+        ],
+        [sg.Checkbox("None", default=True, size=(10, 1))],
+        [
+            sg.Checkbox("threshold", size=(10, 1), key="thresh"),
+            sg.Slider(
+                (0, 255), 128, 1, orientation="h", size=(40, 15), key="thresh_slider"
+            ),
+        ],
+        [
+            sg.Checkbox("canny", size=(10, 1), key="canny"),
+            sg.Slider(
+                (0, 255), 128, 1, orientation="h", size=(20, 15), key="canny_slider_a"
+            ),
+            sg.Slider(
+                (0, 255), 128, 1, orientation="h", size=(20, 15), key="canny_slider_b"
+            ),
+        ],
+        [
+            sg.Checkbox("contour", size=(10, 1), key="contour"),
+            sg.Slider(
+                (0, 255), 128, 1, orientation="h", size=(20, 15), key="contour_slider"
+            ),
+            sg.Slider(
+                (0, 255), 80, 1, orientation="h", size=(20, 15), key="base_slider"
+            ),
+        ],
+        [
+            sg.Checkbox("blur", size=(10, 1), key="blur"),
+            sg.Slider((1, 11), 1, 1, orientation="h", size=(40, 15), key="blur_slider"),
+        ],
+        [
+            sg.Checkbox("hue", size=(10, 1), key="hue"),
+            sg.Slider((0, 225), 0, 1, orientation="h", size=(40, 15), key="hue_slider"),
+        ],
+        [
+            sg.Checkbox("enhance", size=(10, 1), key="enhance"),
+            sg.Slider(
+                (1, 255), 128, 1, orientation="h", size=(40, 15), key="enhance_slider"
+            ),
+        ],
+        [
+            sg.Button("Record", size=(10, 1), button_color=("white", "black")),
+            sg.Button("Screenshot", button_color=("white", "black"), size=(10, 1)),
+            sg.Output(size=(440, 150)),
+        ],
+        [sg.Button("Exit", size=(10, 1), button_color=("white", "red"))],
+    ]
+    tab2_layout = [[sg.T("This is inside tab 2")]]
+
+    layout = [
+        [
+            sg.TabGroup(
+                [
+                    [
+                        sg.Tab("Main", maintab_layout, tooltip="Main Menu"),
+                        sg.Tab("Input", tab2_layout, tooltip="Press Buttons"),
+                        sg.Tab("Output", tab2_layout, tooltip="Set Output"),
+                        sg.Tab(
+                            "Autopilot",
+                            tab2_layout,
+                            tooltip="Press Buttons Automagically",
+                        ),
+                        sg.Tab(
+                            "Training", tab2_layout, tooltip="Machine Learning Stuff"
+                        ),
+                        sg.Tab("Debug", tab2_layout, tooltip="Debug"),
+                    ]
+                ],
+                tooltip="TIP2",
+            )
+        ]
+    ]
 
     # create the window and show it without the plot
-    window = sg.Window(f'XCV - {XCV_VERSION}',
-                       location=(800, 200))
+    window = sg.Window(f"XCV - {XCV_VERSION}", location=(800, 200))
     window.Layout(layout).Finalize()
 
     cap = cv2.VideoCapture(0)
 
     # Check if camera opened successfully
-    if (cap.isOpened() == False): 
+    if cap.isOpened() == False:
         print("Unable to read camera feed")
-    
+
     # Default resolutions of the frame are obtained.The default resolutions are system dependent.
     # We convert the resolutions from float to integer.
     frame_width = int(cap.get(3))
@@ -68,72 +137,86 @@ def mainGUI():
     _recording = False
 
     while True:
-        event, values = window.Read(timeout=0, timeout_key='timeout')
+        event, values = window.Read(timeout=0, timeout_key="timeout")
         ret, frame = cap.read()
 
-        if event == 'Record':
+        if frame_width >= 641:
+            frame = imutils.resize(frame, width=640)
+
+        if event == "Record":
             if not _recording:
                 # Define the codec and create VideoWriter object (defines fps and frame size)
-                out = cv2.VideoWriter(f'data/output/screencap_{datetime.datetime.now().strftime("%Y_%m_%d_%H.%M.%S")}.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (frame_width,frame_height))
+                out = cv2.VideoWriter(
+                    f'data/output/screencap_{datetime.datetime.now().strftime("%Y_%m_%d_%H.%M.%S")}.avi',
+                    cv2.VideoWriter_fourcc("M", "J", "P", "G"),
+                    30,
+                    (frame_width, frame_height),
+                )
                 _recording = True
                 print("Recording...")
             else:
                 _recording = False
                 out.release()
                 print("Finished Recording")
-                      
+
         if _recording:
             out.write(frame)
-        
-        if event == 'Screenshot':
-            print("Saving Screenshot...")            
-            cv2.imwrite(f'data/output/screenshot_{datetime.datetime.now().strftime("%Y_%m_%d_%H.%M.%S")}.png', frame)
 
-        if event == 'Exit' or event is None:
+        if event == "Screenshot":
+            print("Saving Screenshot...")
+            cv2.imwrite(
+                f'data/output/screenshot_{datetime.datetime.now().strftime("%Y_%m_%d_%H.%M.%S")}.png',
+                frame,
+            )
+
+        if event == "Exit" or event is None:
             sys.exit(0)
-        
+
         # if values['GM_debug']:
         #     sg.Print("hello it's me displaying debug info in a window")
 
         # OpenCV
-        if values['thresh']:
+        if values["thresh"]:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
-            _, frame = cv2.threshold(frame, values['thresh_slider'], 255, cv2.THRESH_BINARY)
+            _, frame = cv2.threshold(
+                frame, values["thresh_slider"], 255, cv2.THRESH_BINARY
+            )
 
-        if values['canny']:
-            frame = cv2.Canny(frame, values['canny_slider_a'], values['canny_slider_b'])
+        if values["canny"]:
+            frame = cv2.Canny(frame, values["canny_slider_a"], values["canny_slider_b"])
 
-        if values['blur']:
-            frame = cv2.GaussianBlur(frame, (21, 21), values['blur_slider'])
+        if values["blur"]:
+            frame = cv2.GaussianBlur(frame, (21, 21), values["blur_slider"])
 
-        if values['hue']:
+        if values["hue"]:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            frame[:, :, 0] += values['hue_slider']
+            frame[:, :, 0] += values["hue_slider"]
             frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
 
-        if values['enhance']:
-            enh_val = values['enhance_slider'] / 40
+        if values["enhance"]:
+            enh_val = values["enhance_slider"] / 40
             clahe = cv2.createCLAHE(clipLimit=enh_val, tileGridSize=(8, 8))
             lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
             lab[:, :, 0] = clahe.apply(lab[:, :, 0])
             frame = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
 
-            
-        if values['contour']:
+        if values["contour"]:
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             frame = cv2.GaussianBlur(frame, (21, 21), 1)
             lower_blue = np.array([38, 86, 0])
             upper_blue = np.array([121, 255, 255])
             mask = cv2.inRange(hsv, lower_blue, upper_blue)
-            _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+            _, contours, _ = cv2.findContours(
+                mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE
+            )
             for contour in contours:
                 cv2.drawContours(frame, contour, -1, (0, 255, 0), 3)
             # frame = cv2.inRange(frame, np.array([values['contour_slider'], values['base_slider'], values['contour_slider']))
             # _, cnts, _ = cv2.findContours(frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             # cv2.drawContours(frame, cnts, -1, (0, 0, 255), 2)
 
-        imgbytes = cv2.imencode('.png', frame)[1].tobytes()  # ditto
-        window.FindElement('image').Update(data=imgbytes)
+        imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
+        window.FindElement("image").Update(data=imgbytes)
 
 
 if __name__ == "__main__":

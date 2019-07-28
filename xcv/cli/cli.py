@@ -112,8 +112,6 @@ def main_input(
             f"{stars}{gamerobot}XCV go...{gamesnake}Try to do things...\n"
         )
 
-    # local imports
-    from xcontroller import xcontroller
 
     if dryrun:
         click.echo(
@@ -126,16 +124,18 @@ def main_input(
         checkSerial.checkSerial()
 
     elif push:
+        from xcontroller import xcontroller
         xcontroller.single_btn_press(push)
 
     elif autopilot:
         print("WIP feature")
-        xcontroller.start_btn_press_sequence()
     
     else:
         click.echo(
-            f"{exiting}{debug_indent}{hazard}You need to choose an option. {suggest}Try using --help \n"
+            f"{debug_indent}{hazard}No options passed - Opening GUI\n"
         )
+        from xcv.gui import mainGUI
+        mainGUI()
 
     
     return 0    # indicates function finished without error
@@ -170,4 +170,4 @@ def countdown(secs):
 
 
 if __name__ == "__main__":
-    print(f"{debug_indent}{exiting}{debug_indent}{hazard}Not an entry point! {suggest}Use main xcv module")
+    main_input()
