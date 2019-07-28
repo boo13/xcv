@@ -30,6 +30,9 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
 :Authors: 👻
 :Version: 0.1.0
 :Documentation: https://xcv.readthedocs.io
+:History: HISTORY.rst_
+
+.. _HISTORY.rst: https://github.com/boo13/xcv/blob/master/HISTORY.rst
 
 ----
 
