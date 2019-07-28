@@ -6,6 +6,7 @@
 ----
 
 **The project's goal is to make game-based OpenCV experiments easier.**
+
 By avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
 
 -----------------------
@@ -44,7 +45,7 @@ In-Game Tracking
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 | Template Image                                                 | Template Name                      | Usage                                                                                                                                                                                                  | Size           | ROI |
 +================================================================+====================================+========================================================================================================================================================================================================+================+=====+
-| .. image:: templates/myTeamScoreboardName.png                  | **My Team Badge**                  | Determine which side of the game sreen I am defending                                                                                                                                                  | *24px X 24px*  |     |
+| .. image:: templates/myTeamBadge.jpg                           | **My Team Badge**                  | Determine which side of the game sreen I am defending                                                                                                                                                  | *24px X 24px*  |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 | .. image:: templates/myTeamScoreboardName.png                  | **My Team Scoreboard Name**        | Determine which side of the scoreboard we're on, ``Game.HomeTeam`` or ``Game.AwayTeam`` And is currently the first indication that we are ``GameState.InGame``                                         | *25px X 8px*   |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
@@ -73,6 +74,12 @@ Menu Tracking
 | .. image:: templates/HomeMenu_Cart.png                         | **FUT Home Menu**                  | *We use the little shopping-cart icon in the top-right corner of the screen as our Main Menu indicator.* Matching this template image indicates we are in ``GameState.FUTMainMenu``                                                                                                        | *16px X 13px*  |     |
 +----------------------------------------------------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------+-----+
 
+Hardware
+=============
+
+.. image:: blog/images/Pins_Image.jpg
+   :alt: Pins_Image
+ 
 
 TO-DO
 =====
