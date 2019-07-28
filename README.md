@@ -1,25 +1,14 @@
 
-xcv
+# xcv
 ___
 
 
-![PyPI](https://img.shields.io/pypi/v/xcv)
-
-![Travis](https://img.shields.io/travis/boo13/xcv.svg)
-
-![Read the Docs](https://readthedocs.org/projects/xcv/badge/?version=latest)
-
-![GitHub](https://img.shields.io/github/license/boo13/xcv)
-
-![GitHub repo size](https://img.shields.io/github/repo-size/boo13/xcv)
+![PyPI](https://img.shields.io/pypi/v/xcv) ![Travis](https://img.shields.io/travis/boo13/xcv.svg) ![Read the Docs](https://readthedocs.org/projects/xcv/badge/?version=latest) ![GitHub](https://img.shields.io/github/license/boo13/xcv) ![GitHub repo size](https://img.shields.io/github/repo-size/boo13/xcv)
 
 🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
 
 
-The project's goal is to make OpenCV experiments easier, by avoiding controller-driver 
-nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. 
-On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals
-to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
+*__The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.__*
 
 
 * Free software: MIT license
@@ -29,14 +18,13 @@ to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display
 Features
 --------
 
-#XCV - Features#
-
+# XCV - Features
 ---
 
-#In-Game Tracking
+# In-Game Tracking
 ![sampleImage.png](templates/9AE59C7D0382C17C2FF7161FD6CCEAF8.png)
 
-###Template Matching
+### Template Matching
 
 **My Team Badge**
 ![myTeamBadge.jpg](/templates/myTeamBadge.jpg)
@@ -55,11 +43,10 @@ Matching this template image shows me...
 _25px X 8px_
 
 ---
----
 
-#Menu Tracking
+# Menu Tracking
 
-###Template Matching
+### Template Matching
 
 ![SquadManagement.png](https://github.com/boo13/xcv/blob/master/templates/SquadManagement.png)
 
@@ -118,24 +105,24 @@ _16px X 13px_
 
 To Do
 -------
-##General To Do
+## General To Do
 - [ ] Get caught up on documenting the README
 - [ ] Add photos
 - [ ] Re-implement HUD
 - [ ] Implement GUI
 - [ ] Implement Button Press Received by Game Controller script (via Martin O'Hanlon)
 
-###CLI To Do
+### CLI To Do
 - [ ] Implement Dry-Run
 - [ ] Fix problem with Start button not responding (check wiring)
 - [ ] .
 
-##DONE
+## DONE
 - [X] Reliably detect FIFA's game mode (In Menu, In Game, etc.)  
+
 
 Credits
 -------
-
 * <https://github.com/elgertam/cookiecutter-pipenv> - _This package was created with a version of this Cookiecutter project template_
 * <https://github.com/Sentdex/pygta5> - _I just loved this project and tutorial series Sentdex put together. He's helped me learn python over the years, but this project felt like something I wanted to do my own version of, with a different game, and that started me on this journey._
 * <https://github.com/nefarius/ViGEm> - _I first tried to implement virtual controllers, such as this solution. Truth be told this project idea came from my inability to get ViGEm to work._
