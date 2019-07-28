@@ -115,7 +115,7 @@ DONE
 - [X] Get caught up on documenting the README
 
 
-Credits
+Thanks
 =======
 
 https://github.com/Sentdex/pygta5
@@ -129,3 +129,6 @@ I first tried to implement virtual controllers, such as this solution. Truth be 
 
 https://github.com/elgertam/cookiecutter-pipenv
 This package was created with a version of this Cookiecutter project template
+
+https://www.stuffaboutcode.com
+Martin O'Hanlon - For his class ``XboxController``, which I use for reading values from an xbox controller
