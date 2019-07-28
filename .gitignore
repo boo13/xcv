@@ -1,6 +1,9 @@
 # Photoshop files
 *.psd
 
+# Output files
+data/Output/*
+
 # Word Doc files
 *.docx
 *.doc
