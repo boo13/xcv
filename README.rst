@@ -91,7 +91,7 @@ Options:
   -v, --verbose                        Display debug information
   --port TEXT                          Controller port, default is /dev/cu.SLAB_USBtoUART
   -auto, --autopilot                   Initiate xcv sequence
-  --push [A|B|X|Y|S|l|r|w|a|s|d|o|p]   Enter button to push
+  --push                               Enter button to push (A, B, X, Y, S, l, r, w, a, s, d, o, p)
   --count INTEGER                      Time in seconds before commands
   -dry, --dryrun                       For testing without xbox controller connected
   --help                               Show this message and exit.
