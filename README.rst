@@ -79,7 +79,7 @@ Menu Tracking
 Hardware
 =============
 
-.. image:: blog/images/Pins_Image.jpg
+.. image:: blog/images/Pins_Image.png
    :alt: Pins_Image
    :width: 200pt
 
