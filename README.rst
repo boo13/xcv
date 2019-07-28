@@ -114,22 +114,37 @@ TO-DO
 Thanks
 =======
 
-https://github.com/Sentdex/pygta5
+Sentdex_
+________________
+I'm a big fan - his tutorials have helped me learn python for years now and in this case I owe special thanks. His project 'python plays GTA V' series directly inspired me to figure out my own version of it.
 
-I'm a big fan of @sentdex - his tutorials have helped me learn python for years now. I owe special thanks here though, his project 'python plays GTA V' series directly inspired me to figure out my own version of it, which started me on this journey.
 
-https://github.com/jrosebr1/imutils
+PyImageSearch_
+________________
+I use his FPS class from imutils_. Also - I've learned a ton from @jrosebr1 and his site PyImageSearch_: 
 
-I use his FPS class from imutils. Also - I've learned a ton from @jrosebr1 and his site: http://www.pyimagesearch.com 
 
-https://github.com/nefarius/ViGEm
+stuffaboutcode_
+________________
+Martin O'Hanlon - For his class ``XboxController``, which I use for reading values from an xbox controller
 
+
+ViGEm_
+________________
 I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.
 
-https://github.com/elgertam/cookiecutter-pipenv
 
+cookiecutter_
+________________
 This package was created with a version of this Cookiecutter project template
 
-https://www.stuffaboutcode.com
 
-Martin O'Hanlon - For his class ``XboxController``, which I use for reading values from an xbox controller
+
+.. Links
+
+.. _Sentdex: https://github.com/Sentdex/pygta5
+.. _PyImageSearch: http://www.pyimagesearch.com 
+.. _imutils: https://github.com/jrosebr1/imutils
+.. _stuffaboutcode: https://www.stuffaboutcode.com
+.. _cookiecutter: https://github.com/elgertam/cookiecutter-pipenv
+.. _ViGEm: https://github.com/ViGEm
