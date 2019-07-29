@@ -53,6 +53,8 @@ Project Mission
 What does XCV do?
 =================
 
+.. image:: blog/images/history/2019_07_28.21.53.45.png
+
 .. image:: blog/images/sampleImage.png
   :width: 400pt
 
