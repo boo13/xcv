@@ -127,6 +127,7 @@ TO-DO
 =====
 
 - [ ] **GUI** - Re-implement HUD
+- [ ] **GAMEEE** Re-implement OpenCV tracking/template matching
 - [ ] **GUI** - Implement new, framed, GUI (using PysimpleGui)
 - [ ] **GUI** - Implement Button Press Received by Game Controller script (via Martin O'Hanlon)
 - [ ] **README** - Add more screenshots
