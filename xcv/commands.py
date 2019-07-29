@@ -11,7 +11,7 @@ from xcv.constants import (
     WINDOWS,
 )
 from xcv.cli.cli import hazard, sleep, stars
-from xcv.tools import (
+from xcv.tools.print_sysinfo import (
     print_version,
     print_info,
     print_all_constants,
