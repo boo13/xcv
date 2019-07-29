@@ -36,6 +36,20 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
 
 ----
 
+Project Mission
+=================
+**To create a gaming controller (in my case an Xbox One controller) that can  take commands OpenCV - without dealing with windows drivers or any of that stuff that's over my head.**
+
+* **CLI Commands to Xbox** - **MOSTLY DONE (save for a few bugs)** - Ability to send individual commands to a hacked Xbox controller via the command line. 
+
+* **GUI Commands to Xbox** - Ability to send individual commands to a hacked Xbox controller via graphical user interface (built using `PySimpleGuiQt`. 
+
+* **Navigate Menus** - **MOSTLY DONE (save for a few edge cases)** - his requires OpenCV to identify the Game-State (e.g. in Main Menu) and Menu Selection (e.g. on "Play Now" button). 
+
+* **Accurately Track Game State** - I define "Game State" as essnetially anything that is loaded as a new game mode (e.g. In-Game Menu, Main-Menu, Squad Management Screen, etc.). If the game pauses for a moment to load a screen, I basically call that a Game State. This means that I define "Loading Ultimate Team" as a unique Game State from "Loading Game" or even "Loading Pre-Game Stats"
+
+* **Accurately Track Game Stats** - Examples include: Win/Loss rate, Game Score, Game Time, Game Real-Time Length, etc. 
+
 What does XCV do?
 =================
 
@@ -86,6 +100,12 @@ Hardware
    :alt: Pins_Image
    :width: 200pt
 
+
+Mira_CaptureCard_
+
+I use this to send a videostream into OpenCV. It's not the greatest, I tried others that didn't work, this isn't an affiliate-link, so don't take my word for it. Originally, I used the python package `streamlink` to feed the data in via Twitch or Mixer(xbox's slightly-faster version of Twitch), but I found the lag time tough to work with as it created more oppurtunities for miscommunication and visual artifacting. I will probably, eventually, try and reimplement the ability to stream in the videos once I get some functions to handle timing of commands. That way, I'll just reduce the frequency of the command sends to something like once every 10 seconds. 
+
+.. _Mira_CaptureCard: https://www.amazon.com/MiraBox-Loop-Out-Streaming-Recording-HSV321/dp/B07C6KCBYB
 
 CLI
 =============
@@ -139,9 +159,15 @@ ________________
 I first tried to implement virtual controllers, such as this solution. Truth be told... this project came from my inability to get ViGEm to work.
 
 
+PySimpleGUI_
+________________
+This package, with it's crazy awesome amount of documentation and examples, has been a tremendous learning resource. Building the GUI from their demo example for OpenCV. 
+
+
 cookiecutter_
 ________________
 This package was created with a version of this Cookiecutter project template
+
 
 
 
@@ -153,3 +179,4 @@ This package was created with a version of this Cookiecutter project template
 .. _stuffaboutcode: https://www.stuffaboutcode.com
 .. _cookiecutter: https://github.com/elgertam/cookiecutter-pipenv
 .. _ViGEm: https://github.com/ViGEm
+.. _PySimpleGui: https://github.com/PySimpleGUI
