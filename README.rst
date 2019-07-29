@@ -127,22 +127,42 @@ Options:
 
 Project Structure
 =================
-1. __init__
-2. __main__
-3. __cli__
-4. __game__
-5. xcontroller
 
-**xcontroller.py**
-  - `serial_send`
-  - `single_btn_press`
-  - @dataclass `Buttons`
-    - `show()`
-    - `make_string()`
-  - @dataclass `Settings`
-    - `timerFlag`
-    - `verbose`
+**Step 1 - __init__.py**
+  - assert python version >= 3.7
+  - ``__version__, __author__, __email__``
+  - I still don't really understand ``__all__``
 
+
+**Step 2 - __main__.py**
+  - ``startTime``
+
+**Step 3 - /cli/cli.py**
+  - ``main_input()``
+  - ``countdown(secs)``
+  - Also: if ``WINDOWS`` emoji-handling
+
+
+**Step 4 - /game/game.py**
+  - ``class Game``
+  - ``class GameClock(Game)``
+  - ``main()`` - This is old code, need to refactor
+
+**Step 5 - /xcontroller/xcontroller.py**
+  - ``serial_send``
+  - ``single_btn_press``
+  - @dataclass ``Buttons``
+  - @dataclass ``Settings``
+    * ``timerFlag``
+    * ``verbose``
+
+
+**commands.py**
+  - XcvError
+  - HUD
+
+**constants.py**
+  - ``SERIAL_BAUD, WIN_DEFAULT_SERIAL_PORT, SERIAL_PORT``  etc.
 
 TO-DO
 =====
