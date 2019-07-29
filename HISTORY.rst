@@ -7,6 +7,9 @@ History
 
 * Bunch of refactoring to simplify the project structure
 * Starting to combine old versions of the code (e.g. starting to re-implement HUD)
+* GUI work begins (building from a PySimpleGUI OpenCV demo)
+
+.. image:: blog/images/history/2019_07_28.21.53.45.png
 
 
 0.1.0 (2019-07-09)
