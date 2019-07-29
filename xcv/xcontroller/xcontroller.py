@@ -12,7 +12,7 @@ from typing import List
 from xcv.constants import SERIAL_BAUD, SERIAL_PORT
 from xcv.commands import XcvError
 
-from xcv.cli.cli import hazard, sleep, warning, exiting
+from xcv.cli.cli import hazard, sleep, warning, exiting, suggest
 
 # LOCAL SETTINGS - we use these to set (and mostly forget) the Serial connection config
 @dataclass

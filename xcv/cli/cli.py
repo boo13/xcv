@@ -119,9 +119,9 @@ def main_input(
         )
 
     elif debug:
-        from xcv.tools import checkSerial, list_ports
+        from xcv.tools import list_ports
         list_ports.list_ports()
-        checkSerial.checkSerial()
+        # checkSerial.checkSerial()
 
     elif push:
         from xcontroller import xcontroller
