@@ -53,10 +53,12 @@ Breakdown Phase
 .. image:: blog/images/selects/IMG_0289_800pxWide.jpg
 .. image:: blog/images/selects/IMG_0294_800pxWide.jpg
 .. image:: blog/images/selects/IMG_0299_800pxWide.jpg
-.. image:: blog/images/selects/IMG_0316_800pxWide.jpg
 
-Custom PCBs
--------------------
+
+May 2019 - Custom PCB
+-----------------------
+_I didn't get the spacing/orintation right for the screens if you're wondering why it's proto-boarded together_
+
 .. image:: blog/images/selects/IMG_0371_800pxWide.jpg
 .. image:: blog/images/selects/IMG_0373_800pxWide.jpg
 .. image:: blog/images/selects/IMG_0375_800pxWide.jpg
