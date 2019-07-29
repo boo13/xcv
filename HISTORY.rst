@@ -19,20 +19,67 @@ History
 Pre-History
 ==============
 
-At some point I mapped out a good-enough amount of the pins
+Xbox Teardown
+--------------
+At some point I settled on a particular xbox controller brand that was easy to hack and set out to map a `good-enough` amount of the pins
 
 .. image:: blog/images/400pxWide/Pins_Image_400px.jpg
 
+.. image:: blog/images/selects/IMG_0246_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0249_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0250_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0251_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0255_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0257_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0258_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0260_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0262_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0263_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0268_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0271_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0272_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0274_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0276_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0277_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0278_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0281_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0282_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0283_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0286_800pxWide.jpg
 
-2019-02-18 
------------
+
+Breakdown Phase
+-------------------
+.. image:: blog/images/selects/IMG_0289_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0294_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0299_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0316_800pxWide.jpg
+
+Custom PCBs
+-------------------
+.. image:: blog/images/selects/IMG_0371_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0373_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0375_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0382_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0383_800pxWide.jpg
+
+
+Feb 18, 2019
+--------------
 An early proof-of-concept for object-detection on players (I _think_ this was some out-of-the-box YOLO setup from some tutorial - I remember being plesantly surprised by the drag-and-drop results)
 
 .. image:: blog/images/800pxWide/2019-02-18.jpg
 
 
-2018-12-31
------------
+Dec 31, 2018
+--------------
 Early prototyping on an Xbox One controller
 
 .. image:: blog/images/400pxWide/2018_10_31_20.31.14_400px.jpg
+
+
+Nov 14, 2018
+--------------
+Using an Xbox360 controller here, which requires plugging this into a PC and streaming the Xbox to the PC, which is a pain to get working and error prone. 
+
+.. image:: blog/images/selects/IMG_0007_800pxWide.jpg
