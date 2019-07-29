@@ -48,14 +48,9 @@ At some point I settled on a particular xbox controller brand that was easy to h
 .. image:: blog/images/selects/IMG_0286_800pxWide.jpg
 
 
-Breakdown Phase
--------------------
-.. image:: blog/images/selects/IMG_0289_800pxWide.jpg
-.. image:: blog/images/selects/IMG_0294_800pxWide.jpg
-.. image:: blog/images/selects/IMG_0299_800pxWide.jpg
 
 
-May 2019 - Custom PCB
+May 2019 (Custom PCB)
 -----------------------
 _I didn't get the spacing/orintation right for the screens if you're wondering why it's proto-boarded together_
 
@@ -65,23 +60,28 @@ _I didn't get the spacing/orintation right for the screens if you're wondering w
 .. image:: blog/images/selects/IMG_0382_800pxWide.jpg
 .. image:: blog/images/selects/IMG_0383_800pxWide.jpg
 
+Mar - Apr 2019 (Breadboarding)
+-------------------------------
+.. image:: blog/images/selects/IMG_0289_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0294_800pxWide.jpg
+.. image:: blog/images/selects/IMG_0299_800pxWide.jpg
 
-Feb 18, 2019
---------------
+Feb 18, 2019 (Proof-of-concept)
+--------------------------------
 An early proof-of-concept for object-detection on players (I _think_ this was some out-of-the-box YOLO setup from some tutorial - I remember being plesantly surprised by the drag-and-drop results)
 
 .. image:: blog/images/800pxWide/2019-02-18.jpg
 
 
-Dec 31, 2018
---------------
+Dec 31, 2018  (Proof-of-concept)
+---------------------------------
 Early prototyping on an Xbox One controller
 
 .. image:: blog/images/400pxWide/2018_10_31_20.31.14_400px.jpg
 
 
-Nov 14, 2018
---------------
-Using an Xbox360 controller here, which requires plugging this into a PC and streaming the Xbox to the PC, which is a pain to get working and error prone. 
+Nov 14, 2018  (Proof-of-concept)
+---------------------------------
+Proof-of-concept an Xbox360 controller here, which requires plugging this into a PC and streaming the Xbox to the PC, which is a pain to get working and error prone. 
 
 .. image:: blog/images/selects/IMG_0007_800pxWide.jpg
