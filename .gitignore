@@ -4,6 +4,12 @@
 # Output files
 data/Output/*
 
+# Extra blog files
+blog/images/200pxWide/*
+blog/images/400pxWide/*
+blog/images/800pxWide/*
+blog/images/original
+
 # Word Doc files
 *.docx
 *.doc
