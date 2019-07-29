@@ -19,10 +19,10 @@ try:
     # Local_______________________________________________________________________________________
     # from config import config
     from Templates import ROI, TemplateMatcher
-    from fps import FPS
+    from xcv.tools.fps import FPS
     from FifaFlags import FifaFlags, defending, homeaway, scoreCheck
-    from HUD import HUD
-    from controller.serialSend import serialSend
+    # from HUD import HUD
+    # from controller.serialSend import serialSend
 
 except ImportError:
     logger.exception(" | ERROR | Modules missing ")
@@ -66,7 +66,7 @@ class Game:
         self.debug = debug
         datetime.datetime.now(tz=pytz.UTC).astimezone(pytz.timezone(self.timezone))
 
-        self.hud = HUD()
+        # self.hud = HUD()
 
         # Setup the button press functions to send the serial commands
         self.pressX = serialSend('x\n')
@@ -250,7 +250,7 @@ class Game:
                     Game.countSinceLastKnownState = 0
                     Game.State = 15
 
-                og_frame = self.hud.draw(og_frame, fps=fps, elapsedTime=elapsed)
+                # og_frame = self.hud.draw(og_frame, fps=fps, elapsedTime=elapsed)
 
                 Game.frameCounter += 1
                 Game.countSinceLastKnownState += 1
@@ -304,16 +304,16 @@ class GameClock(Game):
         if self.gameEnd:
             logger.info("Game End")
 
-class Controller(Game):
+# class Controller(Game):
 
-    def __init__(self, timezone="US/Eastern", debug=False, conType="xBox"):
-        super.__init__(timezone, debug)
-        self.conType = conType
+#     def __init__(self, timezone="US/Eastern", debug=False, conType="xBox"):
+#         super.__init__(timezone, debug)
+#         self.conType = conType
 
-    def send(self, buttons=None, pots=None):
-        # btns = dict{}
+#     def send(self, buttons=None, pots=None):
+#         # btns = dict{}
 
-        return
+#         return
 
     # # Create controller properties
     # @property

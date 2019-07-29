@@ -103,11 +103,11 @@ Hardware
    :width: 200pt
 
 
-Mira_CaptureCard_
+CaptureCard_
 
 I use this to send a videostream into OpenCV. It's not the greatest, I tried others that didn't work, this isn't an affiliate-link, so don't take my word for it. Originally, I used the python package `streamlink` to feed the data in via Twitch or Mixer(xbox's slightly-faster version of Twitch), but I found the lag time tough to work with as it created more oppurtunities for miscommunication and visual artifacting. I will probably, eventually, try and reimplement the ability to stream in the videos once I get some functions to handle timing of commands. That way, I'll just reduce the frequency of the command sends to something like once every 10 seconds. 
 
-.. _Mira_CaptureCard: https://www.amazon.com/MiraBox-Loop-Out-Streaming-Recording-HSV321/dp/B07C6KCBYB
+.. _CaptureCard: https://www.amazon.com/MiraBox-Loop-Out-Streaming-Recording-HSV321/dp/B07C6KCBYB
 
 CLI
 =============
@@ -123,6 +123,25 @@ Options:
   -dry, --dryrun                       For testing without xbox controller connected
   --help                               Show this message and exit.
   --debug                              List USB ports and check the serial connection
+
+
+Project Structure
+=================
+1. __init__
+2. __main__
+3. __cli__
+4. __game__
+5. xcontroller
+
+**xcontroller.py**
+  - `serial_send`
+  - `single_btn_press`
+  - @dataclass `Buttons`
+    - `show()`
+    - `make_string()`
+  - @dataclass `Settings`
+    - `timerFlag`
+    - `verbose`
 
 
 TO-DO
