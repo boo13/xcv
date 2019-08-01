@@ -23,6 +23,7 @@ def print_all_constants() -> None:
         WIN_DEFAULT_SERIAL_PORT,
         MAC_DEFAULT_SERIAL_PORT,
         TIMEZONE,
+        ABSPATH,
     )
     print(f"""
             INFO
@@ -36,6 +37,7 @@ def print_all_constants() -> None:
             Python: {DEFAULT_PYTHON}
             Home Path: {HOME_PATH}
             XCV Home: {XCV_HOME}
+            Absolute Path: {ABSPATH}
             Windows Machine? {WINDOWS}
 
             SERIAL
