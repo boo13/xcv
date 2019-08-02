@@ -4,6 +4,11 @@
 # Output files
 data/Output/*
 
+# Folder of icons and other images which have been converted into base64 already
+icons/*
+images/*
+photoshop/*
+
 # Extra blog files
 blog/images/200pxWide/*
 blog/images/400pxWide/*
