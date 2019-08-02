@@ -51,48 +51,6 @@ class Buttons:
         return str(list(self.__dict__.values()))
 
 
-class Press:
-    def __init__(self, btnDict):
-        self.btnDict = btnDict
-
-    def button(self):
-        pass
-
-    def trigger(self):
-        pass
-
-    def stick(self):
-        pass
-
-    def menu(self):
-        pass
-
-    def sequence(self, pattern):
-        pass
-        # cli.countdown(Settings.timerFlag)
-        # count = itertools.count(48)
-
-        # while True:
-        #     next(count)
-
-        #     if Settings.verbose:
-        #         print(f"Sending command set: {count}")
-
-        #     btns = xcontroller.Buttons()
-        #     btns.aBtn = on
-        #     xcontroller.serial_send(btns)
-        #     sleep(0.2)
-
-
-# def dispatch_dict(btnInput):
-#     return {
-#         'A': lambda: btns.aBtn = 1,
-#         'B': lambda: btns.bBtn = 1,
-#         'X': lambda: btns.xBtn = 1,
-#         'Y': lambda: btns.yBtn = 1,
-#     }.get(btnInput, lambda: None)()
-
-
 def single_btn_press(btnInput: object, cnt_down: int = 2):
     from cli import cli
 
