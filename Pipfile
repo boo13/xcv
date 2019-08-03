@@ -25,6 +25,7 @@ pysimpleguiqt = "*"
 pyqt5 = "*"
 opencv-contrib-python = "*"
 imutils = "*"
+pillow = "*"
 
 [pipenv]
 allow_prereleases = true
