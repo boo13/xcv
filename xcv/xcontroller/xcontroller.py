@@ -5,20 +5,17 @@ import pickle
 # PYSERIAL - connects via serial (ie. hardwared USB) to teensy/arduino/whatever-you-want
 import serial
 
+# COLORAMA - for pretty colors in the command line
+from colorama import Fore, Style
+
 # DATACLASSES - req. python 3.7^
 from dataclasses import dataclass
 from typing import List
 
-from xcv.constants import SERIAL_BAUD, SERIAL_PORT
+from xcv.settings import Settings, SERIAL_PORT
 from xcv.commands import XcvError
 
 from xcv.cli.cli import hazard, sleep, warning, exiting, suggest
-
-# LOCAL SETTINGS - we use these to set (and mostly forget) the Serial connection config
-@dataclass
-class Settings:
-    timerFlag: int = 10
-    verbose: bool = False
 
 
 @dataclass(order=True)
@@ -94,9 +91,7 @@ def single_btn_press(btnInput: object, cnt_down: int = 2):
     sleep(0.2)
 
 
-
-
-def serial_send(btns_sending, serialPort=SERIAL_PORT, serialBaud=SERIAL_BAUD):
+def serial_send(btns_sending, serialPort=None, serialBaud=None):
     """ 🎯 Send the commands as a dict converted into a list, converted into a string. 
     
         ⚠️ CAREFUL - string order matters!
@@ -106,16 +101,33 @@ def serial_send(btns_sending, serialPort=SERIAL_PORT, serialBaud=SERIAL_BAUD):
         
         - Probably won't ever really bother with fixing-up the arduino script too much, unless others feel compelled."""
 
+    # In case things go bad
+    serial_error = (
+        Fore.RED
+        + f"\n\n{warning}"
+        + Fore.WHITE
+        + " - No Serial Communication\n"
+        + Fore.YELLOW
+        + f"\t{hazard}CHECK"
+        + Fore.WHITE
+        + " - your serial port in 'constants.py'\n"
+        + Fore.WHITE
+        + f"\t{suggest}TRY - checking the wiring and the port, is this the correct port?\n\t\t\t"
+        + Fore.CYAN
+        + f"{str(SERIAL_PORT)}"
+        + Style.RESET_ALL
+    )
+
     try:
         # Be safe kids - use a Context Manager
-        with serial.Serial(serialPort, serialBaud) as ser:
+        with serial.Serial(SERIAL_PORT, Settings.SERIAL_BAUD) as ser:
             pickle.dump(btns_sending.make_string(), ser)
     except serial.serialutil.SerialException as e:
-        raise XcvError(
-            f"\n\n{warning} - No Serial Communication\n\t{hazard}  CHECK your serial port in 'constants.py'\n\t{suggest}  TRY checking the wiring and the port, is port {str(SERIAL_PORT)} correct for your setup?"
-        )
+        raise XcvError(serial_error)
     except Exception as e:
-        raise XcvError(f"\n\n{exiting} I have no idea - {hazard} CHECK the logs\n\n{str(e)}")
+        raise XcvError(
+            f"\n\n{exiting} I have no idea - {hazard} CHECK the logs\n\n{str(e)}"
+        )
 
 
 # In case we're just testing the controller...
