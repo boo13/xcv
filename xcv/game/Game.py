@@ -20,7 +20,7 @@ try:
     # from config import config
     from Templates import ROI, TemplateMatcher
     from xcv.tools.fps import FPS
-    from FifaFlags import FifaFlags, defending, homeaway, scoreCheck
+    from xcv.game.FifaFlags import FifaFlags, defending, homeaway, scoreCheck
     # from HUD import HUD
     # from controller.serialSend import serialSend
 
