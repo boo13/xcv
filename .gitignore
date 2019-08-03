@@ -9,6 +9,9 @@ icons/*
 images/*
 photoshop/*
 
+# Virtual Env
+xcv_venv/*
+
 # Extra blog files
 blog/images/200pxWide/*
 blog/images/400pxWide/*
