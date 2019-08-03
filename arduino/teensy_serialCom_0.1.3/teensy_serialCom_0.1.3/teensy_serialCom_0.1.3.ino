@@ -3,12 +3,12 @@
 
  Project Name_ = arduino2python_serialCom
  Author__ = Randy "boo13" Bot
- Version__ = 0.1.1
+ Version__ = 0.1.3
 
       ____________________________
      /                           /\
     /      Randy Boo13         _/ /\
-   /         v0.1.1           / \/
+   /         v0.1.3           / \/
   /                           /\
  /___________________________/ /
  \___________________________\/
@@ -25,28 +25,10 @@
    ==========================================================
   
    ==========================================================
-   
 */
-//Libraries
 #include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_SSD1306.h>
-
-/*
- * Serial
-*/
 #define SERIAL_BAUD 115200
-
-/*
- * I2C ("Wire.h")
-*/
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-#define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
-Adafruit_SSD1306 oled_main(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-Adafruit_SSD1306 oled_debug(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 /*
  * SPI DigiPots Setup
@@ -59,7 +41,6 @@ byte incomingByte;
    ==========================================================
   
    ==========================================================
-   
 */
 #define ledPin 28
 
@@ -164,27 +145,12 @@ int pressBtnTime = 200;
    ==========================================================
    
 */
-void setup()
-{
+
+void setup() {
   Serial.begin(SERIAL_BAUD);
-  Serial4.begin(SERIAL_BAUD); // For debugging
+  Serial1.begin(SERIAL_BAUD); // For debugging
 
-  //==============================//
-  //
-  // SETUP the displays
-  //
-  oled_main.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  oled_debug.begin(SSD1306_SWITCHCAPVCC, 0x3D);
-
-  clearDisplays();
-
-  drawDisplayHeaders();
-
-  oled_debug.setTextSize(2);
-  oled_debug.println("[ ... ]");
-
-  displayDisplays();
-  //
+    //
   //==============================//
   // SETUP the DigiPot pins
   //
@@ -225,35 +191,15 @@ void setup()
   //
   // Chill...
   delay(2000);
+  Serial1.println("________________ Starting Loop ________________");
 }
 
-//======================================================
-//=============     Loop      ==========================
-//======================================================
-void loop()
-{
+void loop() {
   curMillis = millis();
-
-  if (MainDisplayTicker >= 1000)
-  {
-    lastMillis = MainDisplayTicker;
-    MainDisplayTicker = 0;
-    secCounter++;
-  }
-  else
-  {
-    MainDisplayTicker = curMillis - lastMillis;
-  }
-
-  // Debug check
-  if (debug_mode == true)
-  {
-    debug_mode_show();
-  }
-
   getDataFromPC();
   replyToPC();
 }
+
 
 //=============
 
@@ -266,14 +212,8 @@ void getDataFromPC()
   {
 
     char x = Serial.read();
-
-    // // Optional debugging on Serial4
-    // if (Serial4.available())
-    // {
-    //   Serial4.print("INPUT: ");
-    //   Serial4.println(x);
-    // }
-
+    Serial1.print("INPUT: ");
+    Serial1.println(x);
     //
     // the order of these IF clauses is significant
     //
@@ -382,65 +322,62 @@ void btnChecker()
   if (aBtn >= 1)
   {
     btnPress(btnA);
-    drawMainDisplay("A");
+    Serial1.println("Pressing Button A");
   }
   if (bBtn >= 1)
   {
     btnPress(btnB);
-    drawMainDisplay("B");
+    Serial1.println("Pressing Button B");
   }
   if (xBtn >= 1)
   {
     btnPress(btnX);
-    drawMainDisplay("X");
+    Serial1.println("Pressing Button X");
   }
   if (yBtn >= 1)
   {
     btnPress(btnY);
-    drawMainDisplay("Y");
+    Serial1.println("Pressing Button Y");
   }
-  //
   if (lbBtn >= 1)
   {
     btnPress(btnLB);
-    drawMainDisplay("LB");
+    Serial1.println("Pressing Button LB");
   }
   if (rbBtn >= 1)
   {
     btnPress(btnRB);
-    drawMainDisplay("RB");
+    Serial1.println("Pressing Button RB");
   }
-  //
   if (duBtn >= 1)
   {
     btnPress(btnDU);
-    drawMainDisplay("DU");
+    Serial1.println("Pressing Button D Up");
   }
   if (ddBtn >= 1)
   {
     btnPress(btnDD);
-    drawMainDisplay("DD");
+    Serial1.println("Pressing Button D Down");
   }
   if (dlBtn >= 1)
   {
     btnPress(btnDL);
-    drawMainDisplay("DL");
+    Serial1.println("Pressing Button D Left");
   }
   if (drBtn >= 1)
   {
     btnPress(btnDR);
-    drawMainDisplay("DR");
+    Serial1.println("Pressing Button D Right");
   }
-  //
   if (startBtn >= 1)
   {
     btnPress(btnSt);
-    drawMainDisplay("St");
+    Serial1.println("Pressing Button Start");
   }
   if (selectBtn >= 1)
   {
     btnPress(btnSe);
-    drawMainDisplay("Se");
+    Serial1.println("Pressing Button Select");
   }
 }
 
@@ -471,142 +408,18 @@ void digiPots(int addr, byte digiPotPinSelect, int pinVal)
 }
 
 //=============
-
-void updateDisplays()
-{
-  //
-  clearDisplays();
-  //
-  drawDisplayHeaders();
-  //
-  drawDebugDisplay();
-  //
-  drawMainDisplay(" ");
-  //
-  displayDisplays();
-}
-
-//=============
-
 void replyToPC()
 {
 
   if (newDataFromPC)
   {
-    updateDisplays();
     newDataFromPC = false;
     Serial.print(empty_response);
   }
 }
 
-//=========================================================================================
-//=========================================================================================
-//============= DISPLAY utils
-//=========================================================================================
-//=========================================================================================
-void clearDisplays()
-{
-  oled_debug.clearDisplay();
-  oled_main.clearDisplay();
-}
-
-void drawDisplayHeaders()
-{
-  oled_main.display();
-  oled_main.setTextSize(2);
-  oled_main.setTextColor(WHITE);
-  oled_main.setCursor(48, 0);
-  oled_main.println("XCV");
-  //
-  oled_debug.setTextSize(2);
-  oled_debug.setTextColor(WHITE);
-  oled_debug.setCursor(0, 0);
-  oled_debug.print("INPUT ");
-  oled_debug.setTextSize(1);
-  oled_debug.println("< debug >");
-  oled_debug.setCursor(0, 16);
-}
-
-void drawMainDisplay(String input)
-{
-  if (input != " ")
-  {
-    last_command_sent = input;
-    oled_main.setCursor(52, 24);
-    oled_main.setTextSize(5);
-    oled_main.println(last_command_sent);
-  }
-}
-
-void drawDebugDisplay(String input)
-{
-  oled_debug.setTextSize(2);
-  oled_debug.setCursor(0, 16);
-
-  oled_debug.print("A");
-  oled_debug.setTextSize(1);
-  oled_debug.print(aBtn);
-
-  oled_debug.setTextSize(2);
-  oled_debug.print(" B");
-  oled_debug.setTextSize(1);
-  oled_debug.print(bBtn);
-  oled_debug.setTextSize(2);
-  oled_debug.print(" X");
-  oled_debug.setTextSize(1);
-  oled_debug.print(xBtn);
-  oled_debug.setTextSize(2);
-  oled_debug.print(" Y");
-  oled_debug.setTextSize(1);
-  oled_debug.println(yBtn);
-  //
-  oled_debug.println();
-  oled_debug.print("Lb ");
-  oled_debug.print(lbBtn);
-  oled_debug.print(" Rb ");
-  oled_debug.print(rbBtn);
-
-  //
-  oled_debug.print(" Lt ");
-  oled_debug.print(ltBtn);
-  oled_debug.print(" Rt ");
-  oled_debug.println(rtBtn);
-  //
-  oled_debug.print("Du ");
-  oled_debug.print(duBtn);
-  oled_debug.print(" Dd ");
-  oled_debug.print(ddBtn);
-  oled_debug.print(" Dl ");
-  oled_debug.print(dlBtn);
-  oled_debug.print(" Dr ");
-  oled_debug.println(drBtn);
-
-  //
-  oled_debug.print("Lx ");
-  oled_debug.print(LSx);
-  oled_debug.print(" Ly ");
-  oled_debug.print(LSy);
-  oled_debug.print(" Rx ");
-  oled_debug.print(RSx);
-  oled_debug.print(" Ry ");
-  oled_debug.println(RSy);
-  //
-  oled_debug.print("Start ");
-  oled_debug.print(startBtn);
-  oled_debug.print(" Se ");
-  oled_debug.print(selectBtn);
-  oled_debug.print(" Xbox ");
-  oled_debug.print(xboxBtn);
-}
-
-void displayDisplays()
-{
-  oled_debug.display();
-  oled_main.display();
-}
-
 void debug_mode_show()
 {
-  Serial4.print("Second Counter: ");
-  Serial4.println(secCounter);
+  Serial1.print("Second Counter: ");
+  Serial1.println(secCounter);
 }
