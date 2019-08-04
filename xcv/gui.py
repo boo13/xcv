@@ -1,52 +1,208 @@
-try:
-    import sys
-    import PySimpleGUIQt as sg
-    import cv2
-    import numpy as np
-    from xcv.constants import XCV_VERSION, SERIAL_PORT, SERIAL_BAUD
-    import datetime
-    import imutils
-except:
-    raise
+#          Import libraries      ______________________________________________
 
-"""
-Demo program that displays a webcam using OpenCV and applies some very basic image functions
+import sys
+import datetime
 
-- functions from top to bottom -
-none:       no processing
-threshold:  simple b/w-threshold on the luma channel, slider sets the threshold value
-canny:      edge finding with canny, sliders set the two threshold values for the function => edge sensitivity
-contour:    colour finding in the frame, first slider sets the hue for the colour to find, second the minimum saturation
-            for the object. Found objects are drawn with a red contour.
-blur:       simple Gaussian blur, slider sets the sigma, i.e. the amount of blur smear
-hue:        moves the image hue values by the amount selected on the slider
-enhance:    applies local contrast enhancement on the luma channel to make the image fancier - slider controls fanciness.
-"""
+# Local
+from xcv.commands import XcvError
+from xcv.constants import XCV_VERSION, SERIAL_PORT, SERIAL_BAUD, ABSPATH
+from xcv.hud import (
+    draw_HUD_FPS,
+    #     draw_HUD_controller,
+    #     draw_HUD_HomeAway,
+    #     draw_HUD_DefendingSide,
+    #     draw_HUD_elapsedTime,
+    draw_HUD_elapsedGameTime,
+)
+
+from xcv.tools import checkSerial
+
+# from xcv.game.Templates import TemplateMatcher, ROI
+# _________________ From 'pip' install _____________________________________
+import PySimpleGUIQt as sg  # GUIs made simple
+import cv2  # Opencv
+import imutils  # Opencv utils (pyimagesearch.com)
+import numpy as np
+from loguru import logger
+from xcv.xcontroller import xcontroller
+
+from xcv.base64_btns import (
+    xb_a,
+    xb_b,
+    xb_x,
+    xb_y,
+    xb_a_null,
+    xb_b_null,
+    xb_x_null,
+    xb_y_null,
+    xb_select,
+    xb_select_null,
+    xb_start,
+    xb_start_null,
+    xb_lb,
+    xb_lb_null,
+    xb_rb,
+    xb_rb_null,
+    xb_lt,
+    xb_lt_null,
+    xb_rt,
+    xb_rt_null,
+    stick_inner_ring,
+    stick_outer_ring,
+)
 
 
+@logger.catch
 def mainGUI():
-    sg.SetOptions(element_padding=(0, 0))
-    # sg.ChangeLookAndFeel('Black')  
-    _recordingColor = ("white", "black")
+
+    _text_color = "#A6A4AF"
+    _btn_text_color = "#16161F"
+    _background_color = "#16161F"
+
+    # Global GUI settings
+    sg.SetOptions(
+        element_padding=(5, 5),
+        scrollbar_color=None,
+        background_color=_background_color,
+        text_color="#A6A4AF",
+    )
+
+    _exitButton = [
+        sg.Button("Exit", size=(10, 1), button_color=("#A6A4AF", "#BD3138")),
+        sg.Text(
+            f"Vers: {XCV_VERSION}    USB: {SERIAL_PORT}    Baud: {SERIAL_BAUD}    FPS: ? ",
+            font="Helvetica 10",
+            justification="right",
+        ),
+    ]
+
+    _outputconsole = [
+        sg.Output(size=(640, 100), background_color="#16161F", text_color=_text_color)
+    ]
 
     # define the window layout
     maintab_layout = [
-        [sg.T("")],
-        [sg.Text("XCV", font=("Helvetica", 16), justification="center")],
+        [sg.T("XCV", font=("Helvetica", 16), justification="center")],
+        [sg.Image(filename="", size=(640, 480), key="main_image")],
         [
-            sg.Text(
-                f"Vers: {XCV_VERSION}    USB: {SERIAL_PORT}    Baud: {SERIAL_BAUD}\n",
-                font="Helvetica 10",
-                justification="center",
-            )
+            sg.Image(
+                data_base64=xb_lt_null,
+                key="_btnLT_",
+                enable_events=True,
+                pad=((50, 0), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_lb_null,
+                key="_btnLB_",
+                enable_events=True,
+                pad=((0, 0), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_select_null,
+                key="_btnSelect_",
+                enable_events=True,
+                pad=((25, 25), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_start_null,
+                key="_btnStart_",
+                enable_events=True,
+                pad=((25, 25), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_x_null,
+                key="_btnX_",
+                enable_events=True,
+                pad=((0, 0), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_y_null,
+                key="_btnY_",
+                enable_events=True,
+                pad=((0, 0), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_a_null,
+                key="_btnA_",
+                enable_events=True,
+                pad=((0, 0), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_b_null,
+                key="_btnB_",
+                enable_events=True,
+                pad=((0, 0), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_rb_null,
+                key="_btnRB_",
+                enable_events=True,
+                pad=((0, 0), (0, 0)),
+            ),
+            sg.Image(
+                data_base64=xb_rt_null,
+                key="_btnRT_",
+                enable_events=True,
+                pad=((0, 0), (0, 0)),
+            ),
         ],
-        [sg.Image(filename="", size=(40, 15), key="image")],
+        # [sg.Image(
+        #         data_base64=stick_outer_ring,
+        #         key="_LS_",
+        #         enable_events=True,
+        #         pad=((50, 0), (0, 0)),
+        #     ),
+        #     sg.Image(
+        #         data_base64=stick_outer_ring,
+        #         key="_RS_",
+        #         enable_events=True,
+        #         pad=((50, 0), (0, 0)),
+        #     ),
+        # ],
         [
-            sg.Radio("Standby", "GameMode", default=True, key="GM_standby"),
-            sg.Radio("AutoPilot", "GameMode", key="GM_autoPilot"),
-            sg.Radio("SinglePress", "GameMode", key="GM_singlePress"),
-            sg.Radio("Debug", "GameMode", key="GM_debug"),
+            sg.Button(
+                "Check Serial",
+                size=(10, 1),
+                button_color=("#16161F", "#007339"),
+                key="_check_serial_",
+            ),
+            sg.Button("Stop", button_color=(_btn_text_color, "#B36C42"), size=(10, 1)),
+            sg.Button(
+                "Record", size=(10, 1), button_color=(_btn_text_color, "#BD3138")
+            ),
+            sg.Button(
+                "Screenshot", button_color=(_btn_text_color, "#1749BF"), size=(10, 1)
+            ),
         ],
+        _outputconsole,
+        _exitButton,
+    ]
+
+    tab2_layout = [
+        [sg.T("Nothing to see here... yet")],
+        [
+            sg.Text("Send Command:", size=(15, 1), justification="right"),
+            sg.InputText("", key="input1", text_color=_text_color, size_px=(420, 35)),
+        ],
+        _exitButton,
+    ]
+
+    """
+    Demo program that displays a webcam using OpenCV and applies some very basic image functions
+
+    - functions from top to bottom -
+    none:       no processing
+    threshold:  simple b/w-threshold on the luma channel, slider sets the threshold value
+    canny:      edge finding with canny, sliders set the two threshold values for the function => edge sensitivity
+    contour:    colour finding in the frame, first slider sets the hue for the colour to find, second the minimum saturation
+                for the object. Found objects are drawn with a red contour.
+    blur:       simple Gaussian blur, slider sets the sigma, i.e. the amount of blur smear
+    hue:        moves the image hue values by the amount selected on the slider
+    enhance:    applies local contrast enhancement on the luma channel to make the image fancier - slider controls fanciness.
+    """
+    imagetab_layout = [
+        [sg.T("Image Controls", font=("Helvetica", 16), justification="center")],
+        [sg.Image(filename="", size=(40, 15), key="imagetab_image")],
         [sg.Checkbox("None", default=True, size=(10, 1))],
         [
             sg.Checkbox("threshold", size=(10, 1), key="thresh"),
@@ -86,14 +242,8 @@ def mainGUI():
                 (1, 255), 128, 1, orientation="h", size=(40, 15), key="enhance_slider"
             ),
         ],
-        [
-            sg.Button("Record", size=(10, 1), button_color=("white", "black")),
-            sg.Button("Screenshot", button_color=("white", "black"), size=(10, 1)),
-            sg.Output(size=(440, 150)),
-        ],
-        [sg.Button("Exit", size=(10, 1), button_color=("white", "red"))],
+        _exitButton,
     ]
-    tab2_layout = [[sg.T("This is inside tab 2")]]
 
     layout = [
         [
@@ -101,17 +251,21 @@ def mainGUI():
                 [
                     [
                         sg.Tab("Main", maintab_layout, tooltip="Main Menu"),
-                        sg.Tab("Input", tab2_layout, tooltip="Press Buttons"),
-                        sg.Tab("Output", tab2_layout, tooltip="Set Output"),
                         sg.Tab(
-                            "Autopilot",
-                            tab2_layout,
-                            tooltip="Press Buttons Automagically",
+                            "Image Controls",
+                            imagetab_layout,
+                            tooltip="For testings CV values",
                         ),
-                        sg.Tab(
-                            "Training", tab2_layout, tooltip="Machine Learning Stuff"
-                        ),
-                        sg.Tab("Debug", tab2_layout, tooltip="Debug"),
+                        # sg.Tab("Output", tab2_layout, tooltip="eSet Output"),
+                        # sg.Tab(
+                        #     "Autopilot",
+                        #     tab2_layout,
+                        #     tooltip="Press Buttons Automagically",
+                        # ),
+                        # sg.Tab(
+                        #     "Training", tab2_layout, tooltip="Machine Learning Stuff"
+                        # ),
+                        # sg.Tab("Debug", tab2_layout, tooltip="Debug"),
                     ]
                 ],
                 tooltip="TIP2",
@@ -120,62 +274,67 @@ def mainGUI():
     ]
 
     # create the window and show it without the plot
-    window = sg.Window(f"XCV - {XCV_VERSION}", location=(800, 200))
+    window = sg.Window("XCV", location=(800, 400))
     window.Layout(layout).Finalize()
 
     cap = cv2.VideoCapture(0)
 
     # Check if camera opened successfully
-    if cap.isOpened() == False:
+    if not cap.isOpened():
         print("Unable to read camera feed")
-
-    # Default resolutions of the frame are obtained.The default resolutions are system dependent.
-    # We convert the resolutions from float to integer.
-    frame_width = int(cap.get(3))
-    frame_height = int(cap.get(4))
-
-    _recording = False
+    else:
+        # Default capture frame width and height, comes as float, converted to
+        frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        logger.debug(f"Video Captured - Frame size: {frame_width} x {frame_height}\n")
 
     while True:
         event, values = window.Read(timeout=0, timeout_key="timeout")
-        ret, frame = cap.read()
-
-        if frame_width >= 641:
-            frame = imutils.resize(frame, width=640)
-
-        if event == "Record":
-            if not _recording:
-                # Define the codec and create VideoWriter object (defines fps and frame size)
-                out = cv2.VideoWriter(
-                    f'data/output/screencap_{datetime.datetime.now().strftime("%Y_%m_%d_%H.%M.%S")}.avi',
-                    cv2.VideoWriter_fourcc("M", "J", "P", "G"),
-                    30,
-                    (frame_width, frame_height),
-                )
-                _recording = True
-                print("Recording...")
-            else:
-                _recording = False
-                out.release()
-                print("Finished Recording")
-
-        if _recording:
-            out.write(frame)
-
-        if event == "Screenshot":
-            print("Saving Screenshot...")
-            cv2.imwrite(
-                f'data/output/screenshot_{datetime.datetime.now().strftime("%Y_%m_%d_%H.%M.%S")}.png',
-                frame,
-            )
 
         if event == "Exit" or event is None:
+            close_all(cap, window)
             sys.exit(0)
 
-        # if values['GM_debug']:
-        #     sg.Print("hello it's me displaying debug info in a window")
+        if event != "timeout":
+            logger.debug(event)
 
-        # OpenCV
+        if event == "_btnA_":
+            xcontroller.single_btn_press("A")
+            print("A - pressed!")
+
+        if event == "_btnB_":
+            xcontroller.single_btn_press("B")
+            print("B - pressed!")
+
+        if event == "_btnX_":
+            xcontroller.single_btn_press("X")
+            print("X - pressed!")
+
+        if event == "_btnY_":
+            xcontroller.single_btn_press("Y")
+            print("Y - pressed!")
+
+        if event == "_btnLB_":
+            xcontroller.single_btn_press("l")
+            print("LB - pressed!")
+
+        if event == "_btnRB_":
+            xcontroller.single_btn_press("r")
+            print("RB - pressed!")
+
+        if event == "_btnStart_":
+            xcontroller.single_btn_press("S")
+            print("Start - pressed!")
+
+        if event == "_btnSelect_":
+            print("This button is NOT yet setup... sorry!")
+
+        if event == "_check_serial_":
+            checkSerial()
+            print("Check Serial pressed!")
+
+        ret, frame = cap.read()
+
         if values["thresh"]:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
             _, frame = cv2.threshold(
@@ -201,22 +360,32 @@ def mainGUI():
             frame = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
 
         if values["contour"]:
-            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            frame = cv2.GaussianBlur(frame, (21, 21), 1)
-            lower_blue = np.array([38, 86, 0])
-            upper_blue = np.array([121, 255, 255])
-            mask = cv2.inRange(hsv, lower_blue, upper_blue)
-            _, contours, _ = cv2.findContours(
-                mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE
+            hue = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            hue = cv2.GaussianBlur(hue, (21, 21), 1)
+            hue = cv2.inRange(
+                hue,
+                np.array([values["contour_slider"], values["base_slider"], 40]),
+                np.array([values["contour_slider"] + 30, 255, 220]),
             )
-            for contour in contours:
-                cv2.drawContours(frame, contour, -1, (0, 255, 0), 3)
-            # frame = cv2.inRange(frame, np.array([values['contour_slider'], values['base_slider'], values['contour_slider']))
-            # _, cnts, _ = cv2.findContours(frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            # cv2.drawContours(frame, cnts, -1, (0, 0, 255), 2)
+            _, cnts, _ = cv2.findContours(
+                hue, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+            )
+            if cnts:
+                cv2.drawContours(frame, cnts, -1, (0, 0, 255), 2)
+
+        draw_HUD_FPS(frame, 7)
 
         imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
-        window.FindElement("image").Update(data=imgbytes)
+        window.FindElement("main_image").Update(data=imgbytes)
+        window.FindElement("imagetab_image").Update(data=imgbytes)
+
+
+def close_all(cap, window) -> None:
+    """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
+    cap.release()
+    cv2.destroyAllWindows()
+    window.Close()
+    logger.debug("Nice! You closed the windows on exit.")
 
 
 if __name__ == "__main__":
