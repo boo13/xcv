@@ -1,38 +1,78 @@
 from dataclasses import dataclass
 
 
-def set_the_settings():
-    """Return the operating system python is currently using"""
-    import platform
-
-    if platform.system() == "Darwin":
-        print("Woo using a Mac! ⚡ Let's use emojis in the command line!")
-        return False
-
-    if platform.system() == "Windows":
-        print("You're using Windows, which is ok too.. it's a personal choice.")
-        return True
-
-
-WINDOWS = set_the_settings()
-# ====================================
-#   Serial
-# ====================================
-
-WIN_DEFAULT_SERIAL_PORT = "COM17"
-MAC_DEFAULT_SERIAL_PORT = "/dev/cu.SLAB_USBtoUART"
-
-# System Logic
-if WINDOWS:
-    SERIAL_PORT = WIN_DEFAULT_SERIAL_PORT
-else:
-    SERIAL_PORT = MAC_DEFAULT_SERIAL_PORT
-
-# LOCAL SETTINGS - we use these to set (and mostly forget) the Serial connection config
+# Settings - we use these to set (and mostly forget) the config
 @dataclass
 class Settings:
-    timerFlag: int = 10
+    # __slots__ = ["TIMEZONE", "timer", "verbose", "PACKAGE_NAME", "SERIAL_BAUD", "WINDOWS", "SERIAL_PORT"]
+    # ====================================
+    #   User Settings
+    # ====================================
+    TIMEZONE: str = "US/Eastern"
+    timer: int = 10
     verbose: bool = False
+
+    # ====================================
+    #   Package Info
+    # ====================================
+    from xcv import __version__, __author__, __email__
+
+    PACKAGE_NAME: str = "xcv"
+    XCV_VERSION: str = __version__
+    XCV_AUTHOR: str = __author__
+    XCV_EMAIL: str = __email__
+    XCV_DESCRIPTION: str = f"""
+        The project's goal is to make game-based OpenCV experiments easier.
+
+        By avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. 
+        On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins
+        (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
+    """
+
+    # ====================================
+    #   Serial
+    # ====================================
     SERIAL_BAUD: int = 115200
+
+    # ====================================
+    #   CLI Styling
+    # ====================================
     debug_indent: str = "\n\t\t"
     centered_indent: str = "\n\t\t\t\t"
+    WARNING = f"{debug_indent}🥵  WARNING"
+    LAUNCHING = f"{debug_indent}🧨  LAUNCHING"
+
+    # ====================================
+    #   Paths
+    # ====================================
+    from pathlib import Path
+
+    HOME_PATH: Path = Path.home()
+    ABSPATH: str = Path(__file__).resolve().parent
+
+    @property
+    def WINDOWS(self) -> bool:
+        import platform
+
+        if platform.system() == "Windows":
+            _w = True
+        else:
+            _w = False
+
+        return _w
+
+    @property
+    def SERIAL_PORT(self) -> str:
+        if self.WINDOWS:
+            _sp: str = "COM17"
+        else:
+            _sp: str = "/dev/cu.SLAB_USBtoUART"
+
+        return _sp
+
+
+if __name__ == "__main__":
+    s = Settings()
+    print(s.SERIAL_PORT)
+    print(s.WINDOWS)
+    print(s.HOME_PATH)
