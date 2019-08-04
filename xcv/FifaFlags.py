@@ -40,7 +40,7 @@ class FifaFlags:
     State: int = 0
     gameStates: List[Any] = (
         "Xbox Home",
-        "Fifa Main Menu",
+        "Fifa Menu",
         "Squad Edit",
         "Side Select",
         "PreGame Menus",
