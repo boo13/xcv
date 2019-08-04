@@ -26,6 +26,7 @@ pyqt5 = "*"
 opencv-contrib-python = "*"
 imutils = "*"
 pillow = "*"
+streamlink = "*"
 
 [pipenv]
 allow_prereleases = true
