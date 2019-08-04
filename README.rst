@@ -12,7 +12,7 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
 -----------------------
 
 .. image:: https://img.shields.io/travis/boo13/xcv.svg
-   :target: https://img.shields.io/travis/boo13/xcv.svg
+   :target: https://travis-ci.org/boo13/xcv
    :alt: Travis
  
 .. image:: https://readthedocs.org/projects/xcv/badge/?version=latest
