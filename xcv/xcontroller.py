@@ -20,25 +20,25 @@ from xcv.cli.cli import hazard, sleep, warning, exiting, suggest
 
 @dataclass(order=True)
 class Buttons:
-    aBtn: bool = 0
-    bBtn: bool = 0
-    xBtn: bool = 0
-    yBtn: bool = 0
-    lbBtn: bool = 0
-    rbBtn: bool = 0
-    duBtn: bool = 0
-    ddBtn: bool = 0
-    dlBtn: bool = 0
-    drBtn: bool = 0
+    aBtn: int = 0
+    bBtn: int = 0
+    xBtn: int = 0
+    yBtn: int = 0
+    lbBtn: int = 0
+    rbBtn: int = 0
+    duBtn: int = 0
+    ddBtn: int = 0
+    dlBtn: int = 0
+    drBtn: int = 0
     ltBtn: float = 0.0
     rtBtn: float = 0.0
     lsx: float = 0.0
     lsy: float = 0.0
     rsx: float = 0.0
     rsy: float = 0.0
-    startBtn: bool = 0
-    selectBtn: bool = 0
-    xboxBtn: bool = 0
+    startBtn: int = 0
+    selectBtn: int = 0
+    xboxBtn: int = 0
 
     def show(self):
         for k, v in self.__dict__.items():
@@ -49,7 +49,7 @@ class Buttons:
 
 
 def single_btn_press(btnInput: object, cnt_down: int = 2):
-    from cli import cli
+    from cli import cli         # pylint: disable=import-error
 
     cli.countdown(cnt_down)
     btns = Buttons()
