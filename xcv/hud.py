@@ -35,7 +35,7 @@ def draw_HUD_FPS(frame, fps: int=0) -> None:
 
 def draw_HUD_elapsedTime(frame) -> None:
     if elapsedTime is not 0:
-        cv2.putText(frame, "Elapsed", (530, 20), font, 0.25, HUD.GRAY2, 1)
+        cv2.putText(frame, "Elapsed", (530, 20), font, 0.25, GRAY2, 1)
         cv2.putText(frame, str(elapsedTime), (530, 35), font, 0.5, GRAY2, 1)
 
 def draw_HUD_elapsedGameTime(frame) -> None:

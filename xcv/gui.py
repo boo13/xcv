@@ -8,8 +8,8 @@ import sys
 import datetime
 
 # Local
-from xcv.commands import XcvError
-from xcv.hud import (
+# from xcv.commands import XcvError
+from hud import (
     draw_HUD_FPS,
     #     draw_HUD_controller,
     #     draw_HUD_HomeAway,
@@ -17,8 +17,9 @@ from xcv.hud import (
     #     draw_HUD_elapsedTime,
     draw_HUD_elapsedGameTime,
 )
-from xcv.settings import Settings
-from xcv.tools import checkSerial
+from settings import Settings
+from version import XCV_VERSION
+from tools import checkSerial
 
 # from xcv.game.Templates import TemplateMatcher, ROI
 # _________________ From 'pip' install _____________________________________
@@ -27,9 +28,9 @@ import cv2  # Opencv
 import imutils  # Opencv utils (pyimagesearch.com)
 import numpy as np
 from loguru import logger
-from xcv.xcontroller import xcontroller
+import xcontroller
 
-from xcv.base64_btns import (
+from base64_btns import (
     xb_a,
     xb_b,
     xb_x,
@@ -73,7 +74,7 @@ def mainGUI():
     _exitButton = [
         sg.Button("Exit", size=(10, 1), button_color=("#A6A4AF", "#BD3138")),
         sg.Text(
-            f"Vers: {Settings.XCV_VERSION}    USB: {Settings.SERIAL_PORT}    Baud: {Settings.SERIAL_BAUD}    FPS: ? ",
+            f"Vers: {XCV_VERSION}    USB: {Settings.SERIAL_PORT}    Baud: {Settings.SERIAL_BAUD}    FPS: ? ",
             font="Helvetica 10",
             justification="right",
         ),

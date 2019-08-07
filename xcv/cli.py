@@ -4,7 +4,7 @@ import click
 
 from loguru import logger
 
-from xcv.settings import Settings
+from settings import Settings
 
 # Emoji handling
 if Settings.WINDOWS:
@@ -107,7 +107,7 @@ def main_input(
         print("WIP feature")
 
     elif gui:
-        from xcv.gui import mainGUI
+        from gui import mainGUI
 
         mainGUI()
 
@@ -125,24 +125,6 @@ def countdown(secs):
         logger.info(rocketLaunchList[3])
     else:
         logger.info(launch)
-
-    # for i in range(secs + 1):
-    #     sleep(1)
-
-    #     if i == (secs - 3):
-    #         print(rocketLaunchList[0])
-
-    #     elif i == (secs - 2):
-    #         print(rocketLaunchList[1])w
-
-    #     elif i == (secs - 1):
-    #         print(rocketLaunchList[2])
-
-    #     elif i == (secs):
-    #         print(rocketLaunchList[3])cls
-
-    #     else:
-    #         print(f"\t    🔥 ... {secs - i}")
 
 
 if __name__ == "__main__":
