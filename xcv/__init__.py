@@ -1,14 +1,15 @@
-"""XCV - An open-source project. Using PySerial and Opencv-Python to take a video feed and send commands to a teensy, which is connected to a hacked controller. 
+"""An open-source project to push buttons with serial.
+XCV - Using PySerial and Opencv-Python to take a video feed and send commands to a teensy, which is connected to a hacked controller. 
 
 """
-__author__ = """Randy Boo13 Boo"""
+__author__ = """Boo13"""
 __email__ = "boo13bot@gmail.com"
-__version__ = "0.1.0"
-__all__ = ["Constants", "cli", "api", "game", "commands"]
+__version__ = "0.1.2"
 
-import os
 import sys
 
-assert sys.version_info >= (3, 7, 0), ("Python 3.7+ is required")
+if sys.version_info >= (3, 7, 0):
+    pass
 
-os.system("cls||clear")
+else:
+    sys.exit("Python 3.7.0 or higher is required")
