@@ -1,8 +1,8 @@
 import serial
 from loguru import logger
+from time import sleep
 
-
-def serialSend(charToSend, port='COM21', baudrate=115200):
+def serialSend(charToSend, port='COM16', baudrate=115200):
     def send():
         try:
             with serial.Serial(port=port, baudrate=baudrate, bytesize=8, parity="E", stopbits=1, timeout=0.05) as s:
@@ -21,12 +21,16 @@ def checkSerial():
     
     logger.info("Sending A command")
     a()
+    sleep(1)
     logger.info("Sending B command")
     b()
+    sleep(1)
     logger.info("Sending X command")
     x()
+    sleep(1)
     logger.info("Sending y command")
     y()
+    sleep(1)
 
 
 
