@@ -7,7 +7,6 @@ import pytest
 from click.testing import CliRunner
 
 import xcv
-from xcv import cli
 
 
 @pytest.fixture
@@ -29,9 +28,9 @@ def test_content(response):
 def test_command_line_interface():
     """Test the CLI."""
     runner = CliRunner()
-    result = runner.invoke(cli.main_input)
-    # assert result.exit_code == 0
+    result = runner.invoke(xcv.cli.main_input)
+    assert result.exit_code == 0
     # assert 'xcv.cli.main_input' in result.output
-    help_result = runner.invoke(cli.main_input, ["--help"])
+    help_result = runner.invoke(xcv.cli.main_input, ["--help"])
     assert help_result.exit_code == 0
     # assert '--help  Show this message and exit.' in help_result.output
