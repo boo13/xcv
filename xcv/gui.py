@@ -1,3 +1,7 @@
+# TODO: Improve GUI layout
+# TODO: Get the xbox buttons sending serial commands
+# TODO: Implement switch for `cap = cv2.VideoCapture(0)` and `streamlink` stream from twitch, mixer, etc.
+
 #          Import libraries      ______________________________________________
 
 import sys
@@ -5,7 +9,6 @@ import datetime
 
 # Local
 from xcv.commands import XcvError
-from xcv.constants import XCV_VERSION, SERIAL_PORT, SERIAL_BAUD, ABSPATH
 from xcv.hud import (
     draw_HUD_FPS,
     #     draw_HUD_controller,
@@ -14,7 +17,7 @@ from xcv.hud import (
     #     draw_HUD_elapsedTime,
     draw_HUD_elapsedGameTime,
 )
-
+from xcv.settings import Settings
 from xcv.tools import checkSerial
 
 # from xcv.game.Templates import TemplateMatcher, ROI
@@ -70,7 +73,7 @@ def mainGUI():
     _exitButton = [
         sg.Button("Exit", size=(10, 1), button_color=("#A6A4AF", "#BD3138")),
         sg.Text(
-            f"Vers: {XCV_VERSION}    USB: {SERIAL_PORT}    Baud: {SERIAL_BAUD}    FPS: ? ",
+            f"Vers: {Settings.XCV_VERSION}    USB: {Settings.SERIAL_PORT}    Baud: {Settings.SERIAL_BAUD}    FPS: ? ",
             font="Helvetica 10",
             justification="right",
         ),
@@ -89,61 +92,52 @@ def mainGUI():
                 data_base64=xb_lt_null,
                 key="_btnLT_",
                 enable_events=True,
-                pad=((50, 0), (0, 0)),
+                pad=((10, 0), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_lb_null,
                 key="_btnLB_",
                 enable_events=True,
-                pad=((0, 0), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_select_null,
                 key="_btnSelect_",
                 enable_events=True,
-                pad=((25, 25), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_start_null,
                 key="_btnStart_",
                 enable_events=True,
-                pad=((25, 25), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_x_null,
                 key="_btnX_",
                 enable_events=True,
-                pad=((0, 0), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_y_null,
                 key="_btnY_",
                 enable_events=True,
-                pad=((0, 0), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_a_null,
                 key="_btnA_",
                 enable_events=True,
-                pad=((0, 0), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_b_null,
                 key="_btnB_",
                 enable_events=True,
-                pad=((0, 0), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_rb_null,
                 key="_btnRB_",
                 enable_events=True,
-                pad=((0, 0), (0, 0)),
             ),
             sg.Image(
                 data_base64=xb_rt_null,
                 key="_btnRT_",
                 enable_events=True,
-                pad=((0, 0), (0, 0)),
             ),
         ],
         # [sg.Image(
