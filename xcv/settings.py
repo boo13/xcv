@@ -4,7 +4,20 @@ from dataclasses import dataclass
 # Settings - we use these to set (and mostly forget) the config
 @dataclass
 class Settings:
-    # __slots__ = ["TIMEZONE", "timer", "verbose", "PACKAGE_NAME", "SERIAL_BAUD", "WINDOWS", "SERIAL_PORT"]
+    # __slots__ = [
+    #     "TIMEZONE",
+    #     "timer",
+    #     "verbose",
+    #     "PACKAGE_NAME",
+    #     "XCV_VERSION",
+    #     "XCV_AUTHOR",
+    #     "XCV_EMAIL",
+    #     "XCV_DESCRIPTION",
+    #     "SERIAL_BAUD",
+    #     "WINDOWS",
+    #     "SERIAL_PORT",
+    # ]
+
     # ====================================
     #   User Settings
     # ====================================
@@ -30,9 +43,24 @@ class Settings:
     """
 
     # ====================================
+    #   System
+    # ====================================
+    import sys
+
+    _WINDOWS = sys.platform.startswith("win")
+
+    @property
+    def WINDOWS(self) -> bool:
+        return self._WINDOWS
+
+    # ====================================
     #   Serial
     # ====================================
     SERIAL_BAUD: int = 115200
+
+    @property
+    def SERIAL_PORT(self) -> str:
+        return "COM17" if self.WINDOWS else "/dev/cu.SLAB_USBtoUART"
 
     # ====================================
     #   CLI Styling
@@ -48,27 +76,7 @@ class Settings:
     from pathlib import Path
 
     HOME_PATH: Path = Path.home()
-    ABSPATH: str = Path(__file__).resolve().parent
-
-    @property
-    def WINDOWS(self) -> bool:
-        import platform
-
-        if platform.system() == "Windows":
-            _w = True
-        else:
-            _w = False
-
-        return _w
-
-    @property
-    def SERIAL_PORT(self) -> str:
-        if self.WINDOWS:
-            _sp: str = "COM17"
-        else:
-            _sp: str = "/dev/cu.SLAB_USBtoUART"
-
-        return _sp
+    ABSPATH: Path = Path(__file__).resolve().parent
 
 
 if __name__ == "__main__":
