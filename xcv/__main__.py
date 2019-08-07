@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import datetime
-import pytz
-from xcv.settings import Settings
-
-startTime = datetime.datetime.now(tz=pytz.UTC).astimezone(
-    pytz.timezone(Settings.TIMEZONE)
-)
 
 import cli
 import sys
