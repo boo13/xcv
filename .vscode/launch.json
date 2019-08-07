@@ -1,0 +1,74 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Go GUI",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/xcv/__main__.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--gui"
+            ]
+        },
+        {
+            "name": "Press A",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/xcv/__main__.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--push",
+                "A",
+                "--count",
+                "3"
+            ]
+        },
+        {
+            "name": "Press B",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/xcv/__main__.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--push",
+                "B",
+                "--count",
+                "3"
+            ]
+        },
+        {
+            "name": "Press DRight",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/xcv/__main__.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--push",
+                "d",
+                "--count",
+                "0"
+            ]
+        },
+        {
+            "name": "Python: --help",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/xcv/__main__.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--help"
+            ]
+        }
+    ]
+}
