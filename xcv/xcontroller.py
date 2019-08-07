@@ -12,10 +12,10 @@ from colorama import Fore, Style
 from dataclasses import dataclass
 from typing import List
 
-from xcv.settings import Settings
-from xcv.commands import XcvError
+from settings import Settings
+from commands import XcvError
 
-from xcv.cli.cli import hazard, sleep, warning, exiting, suggest
+import cli
 
 
 @dataclass(order=True)
@@ -49,8 +49,6 @@ class Buttons:
 
 
 def single_btn_press(btnInput: object, cnt_down: int = 2):
-    from cli import cli         # pylint: disable=import-error
-
     cli.countdown(cnt_down)
     btns = Buttons()
 
@@ -78,7 +76,7 @@ def single_btn_press(btnInput: object, cnt_down: int = 2):
         btns.drBtn = 1
     else:
         print(
-            f"\n\t{warning} Error - Couldn't find that button.\n\t\t {suggest}To list the buttons accepted use --help \n"
+            f"\n\t{cli.warning} Error - Couldn't find that button.\n\t\t {cli.suggest}To list the buttons accepted use --help \n"
         )
         return
 
@@ -104,15 +102,15 @@ def serial_send(btns_sending, serialPort=None, serialBaud=None):
     # In case things go bad
     serial_error = (
         Fore.RED
-        + f"\n\n{warning}"
+        + f"\n\n{cli.warning}"
         + Fore.WHITE
         + " - No Serial Communication\n"
         + Fore.YELLOW
-        + f"\t{hazard}CHECK"
+        + f"\t{cli.hazard}CHECK"
         + Fore.WHITE
         + " - your serial port in 'constants.py'\n"
         + Fore.WHITE
-        + f"\t{suggest}TRY - checking the wiring and the port, is this the correct port?\n\t\t\t"
+        + f"\t{cli.suggest}TRY - checking the wiring and the port, is this the correct port?\n\t\t\t"
         + Fore.CYAN
         + f"{str(Settings.SERIAL_PORT)}"
         + Style.RESET_ALL
@@ -126,7 +124,7 @@ def serial_send(btns_sending, serialPort=None, serialBaud=None):
         raise XcvError(serial_error)
     except Exception as e:
         raise XcvError(
-            f"\n\n{exiting} I have no idea - {hazard} CHECK the logs\n\n{str(e)}"
+            f"\n\n{cli.exiting} I have no idea - {cli.hazard} CHECK the logs\n\n{str(e)}"
         )
 
 

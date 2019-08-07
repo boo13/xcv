@@ -1,11 +1,8 @@
 from dataclasses import dataclass
-from typing import List, Any
+from typing import Tuple
 
 
 def defending(side: int = 0):
-
-    assert side < 4
-
     def currentSide():
         FifaFlags.Defending = side
 
@@ -13,9 +10,6 @@ def defending(side: int = 0):
 
 
 def homeaway(side: int = 0):
-
-    assert side < 4
-
     def currentHomeAway():
         FifaFlags.HomeAway = side
 
@@ -38,7 +32,7 @@ class FifaFlags:
     frameH: int = 0
 
     State: int = 0
-    gameStates: List[Any] = (
+    gameStates: Tuple[str, str, str, str, str, str, str, str, str, str, str, str, str, str, str, str] = (
         "Xbox Home",
         "Fifa Menu",
         "Squad Edit",

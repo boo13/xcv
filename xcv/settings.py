@@ -27,13 +27,7 @@ class Settings:
 
     # ====================================
     #   Package Info
-    # ====================================
-    from xcv import __version__, __author__, __email__
-
-    PACKAGE_NAME: str = "xcv"
-    XCV_VERSION: str = __version__
-    XCV_AUTHOR: str = __author__
-    XCV_EMAIL: str = __email__
+    # ====================================    
     XCV_DESCRIPTION: str = f"""
         The project's goal is to make game-based OpenCV experiments easier.
 
@@ -60,7 +54,10 @@ class Settings:
 
     @property
     def SERIAL_PORT(self) -> str:
-        return "COM17" if self.WINDOWS else "/dev/cu.SLAB_USBtoUART"
+        if self.WINDOWS:
+            return "COM17"
+        else:
+            return "/dev/cu.SLAB_USBtoUART"
 
     # ====================================
     #   CLI Styling
