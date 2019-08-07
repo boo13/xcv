@@ -49,17 +49,25 @@ class TemplateMatcher:
         threshold: float = 0.8,
         func=None,
     ):
-        # Make a numpy array the same size as the cvFrame
-        mask = np.zeros_like(cvFrame)
+        if template:
+            # Get the template dimensions (used to draw the label)
+            _tplateH, _tplateW = template.shape[:2]
+        else:
+            logger.debug("Missing template - pass in a numpy image")
+            return cvFrame
 
-        # Take the ROI and make that section white
-        cv2.fillPoly(mask, ROI, 255)
+        if cvFrame:
+            # Make a numpy array the same size as the cvFrame
+            mask = np.zeros_like(cvFrame)
 
-        # Combine the mask and cvFrame to make a masked_image
-        masked_image = cv2.bitwise_and(cvFrame, mask)
+            # Take the ROI and make that section white
+            cv2.fillPoly(mask, ROI, 255)
 
-        # Get the template dimensions (used to draw the label)
-        templateH, templateW = template.shape[:2]
+            # Combine the mask and cvFrame to make a masked_image
+            masked_image = cv2.bitwise_and(cvFrame, mask)
+        else:
+            logger.debug("Missing cvFrame - pass in a numpy image")
+            return cvFrame
 
         # Use CV2's Template Matching to get our result
         res = cv2.matchTemplate(masked_image, template, cv2.TM_CCOEFF_NORMED)
@@ -70,13 +78,10 @@ class TemplateMatcher:
         for pt in zip(*loc[::-1]):
             # Draw a red box around any matching template results
             cv2.rectangle(
-                ogFrame, pt, (pt[0] + templateW, pt[1] + templateH), (0, 0, 255), 2
+                ogFrame, pt, (pt[0] + _tplateW, pt[1] + _tplateH), (0, 0, 255), 2
             )
 
-            # If we have one - set the code for the state change this is supposed to indicate
-            if state:
-                FifaFlags.State = state
-
+            # If we have one - execute the function (typically sets a game_state_change).
             if func:
                 func()
 
@@ -127,12 +132,13 @@ class ROI:
 if __name__ == "__main__":
 
     import cv2
+    from loguru import logger
 
     cap = cv2.VideoCapture(0)
 
     ok, og_frame = cap.read()
 
-    cv_frame = cv2.cvtColor(og_frame.copy(), cv2.COLOR_BGR2GRAY)
+    cv_frame = cv2.cvtColor()
 
     # if ok:
     #     cv2.imshow("Original", og_frame)
