@@ -28,10 +28,11 @@ blog/images/original
 # Scratch folder
 scratch/*
 
+# I have no idea really...
+.idea/*
+
 # Personal VS Code Settings
-.vscode/
 xcv.code-workspace
-*.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
