@@ -6,7 +6,7 @@ class TemplateMatcher:
         :param cvFrame: the maluable computer vision frame
         :param ogFrame: the original frame, we use it to display information back to the user
         :option func: a function to run if we do find that template (e.g. we are defending the left side of the screen)
-        :paramt hreshold (float): opencv param for template threshold
+        :param threshold (float): opencv param for template threshold
         :option state (int): an optional flag that will be switched if we found our template (a simplified version of `func`)
         """
 
@@ -35,9 +35,9 @@ class TemplateMatcher:
 
     def __str__(self):
         return f"""
-                Matching `template` in `ROI` of `cvFrame`, beyond a chosen `threshold`. 
+                Matching `template` in `ROI` of `cvFrame`, beyond the chosen `threshold`: {self.threshold}. 
                 We ouput the visual information to `ogFrame`. 
-                If we found our template we use `state` or `func` to set the appropriate `game_state` flags."""
+                If we found our template we use `state`({self.state}) or `func`({self.func}) to set the appropriate `game_state` flags."""
 
     def find(
         self,
@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
     ok, og_frame = cap.read()
 
-    cv_frame = cv2.cvtColor()
+    # cv_frame = cv2.cvtColor()
 
     # if ok:
     #     cv2.imshow("Original", og_frame)
