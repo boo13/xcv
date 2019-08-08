@@ -15,12 +15,28 @@ class xcv_api:
     path: Path = Path(__file__).resolve().parent
     timezone = "US/Eastern"
     timer = 10
-    verbose = False
     # ...
+    # CLI stuff
+    verbose = False
     debug_serial = False
+    # ...
     # Game stuff
-    btn_utf_send_commands = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
-    
+    btn_utf_send_commands = [
+        "A",
+        "B",
+        "X",
+        "Y",
+        "S",
+        "l",
+        "r",
+        "w",
+        "a",
+        "s",
+        "d",
+        "o",
+        "p",
+    ]
+
 
 # > PEP8: The naming convention for functions may be used instead in cases where the interface is documented and used primarily as a callable.
 # QUESTION: Does that apply here?
