@@ -1,58 +1,32 @@
 from time import sleep
 from dataclasses import dataclass
-import click
+from textwrap import TextWrapper
+wrapper = TextWrapper()
 
+import click
 from loguru import logger
 
-from settings import Settings
+import settings
 
-# Emoji handling
-if Settings.WINDOWS:
-    stars = f"{Settings.centered_indent}✨ ✨ ✨\n\n"
-    hazard = f"{Settings.debug_indent}⚠️  "
-    sleepy = f"{Settings.debug_indent}😴 "
-    suggest = f"{Settings.debug_indent}✏️  "
-    gamerobot = ""
-    gamesnake = ""
-    launch = f"{Settings.debug_indent}LAUNCHING"
-    warning = f"{Settings.debug_indent} WARNING"
-    exiting = f"{Settings.debug_indent}👟 ️ EXITING"
-    rocketLaunchList = [
-        f"{Settings.debug_indent}... ",
-        f"{Settings.debug_indent} .. ",
-        f"{Settings.debug_indent}  . ",
-        f"{Settings.debug_indent}XCV!\n",
-        f"{Settings.debug_indent}XCV!\n",
-    ]
-else:
-    stars = f"{Settings.centered_indent}✨ 🌟 ✨\n\n"
-    hazard = f"{Settings.debug_indent}⚠️  "
-    sleepy = f"{Settings.debug_indent}😴 "
-    suggest = f"{Settings.debug_indent}✏️  "
-    gamerobot = f"{Settings.debug_indent}👾 🕹  "
-    gamesnake = f"{Settings.debug_indent}🎮 🐍  "
-    launch = f"{Settings.debug_indent}🧨  LAUNCHING"
-    warning = f"{Settings.debug_indent}🥵  WARNING"
-    exiting = f"{Settings.debug_indent}👟 ️ EXITING"
-    rocketLaunchList = [
-        f"{Settings.debug_indent}🔥 ... ",
-        f"{Settings.debug_indent} 🔥 .. ",
-        f"{Settings.debug_indent}  🔥 . ",
-        f"{Settings.debug_indent}    💨  XCV 🚀\n",
-        "🚀",
-    ]
+
+_settings = settings
+print(_settings.xcv_api.emojis["stars"])
+
+x = _settings.serial_config.port_next()
+
+print(x)
+print(_settings.serial_config.port)
 
 # Main CLI
 _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
-_defaultUSBport = "/dev/cu.SLAB_USBtoUART"
 
 
 @click.command()
 @click.option("--verbose", "-v", is_flag=True, help="Display debug information")
 @click.option(
     "--port",
-    default=_defaultUSBport,
-    help=f"Controller port, default is {_defaultUSBport}",
+    default=_settings.serial_config.port,
+    help=f"Controller port, default is {_settings.serial_config.port}",
 )
 @click.option("--autopilot", "-auto", is_flag=True, help="Initiate xcv sequence")
 @click.option("--push", type=click.Choice(_btnList), help="Enter button to push")
@@ -70,12 +44,9 @@ def main_input(
     debug=None,
     gui=None,
 ):
-    """XCV ushes OpenCV to push controller buttons with PySerial.
+    wrapper.wrap"""XCV ushes OpenCV to push controller buttons with PySerial.
 
-    The project's goal is to make OpenCV experiments easier, by avoiding controller-driver 
-    nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. 
-    On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals
-    to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
+    The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
 
     \n
     \n\t____________________ Xbox Commands ____________________                               
@@ -86,8 +57,8 @@ def main_input(
     \n\t      DD = s 
     \n\t_____________________________________________________  """
 
-    if not Settings.WINDOWS:
-        print("🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller")
+    # if not Settings.WINDOWS:
+    #     print("🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller")
 
     if verbose:
         click.echo(f"Successfully connected to port: {port}")
@@ -112,9 +83,7 @@ def main_input(
         mainGUI()
 
     else:
-        click.echo(
-            f"{Settings.debug_indent}{hazard}No options passed. Try --help or --gui\n"
-        )
+        click.echo(f"{hazard}No options passed. Try --help or --gui\n")
 
     return 0  # indicates finished without error
 
