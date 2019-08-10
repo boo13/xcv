@@ -12,7 +12,7 @@ from colorama import Fore, Style
 from dataclasses import dataclass
 from typing import List
 
-from settings import Settings
+from settings import serial_api
 from commands import XcvError
 
 import cli
@@ -112,13 +112,13 @@ def serial_send(btns_sending, serialPort=None, serialBaud=None):
         + Fore.WHITE
         + f"\t{cli.suggest}TRY - checking the wiring and the port, is this the correct port?\n\t\t\t"
         + Fore.CYAN
-        + f"{str(Settings.SERIAL_PORT)}"
+        + f"{str(serial_api.port)}"
         + Style.RESET_ALL
     )
 
     try:
         # Be safe kids - use a Context Manager
-        with serial.Serial(Settings.SERIAL_PORT, Settings.SERIAL_BAUD) as ser:
+        with serial.Serial(serial_api.port, serial_api.BAUD) as ser:
             pickle.dump(btns_sending.make_string(), ser)
     except serial.serialutil.SerialException as e:
         raise XcvError(serial_error)
