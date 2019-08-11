@@ -17,9 +17,6 @@ from hud import (
     #     draw_HUD_elapsedTime,
     draw_HUD_elapsedGameTime,
 )
-from settings import Settings
-from version import XCV_VERSION
-from tools import checkSerial
 
 # from xcv.game.Templates import TemplateMatcher, ROI
 # _________________ From 'pip' install _____________________________________
@@ -28,8 +25,11 @@ import cv2  # Opencv
 import imutils  # Opencv utils (pyimagesearch.com)
 import numpy as np
 from loguru import logger
-import xcontroller
 
+from fps import fps
+import xcontroller
+from settings import serial_session
+from version import XCV_VERSION
 from base64_btns import (
     xb_a,
     xb_b,
@@ -57,331 +57,349 @@ from base64_btns import (
 
 
 @logger.catch
-def mainGUI():
-
-    _text_color = "#A6A4AF"
-    _btn_text_color = "#16161F"
-    _background_color = "#16161F"
-
-    # Global GUI settings
-    sg.SetOptions(
-        element_padding=(5, 5),
-        scrollbar_color=None,
-        background_color=_background_color,
-        text_color="#A6A4AF",
-    )
+class GUI:
+    _outputconsole = [
+        sg.Output(size=(640, 100), background_color="#16161F", text_color="#A6A4AF")
+    ]
 
     _exitButton = [
         sg.Button("Exit", size=(10, 1), button_color=("#A6A4AF", "#BD3138")),
         sg.Text(
-            f"Vers: {XCV_VERSION}    USB: {Settings.SERIAL_PORT}    Baud: {Settings.SERIAL_BAUD}    FPS: ? ",
+            f"Vers: {XCV_VERSION}    USB: {serial_session.port}    Baud: {serial_session.BAUD}    Elapsed:",
             font="Helvetica 10",
             justification="right",
+            key="exit_row_text",
+            text_color="#A6A4AF",
         ),
+        sg.Text("", key="_elapsed_", text_color="#A6A4AF"),
+        sg.Text("FPS:", text_color="#A6A4AF"),
+        sg.Text("", key="_fps_", text_color="#A6A4AF"),
     ]
 
-    _outputconsole = [
-        sg.Output(size=(640, 100), background_color="#16161F", text_color=_text_color)
-    ]
+    def __init__(self):
+        # Global GUI settings
+        sg.SetOptions(
+            element_padding=(5, 5),
+            scrollbar_color=None,
+            background_color="#16161F",
+            text_color="#A6A4AF",
+        )
 
-    # define the window layout
-    maintab_layout = [
-        [sg.T("XCV", font=("Helvetica", 16), justification="center")],
-        [sg.Image(filename="", size=(640, 480), key="main_image")],
-        [
-            sg.Image(
-                data_base64=xb_lt_null,
-                key="_btnLT_",
-                enable_events=True,
-                pad=((10, 0), (0, 0)),
-            ),
-            sg.Image(
-                data_base64=xb_lb_null,
-                key="_btnLB_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_select_null,
-                key="_btnSelect_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_start_null,
-                key="_btnStart_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_x_null,
-                key="_btnX_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_y_null,
-                key="_btnY_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_a_null,
-                key="_btnA_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_b_null,
-                key="_btnB_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_rb_null,
-                key="_btnRB_",
-                enable_events=True,
-            ),
-            sg.Image(
-                data_base64=xb_rt_null,
-                key="_btnRT_",
-                enable_events=True,
-            ),
-        ],
-        # [sg.Image(
-        #         data_base64=stick_outer_ring,
-        #         key="_LS_",
-        #         enable_events=True,
-        #         pad=((50, 0), (0, 0)),
-        #     ),
-        #     sg.Image(
-        #         data_base64=stick_outer_ring,
-        #         key="_RS_",
-        #         enable_events=True,
-        #         pad=((50, 0), (0, 0)),
-        #     ),
-        # ],
-        [
-            sg.Button(
-                "Check Serial",
-                size=(10, 1),
-                button_color=("#16161F", "#007339"),
-                key="_check_serial_",
-            ),
-            sg.Button("Stop", button_color=(_btn_text_color, "#B36C42"), size=(10, 1)),
-            sg.Button(
-                "Record", size=(10, 1), button_color=(_btn_text_color, "#BD3138")
-            ),
-            sg.Button(
-                "Screenshot", button_color=(_btn_text_color, "#1749BF"), size=(10, 1)
-            ),
-        ],
-        _outputconsole,
-        _exitButton,
-    ]
+        self._btnA = {"btn_name": "_btnA_", "on_image": xb_a, "off_image": xb_a_null}
+        self._btnB = {"btn_name": "_btnB_", "on_image": xb_b, "off_image": xb_b_null}
+        self._btnX = {"btn_name": "_btnX_", "on_image": xb_x, "off_image": xb_x_null}
+        self._btnY = {"btn_name": "_btnY_", "on_image": xb_y, "off_image": xb_y_null}
+        self._btnStart = {
+            "btn_name": "_btnStart_",
+            "on_image": xb_start,
+            "off_image": xb_start_null,
+        }
+        self._btnSelect = {
+            "btn_name": "_btnSelect_",
+            "on_image": xb_select,
+            "off_image": xb_select_null,
+        }
+        # self._btnXbox = {"btn_name": "_btnY_", "on_image": xb_y, "off_image": xb_y_null}
+        self._btnLB = {
+            "btn_name": "_btnLB_",
+            "on_image": xb_lb,
+            "off_image": xb_lb_null,
+        }
+        self._btnRB = {
+            "btn_name": "_btnRB_",
+            "on_image": xb_rb,
+            "off_image": xb_rb_null,
+        }
+        #TODO: Fix the `on image` for both LT and RT (size is off)
+        self._btnLT = {
+            "btn_name": "_btnLT_",
+            "on_image": xb_lt,
+            "off_image": xb_lt_null,
+        }
+        self._btnRT = {
+            "btn_name": "_btnRT_",
+            "on_image": xb_rt,
+            "off_image": xb_rt_null,
+        }
 
-    tab2_layout = [
-        [sg.T("Nothing to see here... yet")],
-        [
-            sg.Text("Send Command:", size=(15, 1), justification="right"),
-            sg.InputText("", key="input1", text_color=_text_color, size_px=(420, 35)),
-        ],
-        _exitButton,
-    ]
-
-    """
-    Demo program that displays a webcam using OpenCV and applies some very basic image functions
-
-    - functions from top to bottom -
-    none:       no processing
-    threshold:  simple b/w-threshold on the luma channel, slider sets the threshold value
-    canny:      edge finding with canny, sliders set the two threshold values for the function => edge sensitivity
-    contour:    colour finding in the frame, first slider sets the hue for the colour to find, second the minimum saturation
-                for the object. Found objects are drawn with a red contour.
-    blur:       simple Gaussian blur, slider sets the sigma, i.e. the amount of blur smear
-    hue:        moves the image hue values by the amount selected on the slider
-    enhance:    applies local contrast enhancement on the luma channel to make the image fancier - slider controls fanciness.
-    """
-    imagetab_layout = [
-        [sg.T("Image Controls", font=("Helvetica", 16), justification="center")],
-        [sg.Image(filename="", size=(40, 15), key="imagetab_image")],
-        [sg.Checkbox("None", default=True, size=(10, 1))],
-        [
-            sg.Checkbox("threshold", size=(10, 1), key="thresh"),
-            sg.Slider(
-                (0, 255), 128, 1, orientation="h", size=(40, 15), key="thresh_slider"
-            ),
-        ],
-        [
-            sg.Checkbox("canny", size=(10, 1), key="canny"),
-            sg.Slider(
-                (0, 255), 128, 1, orientation="h", size=(20, 15), key="canny_slider_a"
-            ),
-            sg.Slider(
-                (0, 255), 128, 1, orientation="h", size=(20, 15), key="canny_slider_b"
-            ),
-        ],
-        [
-            sg.Checkbox("contour", size=(10, 1), key="contour"),
-            sg.Slider(
-                (0, 255), 128, 1, orientation="h", size=(20, 15), key="contour_slider"
-            ),
-            sg.Slider(
-                (0, 255), 80, 1, orientation="h", size=(20, 15), key="base_slider"
-            ),
-        ],
-        [
-            sg.Checkbox("blur", size=(10, 1), key="blur"),
-            sg.Slider((1, 11), 1, 1, orientation="h", size=(40, 15), key="blur_slider"),
-        ],
-        [
-            sg.Checkbox("hue", size=(10, 1), key="hue"),
-            sg.Slider((0, 225), 0, 1, orientation="h", size=(40, 15), key="hue_slider"),
-        ],
-        [
-            sg.Checkbox("enhance", size=(10, 1), key="enhance"),
-            sg.Slider(
-                (1, 255), 128, 1, orientation="h", size=(40, 15), key="enhance_slider"
-            ),
-        ],
-        _exitButton,
-    ]
-
-    layout = [
-        [
-            sg.TabGroup(
-                [
-                    [
-                        sg.Tab("Main", maintab_layout, tooltip="Main Menu"),
-                        sg.Tab(
-                            "Image Controls",
-                            imagetab_layout,
-                            tooltip="For testings CV values",
-                        ),
-                        # sg.Tab("Output", tab2_layout, tooltip="eSet Output"),
-                        # sg.Tab(
-                        #     "Autopilot",
-                        #     tab2_layout,
-                        #     tooltip="Press Buttons Automagically",
-                        # ),
-                        # sg.Tab(
-                        #     "Training", tab2_layout, tooltip="Machine Learning Stuff"
-                        # ),
-                        # sg.Tab("Debug", tab2_layout, tooltip="Debug"),
-                    ]
-                ],
-                tooltip="TIP2",
-            )
+        self._all_buttons = [
+            self._btnA,
+            self._btnB,
+            self._btnX,
+            self._btnY,
+            self._btnStart,
+            self._btnSelect,
+            self._btnLB,
+            self._btnRB,
+            self._btnLT,
+            self._btnRT,
         ]
-    ]
 
-    # create the window and show it without the plot
-    window = sg.Window("XCV", location=(800, 400))
-    window.Layout(layout).Finalize()
+        # Style settings
+        self._text_color = "#A6A4AF"
+        self._btn_text_color = "#16161F"
+        self._background_color = "#16161F"
 
-    cap = cv2.VideoCapture(0)
+        # create the window and show it
+        self.window = sg.Window("XCV", location=(800, 200))
+        self.window.Layout(self._layout()).Finalize()
 
-    # Check if camera opened successfully
-    if not cap.isOpened():
-        print("Unable to read camera feed")
-    else:
-        # Default capture frame width and height, comes as float, converted to
-        frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        logger.debug(f"Video Captured - Frame size: {frame_width} x {frame_height}\n")
+        # OpenCV
+        self.cap = cv2.VideoCapture(0)
 
-    while True:
-        event, values = window.Read(timeout=0, timeout_key="timeout")
+        # Check if video stream was found
+        if not self.cap.isOpened():
+            logger.debug("Unable to read camera feed")
+        else:
+            # Default capture frame width and height (comes as float)
+            self.frame_width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            self.frame_height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            logger.debug(
+                f"Video Captured - Size: {self.frame_width} x {self.frame_height}\n"
+            )
 
-        if event == "Exit" or event is None:
-            close_all(cap, window)
+            fps.start()
+
+            self.event_loop()
+
+    def _event_checker(self, _event):
+        if _event == "Exit" or _event is None:
+            self.close_all(self.window)
             sys.exit(0)
 
-        if event != "timeout":
-            logger.debug(event)
+        if _event != "timeout":
+            logger.debug(_event)
 
-        if event == "_btnA_":
-            xcontroller.single_btn_press("A")
-            print("A - pressed!")
+        for b in self._all_buttons:
+            if _event == b["btn_name"]:
+                self.window.FindElement(b["btn_name"]).Update(data_base64=b["on_image"])
+                xcontroller.single_btn_press(b["btn_name"])
+                print(_event)
 
-        if event == "_btnB_":
-            xcontroller.single_btn_press("B")
-            print("B - pressed!")
-
-        if event == "_btnX_":
-            xcontroller.single_btn_press("X")
-            print("X - pressed!")
-
-        if event == "_btnY_":
-            xcontroller.single_btn_press("Y")
-            print("Y - pressed!")
-
-        if event == "_btnLB_":
-            xcontroller.single_btn_press("l")
-            print("LB - pressed!")
-
-        if event == "_btnRB_":
-            xcontroller.single_btn_press("r")
-            print("RB - pressed!")
-
-        if event == "_btnStart_":
-            xcontroller.single_btn_press("S")
-            print("Start - pressed!")
-
-        if event == "_btnSelect_":
-            print("This button is NOT yet setup... sorry!")
-
-        if event == "_check_serial_":
-            checkSerial()
+        if _event == "_check_serial_":
             print("Check Serial pressed!")
 
-        ret, frame = cap.read()
+        # if not being pressed: reset the button image
+        for b in self._all_buttons:
+            if _event != b["btn_name"]:
+                self.window.FindElement(b["btn_name"]).Update(data_base64=b["off_image"])
 
-        if values["thresh"]:
+    def _values_checker(self, _values, frame):
+        if _values["thresh"]:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
             _, frame = cv2.threshold(
-                frame, values["thresh_slider"], 255, cv2.THRESH_BINARY
+                frame, _values["thresh_slider"], 255, cv2.THRESH_BINARY
             )
 
-        if values["canny"]:
-            frame = cv2.Canny(frame, values["canny_slider_a"], values["canny_slider_b"])
+        if _values["canny"]:
+            frame = cv2.Canny(
+                frame, _values["canny_slider_a"], _values["canny_slider_b"]
+            )
 
-        if values["blur"]:
-            frame = cv2.GaussianBlur(frame, (21, 21), values["blur_slider"])
+        if _values["blur"]:
+            frame = cv2.GaussianBlur(frame, (21, 21), _values["blur_slider"])
 
-        if values["hue"]:
+        if _values["hue"]:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            frame[:, :, 0] += values["hue_slider"]
+            frame[:, :, 0] += _values["hue_slider"]
             frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
 
-        if values["enhance"]:
-            enh_val = values["enhance_slider"] / 40
+        if _values["enhance"]:
+            enh_val = _values["enhance_slider"] / 40
             clahe = cv2.createCLAHE(clipLimit=enh_val, tileGridSize=(8, 8))
             lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
             lab[:, :, 0] = clahe.apply(lab[:, :, 0])
             frame = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
 
-        if values["contour"]:
+        if _values["contour"]:
             hue = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             hue = cv2.GaussianBlur(hue, (21, 21), 1)
             hue = cv2.inRange(
                 hue,
-                np.array([values["contour_slider"], values["base_slider"], 40]),
-                np.array([values["contour_slider"] + 30, 255, 220]),
+                np.array([_values["contour_slider"], _values["base_slider"], 40]),
+                np.array([_values["contour_slider"] + 30, 255, 220]),
             )
             _, cnts, _ = cv2.findContours(
                 hue, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
             )
             if cnts:
                 cv2.drawContours(frame, cnts, -1, (0, 0, 255), 2)
+        return _values, frame
 
-        draw_HUD_FPS(frame, 7)
+    def event_loop(self):
+        while True:
+            fps.update()
 
-        imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
-        window.FindElement("main_image").Update(data=imgbytes)
-        window.FindElement("imagetab_image").Update(data=imgbytes)
+            _event, _values = self.window.Read(timeout=10, timeout_key="timeout")
 
+            ret, frame = self.cap.read()
 
-def close_all(cap, window) -> None:
-    """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
-    cap.release()
-    cv2.destroyAllWindows()
-    window.Close()
-    logger.debug("Nice! You closed the windows on exit.")
+            self._event_checker(_event)
+            _, frame = self._values_checker(_values, frame)
+
+            draw_HUD_FPS(frame, 7)
+            imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
+            self.window.FindElement("_elapsed_").Update(fps.elapsed)
+            self.window.FindElement("_fps_").Update(fps.fps)
+            self.window.FindElement("main_image").Update(data=imgbytes)
+            self.window.FindElement("imagetab_image").Update(data=imgbytes)
+
+    def _layout(self):
+
+        maintab_layout = [
+            [sg.T("XCV", font=("Helvetica", 16), justification="center")],
+            [sg.Image(filename="", size=(640, 480), key="main_image")],
+            [
+                sg.Image(
+                    data_base64=xb_lt_null,
+                    key="_btnLT_",
+                    enable_events=True,
+                    pad=((10, 0), (0, 0)),
+                ),
+                sg.Image(data_base64=xb_lb_null, key="_btnLB_", enable_events=True),
+                sg.Image(
+                    data_base64=xb_select_null, key="_btnSelect_", enable_events=True
+                ),
+                sg.Image(
+                    data_base64=xb_start_null, key="_btnStart_", enable_events=True
+                ),
+                sg.Image(data_base64=xb_x_null, key="_btnX_", enable_events=True),
+                sg.Image(data_base64=xb_y_null, key="_btnY_", enable_events=True),
+                sg.Image(data_base64=xb_a_null, key="_btnA_", enable_events=True),
+                sg.Image(data_base64=xb_b_null, key="_btnB_", enable_events=True),
+                sg.Image(data_base64=xb_rb_null, key="_btnRB_", enable_events=True),
+                sg.Image(data_base64=xb_rt_null, key="_btnRT_", enable_events=True),
+            ],
+            [
+                sg.Button(
+                    "Check Serial",
+                    size=(10, 1),
+                    button_color=("#16161F", "#007339"),
+                    key="_check_serial_",
+                ),
+                sg.Button(
+                    "Stop",
+                    button_color=(self._btn_text_color, "#B36C42"),
+                    size=(10, 1),
+                    key="_stop_",
+                ),
+                sg.Button(
+                    "Record",
+                    size=(10, 1),
+                    button_color=(self._btn_text_color, "#BD3138"),
+                    key="_record_",
+                ),
+                sg.Button(
+                    "Screenshot",
+                    button_color=(self._btn_text_color, "#1749BF"),
+                    size=(10, 1),
+                    key="_screenshot_",
+                ),
+            ],
+            self._outputconsole,
+            self._exitButton,
+        ]
+
+        imagetab_layout = [
+            [sg.T("Image Controls", font=("Helvetica", 16), justification="center")],
+            [sg.Image(filename="", size=(40, 15), key="imagetab_image")],
+            [sg.Checkbox("None", default=True, size=(10, 1))],
+            [
+                sg.Checkbox("threshold", size=(10, 1), key="thresh"),
+                sg.Slider(
+                    (0, 255),
+                    128,
+                    1,
+                    orientation="h",
+                    size=(40, 15),
+                    key="thresh_slider",
+                ),
+            ],
+            [
+                sg.Checkbox("canny", size=(10, 1), key="canny"),
+                sg.Slider(
+                    (0, 255),
+                    128,
+                    1,
+                    orientation="h",
+                    size=(20, 15),
+                    key="canny_slider_a",
+                ),
+                sg.Slider(
+                    (0, 255),
+                    128,
+                    1,
+                    orientation="h",
+                    size=(20, 15),
+                    key="canny_slider_b",
+                ),
+            ],
+            [
+                sg.Checkbox("contour", size=(10, 1), key="contour"),
+                sg.Slider(
+                    (0, 255),
+                    128,
+                    1,
+                    orientation="h",
+                    size=(20, 15),
+                    key="contour_slider",
+                ),
+                sg.Slider(
+                    (0, 255), 80, 1, orientation="h", size=(20, 15), key="base_slider"
+                ),
+            ],
+            [
+                sg.Checkbox("blur", size=(10, 1), key="blur"),
+                sg.Slider(
+                    (1, 11), 1, 1, orientation="h", size=(40, 15), key="blur_slider"
+                ),
+            ],
+            [
+                sg.Checkbox("hue", size=(10, 1), key="hue"),
+                sg.Slider(
+                    (0, 225), 0, 1, orientation="h", size=(40, 15), key="hue_slider"
+                ),
+            ],
+            [
+                sg.Checkbox("enhance", size=(10, 1), key="enhance"),
+                sg.Slider(
+                    (1, 255),
+                    128,
+                    1,
+                    orientation="h",
+                    size=(40, 15),
+                    key="enhance_slider",
+                ),
+            ],
+        ]
+
+        return [
+            [
+                sg.TabGroup(
+                    [
+                        [
+                            sg.Tab("Main", maintab_layout, tooltip="Main Menu"),
+                            sg.Tab(
+                                "Image Controls",
+                                imagetab_layout,
+                                tooltip="For testings CV values",
+                            ),
+                        ]
+                    ],
+                    tooltip="TIP2",
+                )
+            ]
+        ]
+
+    def close_all(self, window) -> None:
+        """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
+        fps.stop()
+        logger.debug(f"fps: {fps.fps}  elapsed: {fps.elapsed}")
+        self.cap.release()
+        cv2.destroyAllWindows()
+        window.Close()
+        logger.debug("Nice! You closed the windows on exit.")
 
 
 if __name__ == "__main__":
-    mainGUI()
+    gui = GUI()

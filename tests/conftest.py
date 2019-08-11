@@ -9,11 +9,43 @@ def hardware_VidCapture(tmpdir_factory):
     ok, frame = cap.read()
 
     # Checks the BOOLEAN is not false
-    assert ok
+    if ok:
 
-    # ========================================
-    yield frame         # this is where the testing happens
-    # ========================================
+        # ========================================
+        yield frame         # this is where the testing happens
+        # ========================================
+    else:
+        return
+
+    # Teardown
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+@pytest.fixture(scope='session')
+def streamlink_VidCapture(tmpdir_factory):
+    url = "https://www.twitch.tv/overwatchleague"
+    quality = "best"
+    fps = 30.0
+
+    streams = streamlink.streams(url)
+
+    if streams:
+        stream_url = streams[quality].to_url()
+    else:
+        raise ValueError("No streams were available")
+
+    cap = cv2.VideoCapture(stream_url)
+
+    ok, frame = cap.read()
+
+    if ok:
+
+        yield frame
+
+    else:
+        return
+
 
     # Teardown
     cap.release()

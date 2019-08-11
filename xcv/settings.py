@@ -4,21 +4,16 @@ import sys
 from pathlib import Path
 from dataclasses import dataclass
 
-# class SerialError(Exception):
-#     pass
 
-
-class xcv_api:
-    os_is_windows = False
-    if not os_is_windows:
-        emojis = {"boo": "👻", "robot": "🤖", "stars": "✨ ✨ ✨"}
+@dataclass
+class UserSettings:
     path: Path = Path(__file__).resolve().parent
-    timezone = "US/Eastern"
-    timer = 10
+    timezone: str = "US/Eastern"
+    countdown_timer: int = 10
     # ...
     # CLI stuff
-    verbose = False
-    debug_serial = False
+    verbose: bool = False
+    debug_serial: bool = False
     # ...
     # Game stuff
     btn_utf_send_commands = [
@@ -38,12 +33,28 @@ class xcv_api:
     ]
 
 
-# > PEP8: The naming convention for functions may be used instead in cases where the interface is documented and used primarily as a callable.
-# QUESTION: Does that apply here?
-class serial_api(xcv_api):
-    """Serial API for handling a list of possible ports (class contains no data)"""
+#
+class serial_api:
+    """Serial API for handling a list of possible ports (class contains no data)
+
+
+        :attribute port: return current serial port
+        :attribute BAUD: defaults to 115200
+        :attribute btn: single value change
+        :attribute buttons: multiple value changes
+    """
 
     BAUD = 115200
+
+    def __init__(self):
+        if sys.platform.startswith("win"):
+            self._port = "COM17"
+            self._ports = ["COM18", "COM19", "COM20", "COM21"]
+        elif sys.platform.startswith("darwin"):
+            self._port = "/dev/cu.SLAB_USBtoUART"
+            self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
+        else:
+            serial_config = os_is_other()
 
     @property
     def port(self):
@@ -65,47 +76,37 @@ class serial_api(xcv_api):
     def print_ports(self):
         [print(_sp) for _sp in self._ports]
 
+    def send(self, **kwargs):
+        """Convert button/stick command value to expected list, `buttons`.
+            Send the output to be verified by `_check_pending_send`
+        """
+        print(kwargs)
 
-class os_is_win(serial_api):
-    def __init__(self):
-        """USB serial port settings for Windows"""
-        self._port = "COM17"
-        self._ports = ["COM18", "COM19", "COM20", "COM21"]
+    def _check_pending_send(self, buttons):
+        pass
 
-
-class os_is_mac(serial_api):
-    def __init__(self):
-        """USB serial port settings for Mac"""
-        self._port = "/dev/cu.SLAB_USBtoUART"
-        self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
+    def _send_pending_send(self, checkedbuttons):
+        pass
 
 
-class os_is_other(serial_api):
-    def __init__(self):
-        """Empty USB serial port settings for Linux, FreeBSD, etc."""
-        self._port = input("Unknown OS - enter a USB Port: ")
-        self._ports = []
-
-
-if sys.platform.startswith("win"):
-    serial_config = os_is_win()
-    xcv_api.os_is_windows = True
-    emojis = {"boo": "Boo!", "robot": "", "stars": "Yay"}
-elif sys.platform.startswith("darwin"):
-    serial_config = os_is_mac()
-else:
-    serial_config = os_is_other()
+serial_session = serial_api()
 
 
 if __name__ == "__main__":
     from loguru import logger
 
-    logger.debug(f"Windows? {isinstance(os_config, os_is_win)}")
+    # logger.debug(serial_config._port)
 
-    logger.debug(f"Serial Port: {os_config._port}")
+    ser = serial_api()
 
-    os_config.port_next()
+    ser.send(key1="xyz")
 
-    logger.debug(f"Serial Port: {os_config._port}")
+    # logger.debug(f"Windows? {isinstance(serial_config, os_is_win)}")
 
-    print(os_config.emojis["stars"], os_config.emojis["boo"])
+    # logger.debug(f"Serial Port: {serial_config._port}")
+
+    # serial_config.port_next()
+
+    # logger.debug(f"Serial Port: {serial_config._port}")
+
+    # print(xcv_api.emojis["stars"], emojis["boo"])

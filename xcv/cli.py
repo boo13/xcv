@@ -1,21 +1,27 @@
 from time import sleep
 from dataclasses import dataclass
 from textwrap import TextWrapper
+
 wrapper = TextWrapper()
 
 import click
 from loguru import logger
 
-import settings
+import xcv.settings
+from xcv.emojis import (
+    HAZARD,
+    STARS,
+    ROBOT,
+    BOO,
+    HAZARD,
+    GENERIC_CONTROLLER,
+    XBOX_CONTROLLER,
+    PYTHON,
+    WORK,
+    MAGIC,
+    OPENCV,
+)
 
-
-_settings = settings
-print(_settings.xcv_api.emojis["stars"])
-
-x = _settings.serial_config.port_next()
-
-print(x)
-print(_settings.serial_config.port)
 
 # Main CLI
 _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
@@ -25,12 +31,11 @@ _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
 @click.option("--verbose", "-v", is_flag=True, help="Display debug information")
 @click.option(
     "--port",
-    default=_settings.serial_config.port,
-    help=f"Controller port, default is {_settings.serial_config.port}",
+    default=xcv.settings.serial_api.port,
+    help=f"Controller port, default is {xcv.settings.serial_api.port}",
 )
 @click.option("--autopilot", "-auto", is_flag=True, help="Initiate xcv sequence")
 @click.option("--push", type=click.Choice(_btnList), help="Enter button to push")
-@click.option("--count", type=int, default=3, help="Time in seconds before commands")
 @click.option("--gui", is_flag=True, help="Show the GUI")
 @click.option(
     "--debug", is_flag=True, help="List USB ports and check the serial connection"
@@ -44,25 +49,24 @@ def main_input(
     debug=None,
     gui=None,
 ):
-    wrapper.wrap"""XCV ushes OpenCV to push controller buttons with PySerial.
+    """XCV uses OpenCV to push controller buttons with PySerial.
 
     The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
 
     \n
-    \n\t____________________ Xbox Commands ____________________                               
-    \n\t                 ⒮ tart   ⒳ box    s⒠ lect               
-    \n\t                 Ⓐ = A  Ⓑ = B  Ⓧ = X  Ⓨ =Y                               
+    \n\t _______________________ Xbox Commands _______________________                               
+    \n\t ⒮ tart   ⒳ box    s⒠ lect Ⓐ = A  Ⓑ = B  Ⓧ = X  Ⓨ =Y                               
     \n\t      DU = w   
-    \n\tDL = a      DR = d   Ⓛ Stick          Ⓡ Stick
+    \n\tDL = a      DR = d     Ⓛ Stick      Ⓡ Stick
     \n\t      DD = s 
-    \n\t_____________________________________________________  """
-
-    # if not Settings.WINDOWS:
-    #     print("🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller")
+    """
 
     if verbose:
+        print(
+            f"\n{GENERIC_CONTROLLER} XCV uses {OPENCV}OpenCV for {PYTHON}Python to {WORK}operate a {MAGIC}magic {ROBOT}robot {XBOX_CONTROLLER}controller"
+        )
         click.echo(f"Successfully connected to port: {port}")
-        click.echo(f"{stars}{gamerobot}XCV go...{gamesnake}Try to do things...\n")
+        click.echo(f"{ROBOT}XCV go...{BOO}Try to do things...\n")
 
     elif debug:
         from xcv.tools import list_ports
@@ -83,18 +87,11 @@ def main_input(
         mainGUI()
 
     else:
-        click.echo(f"{hazard}No options passed. Try --help or --gui\n")
+        click.echo(f"{HAZARD}No options passed. Try --help or --gui\n")
 
     return 0  # indicates finished without error
 
 
-def countdown(secs):
-
-    if secs is 0:  # In case we pass in a 0 from CLI
-        logger.info(rocketLaunchList[3])
-    else:
-        logger.info(launch)
-
-
 if __name__ == "__main__":
     main_input()
+    print(HAZARD, STARS)
