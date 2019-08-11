@@ -58,19 +58,15 @@ from base64_btns import (
 
 @logger.catch
 class GUI:
-    _outputconsole = [
+    _output_console = [
         sg.Output(size=(640, 100), background_color="#16161F", text_color="#A6A4AF")
     ]
 
     _exitButton = [
         sg.Button("Exit", size=(10, 1), button_color=("#A6A4AF", "#BD3138")),
+        sg.Text("Vers:", text_color="#A6A4AF"),
         sg.Text(
-            f"Vers: {XCV_VERSION}    USB: {serial_session.port}    Baud: {serial_session.BAUD}    Elapsed:",
-            font="Helvetica 10",
-            justification="right",
-            key="exit_row_text",
-            text_color="#A6A4AF",
-        ),
+            f"{XCV_VERSION}    USB: {serial_session.port}    Baud: {serial_session.BAUD}    Elapsed:", text_color="#A6A4AF"),
         sg.Text("", key="_elapsed_", text_color="#A6A4AF"),
         sg.Text("FPS:", text_color="#A6A4AF"),
         sg.Text("", key="_fps_", text_color="#A6A4AF"),
@@ -79,6 +75,7 @@ class GUI:
     def __init__(self):
         # Global GUI settings
         sg.SetOptions(
+            font="Helvetica 10",
             element_padding=(5, 5),
             scrollbar_color=None,
             background_color="#16161F",
@@ -241,14 +238,14 @@ class GUI:
             imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
             self.window.FindElement("_elapsed_").Update(fps.elapsed)
             self.window.FindElement("_fps_").Update(fps.fps)
-            self.window.FindElement("main_image").Update(data=imgbytes)
+            self.window.FindElement("_video_frame_").Update(data=imgbytes)
             self.window.FindElement("imagetab_image").Update(data=imgbytes)
 
     def _layout(self):
 
         maintab_layout = [
             [sg.T("XCV", font=("Helvetica", 16), justification="center")],
-            [sg.Image(filename="", size=(640, 480), key="main_image")],
+            [sg.Image(filename="", size=(640, 480), key="_video_frame_")],
             [
                 sg.Image(
                     data_base64=xb_lt_null,
@@ -296,7 +293,7 @@ class GUI:
                     key="_screenshot_",
                 ),
             ],
-            self._outputconsole,
+            self._output_console,
             self._exitButton,
         ]
 

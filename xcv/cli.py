@@ -14,7 +14,7 @@ from xcv.emojis import (
     ROBOT,
     BOO,
     HAZARD,
-    GENERIC_CONTROLLER,
+    JOYSTICK,
     XBOX_CONTROLLER,
     PYTHON,
     WORK,
@@ -63,7 +63,7 @@ def main_input(
 
     if verbose:
         print(
-            f"\n{GENERIC_CONTROLLER} XCV uses {OPENCV}OpenCV for {PYTHON}Python to {WORK}operate a {MAGIC}magic {ROBOT}robot {XBOX_CONTROLLER}controller"
+            f"\n{JOYSTICK} XCV uses {OPENCV}OpenCV for {PYTHON}Python to {WORK}operate a {MAGIC}magic {ROBOT}robot {XBOX_CONTROLLER}controller"
         )
         click.echo(f"Successfully connected to port: {port}")
         click.echo(f"{ROBOT}XCV go...{BOO}Try to do things...\n")
