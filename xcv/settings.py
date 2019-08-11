@@ -46,6 +46,16 @@ class serial_api:
 
     BAUD = 115200
 
+    def __init__(self):
+        if sys.platform.startswith("win"):
+            self._port = "COM17"
+            self._ports = ["COM18", "COM19", "COM20", "COM21"]
+        elif sys.platform.startswith("darwin"):
+            self._port = "/dev/cu.SLAB_USBtoUART"
+            self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
+        else:
+            serial_config = os_is_other()
+
     @property
     def port(self):
         return self._port
@@ -79,38 +89,13 @@ class serial_api:
         pass
 
 
-class os_is_win(serial_api):
-    def __init__(self):
-        """USB serial port settings for Windows"""
-        self._port = "COM17"
-        self._ports = ["COM18", "COM19", "COM20", "COM21"]
+serial_session = serial_api()
 
-
-class os_is_mac(serial_api):
-    def __init__(self):
-        """USB serial port settings for Mac"""
-        self._port = "/dev/cu.SLAB_USBtoUART"
-        self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
-
-
-class os_is_other(serial_api):
-    def __init__(self):
-        """Empty USB serial port settings for Linux, FreeBSD, etc."""
-        self._port = input("Unknown OS - enter a USB Port: ")
-        self._ports = []
-
-
-if sys.platform.startswith("win"):
-    serial_config = os_is_win()
-elif sys.platform.startswith("darwin"):
-    serial_config = os_is_mac()
-else:
-    serial_config = os_is_other()
 
 if __name__ == "__main__":
     from loguru import logger
 
-    logger.debug(serial_config._port)
+    # logger.debug(serial_config._port)
 
     ser = serial_api()
 
