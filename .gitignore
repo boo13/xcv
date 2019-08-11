@@ -138,3 +138,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+/xcv/scratch.py
