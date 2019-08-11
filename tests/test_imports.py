@@ -1,3 +1,5 @@
+import pytest
+
 def test_imports():
     try:
         import cv2
@@ -15,3 +17,8 @@ def test_imports():
         raise
 
     assert True
+
+
+def test_RaiseErrors():
+    with pytest.raises(ImportError):
+        import cv
