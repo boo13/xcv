@@ -110,6 +110,7 @@ class GUI:
             "on_image": xb_rb,
             "off_image": xb_rb_null,
         }
+        #TODO: Fix the `on image` for both LT and RT (size is off)
         self._btnLT = {
             "btn_name": "_btnLT_",
             "on_image": xb_lt,
@@ -163,7 +164,7 @@ class GUI:
 
     def _event_checker(self, _event):
         if _event == "Exit" or _event is None:
-            self.close_all(self.cap, self.window)
+            self.close_all(self.window)
             sys.exit(0)
 
         if _event != "timeout":
@@ -172,18 +173,16 @@ class GUI:
         for b in self._all_buttons:
             if _event == b["btn_name"]:
                 self.window.FindElement(b["btn_name"]).Update(data_base64=b["on_image"])
-                # xcontroller.single_btn_press("A")
+                xcontroller.single_btn_press(b["btn_name"])
                 print(_event)
 
         if _event == "_check_serial_":
             print("Check Serial pressed!")
 
-        # reset the buttons
-        # for btn, img in self._button_data:
-        #     print(btn, img)
-
-        # if _event != "_btnA_":
-        #     self.window.FindElement("_btnA_").Update(data_base64=xb_a_null)
+        # if not being pressed: reset the button image
+        for b in self._all_buttons:
+            if _event != b["btn_name"]:
+                self.window.FindElement(b["btn_name"]).Update(data_base64=b["off_image"])
 
     def _values_checker(self, _values, frame):
         if _values["thresh"]:
@@ -392,7 +391,7 @@ class GUI:
             ]
         ]
 
-    def close_all(self, cap, window) -> None:
+    def close_all(self, window) -> None:
         """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
         fps.stop()
         logger.debug(f"fps: {fps.fps}  elapsed: {fps.elapsed}")
