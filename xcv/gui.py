@@ -1,118 +1,51 @@
-# TODO: Improve GUI layout
-# TODO: Get the xbox buttons sending serial commands
 # TODO: Implement switch for `cap = cv2.VideoCapture(0)` and `streamlink` stream from twitch, mixer, etc.
 
 #          Import libraries      ______________________________________________
 
 import sys
-import datetime
 
-from xcv.game.Templates import TemplateMatcher
+# import datetime
+
+from xcv.template_matcher import TemplateMatcher
 
 # _________________ From 'pip' install _____________________________________
-import PySimpleGUIQt as sg  # GUIs made simple
-import cv2  # Opencv
-import imutils  # Opencv utils (pyimagesearch.com)
+import PySimpleGUIQt as sg
+import cv2
+import imutils
 import numpy as np
 from loguru import logger
 
-from fps import fps
+from xcv.fps import fps
 import xcontroller
 from settings import serial_session
+import xcv.base64_icons as b64
 
 
 @logger.catch
 class GUI:
-    _output_console = [
-        sg.Output(size=(640, 100), background_color="#16161F",
-                  text_color="#A6A4AF")
-    ]
-
-    _exitButton = [
-        sg.Button("Exit", size=(10, 1), button_color=("#A6A4AF", "#BD3138")),
-        sg.Text("Vers:", text_color="#A6A4AF"),
-        sg.Text(
-            f"{XCV_VERSION}    USB: {serial_session.port}    Baud: {serial_session.BAUD}    Elapsed:", text_color="#A6A4AF"),
-        sg.Text("", key="_elapsed_", text_color="#A6A4AF"),
-        sg.Text("FPS:", text_color="#A6A4AF"),
-        sg.Text("", key="_fps_", text_color="#A6A4AF"),
-    ]
+    """
+    Build the GUI layout, display it, check for events and act accordingly.
+    """
 
     def __init__(self):
-        self.font = "Helvetica 8",
-        self.text_color = "#A6A4AF"
-
-        # Global GUI settings
-        sg.SetOptions(
-            font=self.font,
-            element_padding=(0, 0),
-            scrollbar_color=None,
-            background_color="#16161F",
-            text_color=self.text_color,
-        )
-
-        # self._btnA = {"btn_name": "_btnA_",
-        #               "on_image": xb_a, "off_image": xb_a_null}
-        # self._btnB = {"btn_name": "_btnB_",
-        #               "on_image": xb_b, "off_image": xb_b_null}
-        # self._btnX = {"btn_name": "_btnX_",
-        #               "on_image": xb_x, "off_image": xb_x_null}
-        # self._btnY = {"btn_name": "_btnY_",
-        #               "on_image": xb_y, "off_image": xb_y_null}
-        # self._btnStart = {
-        #     "btn_name": "_btnStart_",
-        #     "on_image": xb_start,
-        #     "off_image": xb_start_null,
-        # }
-        # self._btnSelect = {
-        #     "btn_name": "_btnSelect_",
-        #     "on_image": xb_select,
-        #     "off_image": xb_select_null,
-        # }
-        # # self._btnXbox = {"btn_name": "_btnY_", "on_image": xb_y, "off_image": xb_y_null}
-        # self._btnLB = {
-        #     "btn_name": "_btnLB_",
-        #     "on_image": xb_lb,
-        #     "off_image": xb_lb_null,
-        # }
-        # self._btnRB = {
-        #     "btn_name": "_btnRB_",
-        #     "on_image": xb_rb,
-        #     "off_image": xb_rb_null,
-        # }
-        # # TODO: Fix the `on image` for both LT and RT (size is off)
-        # self._btnLT = {
-        #     "btn_name": "_btnLT_",
-        #     "on_image": xb_lt,
-        #     "off_image": xb_lt_null,
-        # }
-        # self._btnRT = {
-        #     "btn_name": "_btnRT_",
-        #     "on_image": xb_rt,
-        #     "off_image": xb_rt_null,
-        # }
-
-        # self._all_buttons = [
-        #     self._btnA,
-        #     self._btnB,
-        #     self._btnX,
-        #     self._btnY,
-        #     self._btnStart,
-        #     self._btnSelect,
-        #     self._btnLB,
-        #     self._btnRB,
-        #     self._btnLT,
-        #     self._btnRT,
-        # ]
-
         # Style settings
-        self._text_color = "#A6A4AF"
-        self._btn_text_color = "#16161F"
-        self._background_color = "#16161F"
+        self.FONT = "Helvetica 8"
+        self.TEXT_COLOR = "#A6A4AF"
+        self.BKG_COLOR = "#0a0a0f"
+        
+        self._build_window()
 
-        from version import XCV_VERSION
-        self.window = sg.Window(f"XCV - {XCV_VERSION}", location=(600, 200))
-        self.window.Layout(self._layout()).Finalize()
+
+    def _build_window(self):
+
+        from xcv.version import XCV_VERSION
+
+        self.window = sg.Window(
+            f"XCV - {XCV_VERSION}",
+            layout=self._lay_it_out(),
+            location=(600, 200),
+            background_color=self.BKG_COLOR,
+        )
 
         # OpenCV
         self.cap = cv2.VideoCapture(0)
@@ -132,156 +65,102 @@ class GUI:
 
             self.event_loop()
 
-    def _event_checker(self, _event):
-        if _event == "Exit" or _event is None:
-            self.close_all(self.window)
-            sys.exit(0)
 
-        if _event != "timeout":
-            logger.debug(_event)
+    def _layout_maintab(self):
 
-        for b in self._all_buttons:
-            if _event == b["btn_name"]:
-                self.window.FindElement(b["btn_name"]).Update(
-                    data_base64=b["on_image"])
-                xcontroller.single_btn_press(b["btn_name"])
-                print(_event)
+        # Global GUI settings
+        sg.SetOptions(
+            font=self.FONT, element_padding=(0, 0), scrollbar_color=None, text_color=self.TEXT_COLOR
+        )
 
-        if _event == "_check_serial_":
-            print("Check Serial pressed!")
+        """
+        """
+        _row0_video_frame = [sg.Image(filename="", key="_video_frame_")]
 
-        # if not being pressed: reset the button image
-        for b in self._all_buttons:
-            if _event != b["btn_name"]:
-                self.window.FindElement(b["btn_name"]).Update(
-                    data_base64=b["off_image"])
+        """
+        """
+        _row1_detected_state = [sg.Text("", key="_detected_state_")]
 
-    def _values_checker(self, _values, frame):
-        if _values["thresh"]:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
-            _, frame = cv2.threshold(
-                frame, _values["thresh_slider"], 255, cv2.THRESH_BINARY
-            )
+        """ --------------------------------------------------------------------------
+        Game Stats - Example Display: 
 
-        if _values["canny"]:
-            frame = cv2.Canny(
-                frame, _values["canny_slider_a"], _values["canny_slider_b"]
-            )
+        0 - 0  Home    Defending Left  BALL    Offensive - Shooting - InsideBox
 
-        if _values["blur"]:
-            frame = cv2.GaussianBlur(frame, (21, 21), _values["blur_slider"])
-
-        if _values["hue"]:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            frame[:, :, 0] += _values["hue_slider"]
-            frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
-
-        if _values["enhance"]:
-            enh_val = _values["enhance_slider"] / 40
-            clahe = cv2.createCLAHE(clipLimit=enh_val, tileGridSize=(8, 8))
-            lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
-            lab[:, :, 0] = clahe.apply(lab[:, :, 0])
-            frame = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
-
-        if _values["contour"]:
-            hue = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            hue = cv2.GaussianBlur(hue, (21, 21), 1)
-            hue = cv2.inRange(
-                hue,
-                np.array([_values["contour_slider"],
-                          _values["base_slider"], 40]),
-                np.array([_values["contour_slider"] + 30, 255, 220]),
-            )
-            _, cnts, _ = cv2.findContours(
-                hue, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
-            )
-            if cnts:
-                cv2.drawContours(frame, cnts, -1, (0, 0, 255), 2)
-        return _values, frame
-
-    def event_loop(self):
-        while True:
-            fps.update()
-
-            _event, _values = self.window.Read(
-                timeout=10, timeout_key="timeout")
-
-            ok, frame = self.cap.read()
-
-            if ok:
-                self._event_checker(_event)
-                _, frame = self._values_checker(_values, frame)
-
-                draw_HUD_FPS(frame, 7)
-
-            imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
-            self.window.FindElement("_elapsed_").Update(fps.elapsed)
-            self.window.FindElement("_fps_").Update(fps.fps)
-            self.window.FindElement("_video_frame_").Update(data=imgbytes)
-            self.window.FindElement("imagetab_image").Update(data=imgbytes)
-
-    def _layout(self):
-
-        maintab_layout = [
-            [sg.T("XCV", font=("Helvetica", 16), justification="center")],
-            [sg.Image(filename="", size=(640, 480), key="_video_frame_")],
-            [
-                sg.Image(
-                    data_base64=xb_lt_null,
-                    key="_btnLT_",
-                    enable_events=True,
-                    pad=((10, 0), (0, 0)),
-                ),
-                sg.Image(data_base64=xb_lb_null,
-                         key="_btnLB_", enable_events=True),
-                sg.Image(
-                    data_base64=xb_select_null, key="_btnSelect_", enable_events=True
-                ),
-                sg.Image(
-                    data_base64=xb_start_null, key="_btnStart_", enable_events=True
-                ),
-                sg.Image(data_base64=xb_x_null,
-                         key="_btnX_", enable_events=True),
-                sg.Image(data_base64=xb_y_null,
-                         key="_btnY_", enable_events=True),
-                sg.Image(data_base64=xb_a_null,
-                         key="_btnA_", enable_events=True),
-                sg.Image(data_base64=xb_b_null,
-                         key="_btnB_", enable_events=True),
-                sg.Image(data_base64=xb_rb_null,
-                         key="_btnRB_", enable_events=True),
-                sg.Image(data_base64=xb_rt_null,
-                         key="_btnRT_", enable_events=True),
-            ],
-            [
-                sg.Button(
-                    "Check Serial",
-                    size=(10, 1),
-                    button_color=("#16161F", "#007339"),
-                    key="_check_serial_",
-                ),
-                sg.Button(
-                    "Stop",
-                    button_color=(self._btn_text_color, "#B36C42"),
-                    size=(10, 1),
-                    key="_stop_",
-                ),
-                sg.Button(
-                    "Record",
-                    size=(10, 1),
-                    button_color=(self._btn_text_color, "#BD3138"),
-                    key="_record_",
-                ),
-                sg.Button(
-                    "Screenshot",
-                    button_color=(self._btn_text_color, "#1749BF"),
-                    size=(10, 1),
-                    key="_screenshot_",
-                ),
-            ],
-            self._output_console,
-            self._exitButton,
+        _tactic_ = Our AI's current gameplan/status
+        """
+        _row2_game_stats = [
+            sg.Text("", key="_score_"),
+            sg.Text("", key="_home_away_"),
+            sg.Text("", key="_defending_side_"),
+            sg.Text("", key="_possession_"),
+            sg.Text("", key="_tactic_"),
         ]
+
+        """
+        Action Buttons - Example Display: 
+
+            Y
+          X   B
+            A
+        """
+        _row3_xcontroller_action_buttons = [
+            sg.Image(filename="", key="_a_", enable_events=True),
+            sg.Image(filename="", key="_b_", enable_events=True),
+            sg.Image(filename="", key="_x_", enable_events=True),
+            sg.Image(filename="", key="_y_", enable_events=True),
+        ]
+
+        """
+        DPad Buttons - Example Display: 
+
+            ^
+          <   >
+            v
+        """
+        _row3_xcontroller_dpad = [
+            sg.Image(data_base64=b64.DU_WHITE, key="_du_", enable_events=True),
+            # sg.Image(data_base64=b64.DD_WHITE, key="_dd_", enable_events=True),
+            sg.Image(data_base64=b64.DL_WHITE, key="_dl_", enable_events=True),
+            sg.Image(data_base64=b64.DR_WHITE, key="_dr_", enable_events=True),
+        ]
+
+        """
+        """
+        _row4_connection_status = [
+            sg.Image(data_base64=b64.GAMEPAD_NULL, key="_gamepad_connection_status_"),
+            sg.Text("", key="_gamepad_usb_port_"),
+            sg.Image(data_base64=b64.FILM_NULL, key="_opencv_fps_icon_"),
+            sg.Text("", key="_opencv_fps_"),
+        ]
+
+        """
+        """
+        _row5_gui_menu_buttons = [
+            sg.Image(data_base64="", key="_save_logs_"),
+            sg.Image(data_base64=b64.SAVE_NULL, key="_save_screenshot_"),
+            sg.Image(data_base64="", key="_start_record_"),
+            sg.Image(data_base64=b64.POWER_NULL, key="_EXIT_"),
+        ]
+        _output_console = [
+            sg.Output(size=(640, 100), background_color="#16161F", text_color="#A6A4AF")
+        ]
+
+        # define the window layout
+        full_layout = [
+            _row0_video_frame,
+            _row1_detected_state,
+            _row2_game_stats,
+            _row3_xcontroller_action_buttons,
+            _row3_xcontroller_dpad,
+            _row4_connection_status,
+            _row5_gui_menu_buttons,
+            _output_console,
+        ]
+        return full_layout
+
+
+    def _lay_it_out(self):
+        maintab_layout = self._layout_maintab()
 
         imagetab_layout = [
             [sg.T("Image Controls", font=("Helvetica", 16), justification="center")],
@@ -361,19 +240,99 @@ class GUI:
                 sg.TabGroup(
                     [
                         [
-                            sg.Tab("Main", maintab_layout,
-                                   tooltip="Main Menu"),
-                            sg.Tab(
-                                "Image Controls",
-                                imagetab_layout,
-                                tooltip="For testings CV values",
-                            ),
+                            sg.Tab("Main", maintab_layout),
+                            sg.Tab("Image Controls", imagetab_layout),
                         ]
-                    ],
-                    tooltip="TIP2",
+                    ]
                 )
             ]
         ]
+
+    def _event_checker(self, _event):
+        if _event == "Exit" or _event is None:
+            self.close_all(self.window)
+            sys.exit(0)
+
+        if _event != "timeout":
+            logger.debug(_event)
+
+        # for b in self._all_buttons:
+        #     if _event == b["btn_name"]:
+        #         self.window.FindElement(b["btn_name"]).Update(
+        #             data_base64=b["on_image"])
+        #         xcontroller.single_btn_press(b["btn_name"])
+        #         print(_event)
+
+        if _event == "_check_serial_":
+            print("Check Serial pressed!")
+
+        # if not being pressed: reset the button image
+        # for b in self._all_buttons:
+        #     if _event != b["btn_name"]:
+        #         self.window.FindElement(b["btn_name"]).Update(
+        #             data_base64=b["off_image"])
+
+    def _values_checker(self, _values, frame):
+        if _values["thresh"]:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
+            _, frame = cv2.threshold(
+                frame, _values["thresh_slider"], 255, cv2.THRESH_BINARY
+            )
+
+        if _values["canny"]:
+            frame = cv2.Canny(
+                frame, _values["canny_slider_a"], _values["canny_slider_b"]
+            )
+
+        if _values["blur"]:
+            frame = cv2.GaussianBlur(frame, (21, 21), _values["blur_slider"])
+
+        if _values["hue"]:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            frame[:, :, 0] += _values["hue_slider"]
+            frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
+
+        if _values["enhance"]:
+            enh_val = _values["enhance_slider"] / 40
+            clahe = cv2.createCLAHE(clipLimit=enh_val, tileGridSize=(8, 8))
+            lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
+            lab[:, :, 0] = clahe.apply(lab[:, :, 0])
+            frame = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+
+        if _values["contour"]:
+            hue = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            hue = cv2.GaussianBlur(hue, (21, 21), 1)
+            hue = cv2.inRange(
+                hue,
+                np.array([_values["contour_slider"], _values["base_slider"], 40]),
+                np.array([_values["contour_slider"] + 30, 255, 220]),
+            )
+            _, cnts, _ = cv2.findContours(
+                hue, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+            )
+            if cnts:
+                cv2.drawContours(frame, cnts, -1, (0, 0, 255), 2)
+        return _values, frame
+
+    def event_loop(self):
+        while True:
+            fps.update()
+
+            _event, _values = self.window.Read(timeout=10, timeout_key="timeout")
+
+            ok, frame = self.cap.read()
+
+            if ok:
+                self._event_checker(_event)
+                # _, frame = self._values_checker(_values, frame)
+
+                # draw_HUD_FPS(frame, 7)
+
+            imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
+            # self.window.FindElement("_elapsed_").Update(fps.elapsed)
+            # self.window.FindElement("_fps_").Update(fps.fps)
+            self.window.FindElement("_video_frame_").Update(data=imgbytes)
+            # self.window.FindElement("imagetab_image").Update(data=imgbytes)
 
     def close_all(self, window) -> None:
         """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
