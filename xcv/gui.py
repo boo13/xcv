@@ -7,18 +7,8 @@
 import sys
 import datetime
 
-# Local
-# from xcv.commands import XcvError
-from hud import (
-    draw_HUD_FPS,
-    #     draw_HUD_controller,
-    #     draw_HUD_HomeAway,
-    #     draw_HUD_DefendingSide,
-    #     draw_HUD_elapsedTime,
-    draw_HUD_elapsedGameTime,
-)
+from xcv.game.Templates import TemplateMatcher
 
-# from xcv.game.Templates import TemplateMatcher, ROI
 # _________________ From 'pip' install _____________________________________
 import PySimpleGUIQt as sg  # GUIs made simple
 import cv2  # Opencv
@@ -29,37 +19,13 @@ from loguru import logger
 from fps import fps
 import xcontroller
 from settings import serial_session
-from version import XCV_VERSION
-from base64_btns import (
-    xb_a,
-    xb_b,
-    xb_x,
-    xb_y,
-    xb_a_null,
-    xb_b_null,
-    xb_x_null,
-    xb_y_null,
-    xb_select,
-    xb_select_null,
-    xb_start,
-    xb_start_null,
-    xb_lb,
-    xb_lb_null,
-    xb_rb,
-    xb_rb_null,
-    xb_lt,
-    xb_lt_null,
-    xb_rt,
-    xb_rt_null,
-    stick_inner_ring,
-    stick_outer_ring,
-)
 
 
 @logger.catch
 class GUI:
     _output_console = [
-        sg.Output(size=(640, 100), background_color="#16161F", text_color="#A6A4AF")
+        sg.Output(size=(640, 100), background_color="#16161F",
+                  text_color="#A6A4AF")
     ]
 
     _exitButton = [
@@ -73,72 +39,79 @@ class GUI:
     ]
 
     def __init__(self):
+        self.font = "Helvetica 8",
+        self.text_color = "#A6A4AF"
+
         # Global GUI settings
         sg.SetOptions(
-            font="Helvetica 10",
-            element_padding=(5, 5),
+            font=self.font,
+            element_padding=(0, 0),
             scrollbar_color=None,
             background_color="#16161F",
-            text_color="#A6A4AF",
+            text_color=self.text_color,
         )
 
-        self._btnA = {"btn_name": "_btnA_", "on_image": xb_a, "off_image": xb_a_null}
-        self._btnB = {"btn_name": "_btnB_", "on_image": xb_b, "off_image": xb_b_null}
-        self._btnX = {"btn_name": "_btnX_", "on_image": xb_x, "off_image": xb_x_null}
-        self._btnY = {"btn_name": "_btnY_", "on_image": xb_y, "off_image": xb_y_null}
-        self._btnStart = {
-            "btn_name": "_btnStart_",
-            "on_image": xb_start,
-            "off_image": xb_start_null,
-        }
-        self._btnSelect = {
-            "btn_name": "_btnSelect_",
-            "on_image": xb_select,
-            "off_image": xb_select_null,
-        }
-        # self._btnXbox = {"btn_name": "_btnY_", "on_image": xb_y, "off_image": xb_y_null}
-        self._btnLB = {
-            "btn_name": "_btnLB_",
-            "on_image": xb_lb,
-            "off_image": xb_lb_null,
-        }
-        self._btnRB = {
-            "btn_name": "_btnRB_",
-            "on_image": xb_rb,
-            "off_image": xb_rb_null,
-        }
-        #TODO: Fix the `on image` for both LT and RT (size is off)
-        self._btnLT = {
-            "btn_name": "_btnLT_",
-            "on_image": xb_lt,
-            "off_image": xb_lt_null,
-        }
-        self._btnRT = {
-            "btn_name": "_btnRT_",
-            "on_image": xb_rt,
-            "off_image": xb_rt_null,
-        }
+        # self._btnA = {"btn_name": "_btnA_",
+        #               "on_image": xb_a, "off_image": xb_a_null}
+        # self._btnB = {"btn_name": "_btnB_",
+        #               "on_image": xb_b, "off_image": xb_b_null}
+        # self._btnX = {"btn_name": "_btnX_",
+        #               "on_image": xb_x, "off_image": xb_x_null}
+        # self._btnY = {"btn_name": "_btnY_",
+        #               "on_image": xb_y, "off_image": xb_y_null}
+        # self._btnStart = {
+        #     "btn_name": "_btnStart_",
+        #     "on_image": xb_start,
+        #     "off_image": xb_start_null,
+        # }
+        # self._btnSelect = {
+        #     "btn_name": "_btnSelect_",
+        #     "on_image": xb_select,
+        #     "off_image": xb_select_null,
+        # }
+        # # self._btnXbox = {"btn_name": "_btnY_", "on_image": xb_y, "off_image": xb_y_null}
+        # self._btnLB = {
+        #     "btn_name": "_btnLB_",
+        #     "on_image": xb_lb,
+        #     "off_image": xb_lb_null,
+        # }
+        # self._btnRB = {
+        #     "btn_name": "_btnRB_",
+        #     "on_image": xb_rb,
+        #     "off_image": xb_rb_null,
+        # }
+        # # TODO: Fix the `on image` for both LT and RT (size is off)
+        # self._btnLT = {
+        #     "btn_name": "_btnLT_",
+        #     "on_image": xb_lt,
+        #     "off_image": xb_lt_null,
+        # }
+        # self._btnRT = {
+        #     "btn_name": "_btnRT_",
+        #     "on_image": xb_rt,
+        #     "off_image": xb_rt_null,
+        # }
 
-        self._all_buttons = [
-            self._btnA,
-            self._btnB,
-            self._btnX,
-            self._btnY,
-            self._btnStart,
-            self._btnSelect,
-            self._btnLB,
-            self._btnRB,
-            self._btnLT,
-            self._btnRT,
-        ]
+        # self._all_buttons = [
+        #     self._btnA,
+        #     self._btnB,
+        #     self._btnX,
+        #     self._btnY,
+        #     self._btnStart,
+        #     self._btnSelect,
+        #     self._btnLB,
+        #     self._btnRB,
+        #     self._btnLT,
+        #     self._btnRT,
+        # ]
 
         # Style settings
         self._text_color = "#A6A4AF"
         self._btn_text_color = "#16161F"
         self._background_color = "#16161F"
 
-        # create the window and show it
-        self.window = sg.Window("XCV", location=(800, 200))
+        from version import XCV_VERSION
+        self.window = sg.Window(f"XCV - {XCV_VERSION}", location=(600, 200))
         self.window.Layout(self._layout()).Finalize()
 
         # OpenCV
@@ -169,7 +142,8 @@ class GUI:
 
         for b in self._all_buttons:
             if _event == b["btn_name"]:
-                self.window.FindElement(b["btn_name"]).Update(data_base64=b["on_image"])
+                self.window.FindElement(b["btn_name"]).Update(
+                    data_base64=b["on_image"])
                 xcontroller.single_btn_press(b["btn_name"])
                 print(_event)
 
@@ -179,7 +153,8 @@ class GUI:
         # if not being pressed: reset the button image
         for b in self._all_buttons:
             if _event != b["btn_name"]:
-                self.window.FindElement(b["btn_name"]).Update(data_base64=b["off_image"])
+                self.window.FindElement(b["btn_name"]).Update(
+                    data_base64=b["off_image"])
 
     def _values_checker(self, _values, frame):
         if _values["thresh"]:
@@ -213,7 +188,8 @@ class GUI:
             hue = cv2.GaussianBlur(hue, (21, 21), 1)
             hue = cv2.inRange(
                 hue,
-                np.array([_values["contour_slider"], _values["base_slider"], 40]),
+                np.array([_values["contour_slider"],
+                          _values["base_slider"], 40]),
                 np.array([_values["contour_slider"] + 30, 255, 220]),
             )
             _, cnts, _ = cv2.findContours(
@@ -227,14 +203,17 @@ class GUI:
         while True:
             fps.update()
 
-            _event, _values = self.window.Read(timeout=10, timeout_key="timeout")
+            _event, _values = self.window.Read(
+                timeout=10, timeout_key="timeout")
 
-            ret, frame = self.cap.read()
+            ok, frame = self.cap.read()
 
-            self._event_checker(_event)
-            _, frame = self._values_checker(_values, frame)
+            if ok:
+                self._event_checker(_event)
+                _, frame = self._values_checker(_values, frame)
 
-            draw_HUD_FPS(frame, 7)
+                draw_HUD_FPS(frame, 7)
+
             imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
             self.window.FindElement("_elapsed_").Update(fps.elapsed)
             self.window.FindElement("_fps_").Update(fps.fps)
@@ -253,19 +232,26 @@ class GUI:
                     enable_events=True,
                     pad=((10, 0), (0, 0)),
                 ),
-                sg.Image(data_base64=xb_lb_null, key="_btnLB_", enable_events=True),
+                sg.Image(data_base64=xb_lb_null,
+                         key="_btnLB_", enable_events=True),
                 sg.Image(
                     data_base64=xb_select_null, key="_btnSelect_", enable_events=True
                 ),
                 sg.Image(
                     data_base64=xb_start_null, key="_btnStart_", enable_events=True
                 ),
-                sg.Image(data_base64=xb_x_null, key="_btnX_", enable_events=True),
-                sg.Image(data_base64=xb_y_null, key="_btnY_", enable_events=True),
-                sg.Image(data_base64=xb_a_null, key="_btnA_", enable_events=True),
-                sg.Image(data_base64=xb_b_null, key="_btnB_", enable_events=True),
-                sg.Image(data_base64=xb_rb_null, key="_btnRB_", enable_events=True),
-                sg.Image(data_base64=xb_rt_null, key="_btnRT_", enable_events=True),
+                sg.Image(data_base64=xb_x_null,
+                         key="_btnX_", enable_events=True),
+                sg.Image(data_base64=xb_y_null,
+                         key="_btnY_", enable_events=True),
+                sg.Image(data_base64=xb_a_null,
+                         key="_btnA_", enable_events=True),
+                sg.Image(data_base64=xb_b_null,
+                         key="_btnB_", enable_events=True),
+                sg.Image(data_base64=xb_rb_null,
+                         key="_btnRB_", enable_events=True),
+                sg.Image(data_base64=xb_rt_null,
+                         key="_btnRT_", enable_events=True),
             ],
             [
                 sg.Button(
@@ -375,7 +361,8 @@ class GUI:
                 sg.TabGroup(
                     [
                         [
-                            sg.Tab("Main", maintab_layout, tooltip="Main Menu"),
+                            sg.Tab("Main", maintab_layout,
+                                   tooltip="Main Menu"),
                             sg.Tab(
                                 "Image Controls",
                                 imagetab_layout,
