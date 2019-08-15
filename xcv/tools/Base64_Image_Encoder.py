@@ -13,7 +13,7 @@ import base64
 
 def main():
     OUTPUT_FILENAME = "base64_output.py"
-    folder = "input"
+    folder = ""
 
     try:
         namesonly = [
