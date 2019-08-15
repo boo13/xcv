@@ -13,23 +13,22 @@ import base64
 
 def main():
     OUTPUT_FILENAME = "base64_output.py"
-    folder = ""
-
     try:
         namesonly = [
-            f for f in os.listdir(folder) if f.endswith(".png") or f.endswith(".ico")
+            f for f in os.listdir("input") if f.endswith(".png") or f.endswith(".ico")
         ]
     except:
         print("Cancelled - No valid folder entered")
         return
 
-    outfile = open(os.path.join(folder, OUTPUT_FILENAME), "w")
+    outfile = open(os.path.join("input", OUTPUT_FILENAME), "w")
 
     for i, file in enumerate(namesonly):
-        contents = open(os.path.join(folder, file), "rb").read()
+        contents = open(os.path.join("input", file), "rb").read()
         encoded = base64.b64encode(contents)
         outfile.write("\n{} = {}\n\n".format(file[: file.index(".")], encoded))
-        sg.OneLineProgressMeter("Base64 Encoding", i + 1, len(namesonly), key="_METER_")
+        sg.OneLineProgressMeter("Base64 Encoding", i + 1,
+                                len(namesonly), key="_METER_")
 
     outfile.close()
     sg.Popup("Completed!", "Encoded %s files" % (i + 1))
