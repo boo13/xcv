@@ -1,17 +1,14 @@
 # TODO: Implement switch for `cap = cv2.VideoCapture(0)` and `streamlink` stream from twitch, mixer, etc.
 
-#          Import libraries      ______________________________________________
-
 import sys
-
 # import datetime
 from xcv.template_matcher import TemplateMatcher
 import xcontroller
-from settings import serial_session
 from xcv.fps import fps
 import xcv.base64_icons as b64
+import xcv.version
 
-# _________________ From 'pip' install _____________________________________
+# _________________ `pip install` _________________
 import PySimpleGUIQt as sg
 import cv2
 import imutils
@@ -49,7 +46,7 @@ class GUI:
             background_color=self.BKG_COLOR,
             message_box_line_width=0,
             text_justification="left",
-            margins=(0,0)
+            margins=(0, 0)
         )
 
         from xcv.version import XCV_VERSION
@@ -58,12 +55,14 @@ class GUI:
             f"XCV - {XCV_VERSION}", layout=self._lay_it_out(), location=(600, 200), icon=b64.SOCCER_BALL_ORANGE, border_depth=0
         )
 
+
+
         # OpenCV
         self.cap = cv2.VideoCapture(0)
 
         # Check if video stream was found
         if not self.cap.isOpened():
-            logger.debug("Unable to read camera feed")
+            logger.warning("Unable to read camera feed")
         else:
             # Default capture frame width and height (comes as float)
             self.frame_width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -71,6 +70,8 @@ class GUI:
             logger.debug(
                 f"Video Captured - Size: {self.frame_width} x {self.frame_height}\n"
             )
+            if self.frame_width >= 641:
+                logger.warning("OpenCV values are currently hard-coded for a 640x480 frame.")
 
             fps.start()
 
@@ -85,10 +86,11 @@ class GUI:
                     A
                 """
         _row3_xcontroller_action_buttons = [
-            sg.Image(data_base64=b64.DU_WHITE, key="_a_", enable_events=True),
-            sg.Image(data_base64=b64.DU_WHITE, key="_b_", enable_events=True),
-            sg.Image(data_base64=b64.DU_WHITE, key="_x_", enable_events=True),
-            sg.Image(data_base64=b64.DU_WHITE, key="_y_", enable_events=True),
+            [sg.Image(data_base64=b64.BTN_Y_ON, key="_y_", enable_events=True, pad=(40, 0, 0, 0),)],
+            [sg.Image(data_base64=b64.BTN_A_OFF, key="_a_", enable_events=True, pad=(0, 0, 0, 0),),
+            sg.Image(data_base64=b64.BTN_B_OFF, key="_b_", enable_events=True, pad=(0, 0, 0, 0),)],
+            [sg.Image(data_base64=b64.BTN_X_OFF, key="_x_", enable_events=True, pad=(40, 0, 0, 0))],
+
         ]
 
         """
@@ -126,9 +128,18 @@ class GUI:
             ],
         ]
 
-        return [sg.Column(_row3_xcontroller_dpad), sg.Column(_row3_xcontroller_dpad),
-                 sg.Column(_row3_xcontroller_dpad), sg.Column(_row3_xcontroller_dpad)]
+        _row3_xcontroller_other = [
+            [sg.Image(data_base64=b64.BTN_LT_OFF, key="_lt_", enable_events=True), sg.Image(data_base64=b64.BTN_RT_OFF, key="_rt_", enable_events=True)],
+            [sg.Image(data_base64=b64.BTN_LB_OFF, key="_lb_", enable_events=True), sg.Image(data_base64=b64.BTN_RB_OFF, key="_rb_", enable_events=True)],
+            [sg.Image(data_base64=b64.SELECT_OFF, key="_select_", enable_events=True),
+             sg.Image(data_base64=b64.XBOX_LOADING, key="_xbox_", enable_events=True, pad=(40, 40, 0, 0)),
+             sg.Image(data_base64=b64.START_OFF, key="_start_", enable_events=True),
+            ],
+        ]
 
+        return [sg.Column(_row3_xcontroller_dpad),
+                sg.Column(_row3_xcontroller_other),
+                sg.Column(_row3_xcontroller_action_buttons)]
 
     def _layout_maintab_row4_connection_status(self):
         """
@@ -136,61 +147,66 @@ class GUI:
         return [
             sg.Image(data_base64=b64.GAMEPAD_GREY, key="_gamepad_connection_status_"),
             sg.Text(
-                "No Connection", key="_gamepad_usb_port_", text_color=self.TEXT_COLOR
+                "No Connection", key="_gamepad_usb_port_", text_color=self.TEXT_COLOR, justification="left"
             ),
-            sg.Image(data_base64=b64.soccer_shirt, key="_opencv_fps_icon_"),
+            sg.Image(data_base64=b64.FILM_GREY, key="_opencv_fps_icon_"),
             sg.Text("", key="_opencv_fps_", text_color=self.TEXT_COLOR),
-            sg.Image(data_base64=b64.goal, key="_elapsed_icon_"),
+            sg.Image(data_base64=b64.FILM_YELLOW, key="_elapsed_icon_"),
             sg.Text("", key="_elapsed_"),
         ]
 
-
-    def _layout_maintab(self):
-
-        """
-        """
-        _row0_video_frame = [sg.Image(filename="", key="_video_frame_")]
-
-        """
-        """
-        _row1_detected_state = [sg.Text("", key="_detected_state_")]
-
-        """ --------------------------------------------------------------------------
-        Game Stats - Example Display: 
-
-        0 - 0  Home    Defending Left  BALL    Offensive - Shooting - InsideBox
-
-        _tactic_ = Our AI's current gameplan/status
-        """
-        _row2_game_stats = [
-            sg.Text("", key="_score_"),
-            sg.Text("", key="_home_away_"),
-            sg.Text("", key="_defending_side_"),
-            sg.Text("", key="_possession_"),
-            sg.Text("", key="_tactic_"),
+    def _output_console(selfs):
+        return [
+            sg.Output(size=(640, 100), background_color="#16161F", text_color="#A6A4AF")
         ]
 
+    def _row0_video_frame(self):
+        return [sg.Image(filename="", key="_video_frame_")]
+
+
+    def _row2_game_stats(self):
+        """ --------------------------------------------------------------------------
+                Game Stats - Example Display:
+
+                0 - 0  Home    Defending Left  BALL    Offensive - Shooting - InsideBox
+
+                _tactic_ = Our AI's current gameplan/status
         """
-        """
-        _row5_gui_menu_buttons = [
+        return [
+            sg.Text("\n\n\n\n"),
+            sg.Text("0 - 0", key="_score_", text_color=self.GREEN, font="Helvetica 12"),
+            sg.Image(data_base64=b64.soccer_shirt),
+            sg.Text("Home", key="_home_away_"),
+            sg.Text("Defending", key="_defending_side_", text_color=self.YELLOW),
+            sg.Image(data_base64=b64.goal),
+            sg.Text("", key="_possession_"),
+            sg.Image(data_base64=b64.football_field_in_perspective),
+            sg.Text("No Tactic", key="_tactic_"),
+            sg.Text("\n"),
+        ]
+
+    def _row1_detected_state(self):
+        return [sg.Text("Unknown State", key="_detected_state_", font="Helvetica 16", justification="center")]
+
+    def _row5_gui_menu_buttons(self):
+        return [
             sg.Image(data_base64="", key="_save_logs_"),
             sg.Image(data_base64=b64.SAVE_NULL, key="_save_screenshot_"),
             sg.Image(data_base64="", key="_start_record_"),
             sg.Image(data_base64=b64.POWER_NULL, key="_EXIT_"),
         ]
-        _output_console = [
-            sg.Output(size=(640, 100), background_color="#16161F", text_color="#A6A4AF")
-        ]
+
+    def _layout_maintab(self):
 
         # define the window layout
         _full_layout = [
-            _row0_video_frame,
-            _row1_detected_state,
-            _row2_game_stats,
+            self._row0_video_frame(),
+            self._row1_detected_state(),
+            self._row2_game_stats(),
             self._layout_mainttab_row3_buttons(),
             self._layout_maintab_row4_connection_status(),
-            _row5_gui_menu_buttons,
-            _output_console,
+            self._row5_gui_menu_buttons(),
+            self._output_console(),
         ]
         return _full_layout
 
@@ -269,18 +285,28 @@ class GUI:
         ]
         return _imagetab_layout
 
+    def _layout_about_tab(self):
+        return [
+            [sg.Text("")],
+            [sg.Image(data_base64=b64.BOO, pad=(240, 0))],
+            [sg.Text(f"{xcv.__author__}\n", justification="center")],
+            [sg.Text(f"{xcv.__email__}\n", justification="center")],
+            [sg.Text(f"XCV VERSION: {xcv.version.XCV_VERSION}\n", justification="center")],
+            [sg.Text("\n\n\tSPECIAL THANKS TO", font=("Helvetica", 16), justification="left")],
+            [sg.Text(f"\tIcons from: https://www.flaticon.com/authors/freepik \n")],
+            [sg.Text(f"\thttps://github.com/PySimpleGUI/PySimpleGUI\n")],
+            [sg.Text(f"\thttps://www.youtube.com/user/sentdexv\n")],
+        ]
+
     def _lay_it_out(self):
-        maintab_layout = self._layout_maintab()
-
-        imagetab_layout = self._layout_imagetab()
-
         return [
             [
                 sg.TabGroup(
                     [
                         [
-                            sg.Tab("Main", layout=maintab_layout),
-                            sg.Tab("Image Controls", layout=imagetab_layout),
+                            sg.Tab("Main", layout=self._layout_maintab()),
+                            sg.Tab("Image Controls", layout=self._layout_imagetab()),
+                            sg.Tab("About", layout=self._layout_about_tab())
                         ]
                     ],
                     background_color=self.BKG_COLOR,
@@ -299,16 +325,13 @@ class GUI:
 
         if _event != "timeout":
             logger.debug(_event)
-
+        #
         # for b in self._all_buttons:
         #     if _event == b["btn_name"]:
         #         self.window.FindElement(b["btn_name"]).Update(
         #             data_base64=b["on_image"])
         #         xcontroller.single_btn_press(b["btn_name"])
         #         print(_event)
-
-        if _event == "_check_serial_":
-            print("Check Serial pressed!")
 
         # if not being pressed: reset the button image
         # for b in self._all_buttons:
@@ -377,6 +400,7 @@ class GUI:
             self.window.Element("_opencv_fps_").Update(fps.fps)
             self.window.Element("_video_frame_").Update(data=imgbytes)
             self.window.Element("imagetab_image").Update(data=imgbytes)
+
     def close_all(self, window) -> None:
         """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
         fps.stop()
