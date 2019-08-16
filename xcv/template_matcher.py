@@ -16,7 +16,7 @@ class CVManager:
 
         if _ok:
             print("yay we're ok")
-            cv2.imshow("Original", self.original_frame))
+            cv2.imshow("Original", self.original_frame)
 
 
 class TemplateMatcher(CVManager):
