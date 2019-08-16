@@ -5,8 +5,11 @@
 import sys
 
 # import datetime
-
 from xcv.template_matcher import TemplateMatcher
+import xcontroller
+from settings import serial_session
+from xcv.fps import fps
+import xcv.base64_icons as b64
 
 # _________________ From 'pip' install _____________________________________
 import PySimpleGUIQt as sg
@@ -15,16 +18,11 @@ import imutils
 import numpy as np
 from loguru import logger
 
-from xcv.fps import fps
-import xcontroller
-from settings import serial_session
-import xcv.base64_icons as b64
-
 
 @logger.catch
 class GUI:
     """
-    Build the GUI layout, display it, check for events and act accordingly.
+    Build the GUI layout, display it, check for events and act accordingly (sending corresponding command over serial).
     """
 
     def __init__(self):
@@ -32,19 +30,32 @@ class GUI:
         self.FONT = "Helvetica 8"
         self.TEXT_COLOR = "#A6A4AF"
         self.BKG_COLOR = "#0a0a0f"
-        
+        self.GREEN = "#4e8827"
+        self.YELLOW = "#a68c27"
+        self.RED = "#7e2c2c"
+        self.GREY = "#a6a6a6"
+        self.GREY2 = "#2b2b2e"
+
         self._build_window()
 
-
     def _build_window(self):
+
+        # Global GUI settings
+        sg.SetOptions(
+            scrollbar_color=None,
+            text_color=self.TEXT_COLOR,
+            font=self.FONT,
+            element_padding=(0, 0),
+            background_color=self.BKG_COLOR,
+            message_box_line_width=0,
+            text_justification="left",
+            margins=(0,0)
+        )
 
         from xcv.version import XCV_VERSION
 
         self.window = sg.Window(
-            f"XCV - {XCV_VERSION}",
-            layout=self._lay_it_out(),
-            location=(600, 200),
-            background_color=self.BKG_COLOR,
+            f"XCV - {XCV_VERSION}", layout=self._lay_it_out(), location=(600, 200), icon=b64.SOCCER_BALL_ORANGE, border_depth=0
         )
 
         # OpenCV
@@ -65,13 +76,76 @@ class GUI:
 
             self.event_loop()
 
+    def _layout_mainttab_row3_buttons(self):
+        """
+                Action Buttons - Example Display:
+
+                    Y
+                  X   B
+                    A
+                """
+        _row3_xcontroller_action_buttons = [
+            sg.Image(data_base64=b64.DU_WHITE, key="_a_", enable_events=True),
+            sg.Image(data_base64=b64.DU_WHITE, key="_b_", enable_events=True),
+            sg.Image(data_base64=b64.DU_WHITE, key="_x_", enable_events=True),
+            sg.Image(data_base64=b64.DU_WHITE, key="_y_", enable_events=True),
+        ]
+
+        """
+        DPad Buttons - Example Display: 
+
+            ^
+          <   >
+            v
+        """
+        _row3_xcontroller_dpad = [
+            [
+                sg.Image(
+                    data_base64=b64.DU_WHITE,
+                    key="_du_",
+                    enable_events=True,
+                    pad=(40, 0, 0, 0),
+                )
+            ],
+            [
+                sg.Image(data_base64=b64.DL_WHITE, key="_dl_", enable_events=True),
+                sg.Image(
+                    data_base64=b64.DR_WHITE,
+                    key="_dr_",
+                    enable_events=True,
+                    pad=(0, 0, 0, 0),
+                ),
+            ],
+            [
+                sg.Image(
+                    data_base64=b64.DU_WHITE,
+                    key="_left_stick_gif_",
+                    enable_events=True,
+                    pad=(40, 0, 0, 0),
+                )
+            ],
+        ]
+
+        return [sg.Column(_row3_xcontroller_dpad), sg.Column(_row3_xcontroller_dpad),
+                 sg.Column(_row3_xcontroller_dpad), sg.Column(_row3_xcontroller_dpad)]
+
+
+    def _layout_maintab_row4_connection_status(self):
+        """
+        """
+        return [
+            sg.Image(data_base64=b64.GAMEPAD_GREY, key="_gamepad_connection_status_"),
+            sg.Text(
+                "No Connection", key="_gamepad_usb_port_", text_color=self.TEXT_COLOR
+            ),
+            sg.Image(data_base64=b64.soccer_shirt, key="_opencv_fps_icon_"),
+            sg.Text("", key="_opencv_fps_", text_color=self.TEXT_COLOR),
+            sg.Image(data_base64=b64.goal, key="_elapsed_icon_"),
+            sg.Text("", key="_elapsed_"),
+        ]
+
 
     def _layout_maintab(self):
-
-        # Global GUI settings
-        sg.SetOptions(
-            font=self.FONT, element_padding=(0, 0), scrollbar_color=None, text_color=self.TEXT_COLOR
-        )
 
         """
         """
@@ -97,43 +171,6 @@ class GUI:
         ]
 
         """
-        Action Buttons - Example Display: 
-
-            Y
-          X   B
-            A
-        """
-        _row3_xcontroller_action_buttons = [
-            sg.Image(filename="", key="_a_", enable_events=True),
-            sg.Image(filename="", key="_b_", enable_events=True),
-            sg.Image(filename="", key="_x_", enable_events=True),
-            sg.Image(filename="", key="_y_", enable_events=True),
-        ]
-
-        """
-        DPad Buttons - Example Display: 
-
-            ^
-          <   >
-            v
-        """
-        _row3_xcontroller_dpad = [
-            sg.Image(data_base64=b64.DU_WHITE, key="_du_", enable_events=True),
-            # sg.Image(data_base64=b64.DD_WHITE, key="_dd_", enable_events=True),
-            sg.Image(data_base64=b64.DL_WHITE, key="_dl_", enable_events=True),
-            sg.Image(data_base64=b64.DR_WHITE, key="_dr_", enable_events=True),
-        ]
-
-        """
-        """
-        _row4_connection_status = [
-            sg.Image(data_base64=b64.GAMEPAD_NULL, key="_gamepad_connection_status_"),
-            sg.Text("", key="_gamepad_usb_port_"),
-            sg.Image(data_base64=b64.FILM_NULL, key="_opencv_fps_icon_"),
-            sg.Text("", key="_opencv_fps_"),
-        ]
-
-        """
         """
         _row5_gui_menu_buttons = [
             sg.Image(data_base64="", key="_save_logs_"),
@@ -146,23 +183,19 @@ class GUI:
         ]
 
         # define the window layout
-        full_layout = [
+        _full_layout = [
             _row0_video_frame,
             _row1_detected_state,
             _row2_game_stats,
-            _row3_xcontroller_action_buttons,
-            _row3_xcontroller_dpad,
-            _row4_connection_status,
+            self._layout_mainttab_row3_buttons(),
+            self._layout_maintab_row4_connection_status(),
             _row5_gui_menu_buttons,
             _output_console,
         ]
-        return full_layout
+        return _full_layout
 
-
-    def _lay_it_out(self):
-        maintab_layout = self._layout_maintab()
-
-        imagetab_layout = [
+    def _layout_imagetab(self):
+        _imagetab_layout = [
             [sg.T("Image Controls", font=("Helvetica", 16), justification="center")],
             [sg.Image(filename="", size=(40, 15), key="imagetab_image")],
             [sg.Checkbox("None", default=True, size=(10, 1))],
@@ -234,16 +267,27 @@ class GUI:
                 ),
             ],
         ]
+        return _imagetab_layout
+
+    def _lay_it_out(self):
+        maintab_layout = self._layout_maintab()
+
+        imagetab_layout = self._layout_imagetab()
 
         return [
             [
                 sg.TabGroup(
                     [
                         [
-                            sg.Tab("Main", maintab_layout),
-                            sg.Tab("Image Controls", imagetab_layout),
+                            sg.Tab("Main", layout=maintab_layout),
+                            sg.Tab("Image Controls", layout=imagetab_layout),
                         ]
-                    ]
+                    ],
+                    background_color=self.BKG_COLOR,
+                    title_color=self.TEXT_COLOR,
+                    selected_title_color=self.GREY2,
+                    border_width=0,
+
                 )
             ]
         ]
@@ -324,16 +368,15 @@ class GUI:
 
             if ok:
                 self._event_checker(_event)
-                # _, frame = self._values_checker(_values, frame)
+                _, frame = self._values_checker(_values, frame)
 
                 # draw_HUD_FPS(frame, 7)
 
             imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
-            # self.window.FindElement("_elapsed_").Update(fps.elapsed)
-            # self.window.FindElement("_fps_").Update(fps.fps)
-            self.window.FindElement("_video_frame_").Update(data=imgbytes)
-            # self.window.FindElement("imagetab_image").Update(data=imgbytes)
-
+            self.window.Element("_elapsed_").Update(fps.elapsed)
+            self.window.Element("_opencv_fps_").Update(fps.fps)
+            self.window.Element("_video_frame_").Update(data=imgbytes)
+            self.window.Element("imagetab_image").Update(data=imgbytes)
     def close_all(self, window) -> None:
         """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
         fps.stop()

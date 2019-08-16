@@ -13,9 +13,9 @@ try:
     # import multiprocessing
 
     # Local_____________________________________
-    from Templates import ROI, TemplateMatcher
-    from xcv.tools.fps import FPS
-    from xcv.game.FifaFlags import FifaFlags, defending, homeaway, scoreCheck
+    from xcv.template_matcher import TemplateMatcher
+    from xcv.fps import FPS
+    # from xcv.game.FifaFlags import FifaFlags, defending, homeaway, scoreCheck
 
 except ImportError:
     logger.exception(" | ERROR | Modules missing ")
