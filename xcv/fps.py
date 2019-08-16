@@ -41,6 +41,17 @@ class FPS:
         else:
             return round((self._end - self._start).total_seconds())
 
+
+
+    @property
+    def str_elapsed(self):
+        try:
+            mins, secs = divmod(round((self._end - self._start).total_seconds()), 60)
+            print("here")
+            return '{:02d}:{:02d}'.format(mins, secs)
+        except:
+            pass
+
     @property
     def fps(self):
         # compute the (approximate) frames per second
@@ -62,3 +73,4 @@ if __name__ == "__main__":
     sleep(1)
     fps.stop()
     print(fps.elapsed, fps.fps)
+    print(fps.str_elapsed)

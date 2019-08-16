@@ -1,9 +1,10 @@
 # TODO: Implement switch for `cap = cv2.VideoCapture(0)` and `streamlink` stream from twitch, mixer, etc.
 
 import sys
+
 # import datetime
 from xcv.template_matcher import TemplateMatcher
-import xcontroller
+import xcv.xcontroller
 from xcv.fps import fps
 import xcv.base64_icons as b64
 import xcv.version
@@ -33,6 +34,79 @@ class GUI:
         self.GREY = "#a6a6a6"
         self.GREY2 = "#2b2b2e"
 
+        self.button_a = {
+            "key": "_a_",
+            "name": "A",
+            "on_image": b64.BTN_A_ON,
+            "off_image": b64.BTN_A_OFF,
+        }
+        self.button_b = {
+            "key": "_b_",
+            "name": "B",
+            "on_image": b64.BTN_B_ON,
+            "off_image": b64.BTN_B_OFF,
+        }
+        self.button_x = {
+            "key": "_x_",
+            "name": "X",
+            "on_image": b64.BTN_X_ON,
+            "off_image": b64.BTN_X_OFF,
+        }
+        self.button_y = {
+            "key": "_y_",
+            "name": "Y",
+            "on_image": b64.BTN_Y_ON,
+            "off_image": b64.BTN_Y_OFF,
+        }
+        self.button_start = {
+            "key": "_start_",
+            "name": "Start",
+            "on_image": b64.START_ON,
+            "off_image": b64.START_OFF,
+        }
+        self.button_select = {
+            "key": "_select_",
+            "name": "Select",
+            "on_image": b64.SELECT_ON,
+            "off_image": b64.SELECT_OFF,
+        }
+        self.button_lb = {
+            "key": "_lb_",
+            "name": "L Bumper",
+            "on_image": b64.BTN_LB_ON,
+            "off_image": b64.BTN_LB_OFF,
+        }
+        self.button_lt = {
+            "key": "_lt_",
+            "name": "L Trigger",
+            "on_image": b64.BTN_LT_ON,
+            "off_image": b64.BTN_LT_OFF,
+        }
+        self.button_rb = {
+            "key": "_rb_",
+            "name": "R Bumper",
+            "on_image": b64.BTN_RB_ON,
+            "off_image": b64.BTN_RB_OFF,
+        }
+        self.button_rt = {
+            "key": "_rt_",
+            "name": "R Trigger",
+            "on_image": b64.BTN_RT_ON,
+            "off_image": b64.BTN_RT_OFF,
+        }
+        self._all_buttons = [
+            self.button_a,
+            self.button_b,
+            self.button_x,
+            self.button_y,
+            self.button_select,
+            self.button_start,
+            self.button_lb,
+            self.button_lt,
+            self.button_rb,
+            self.button_rt
+        ]
+
         self._build_window()
 
     def _build_window(self):
@@ -46,16 +120,19 @@ class GUI:
             background_color=self.BKG_COLOR,
             message_box_line_width=0,
             text_justification="left",
-            margins=(0, 0)
+            margins=(0, 0),
+            border_width=0,
         )
 
         from xcv.version import XCV_VERSION
 
         self.window = sg.Window(
-            f"XCV - {XCV_VERSION}", layout=self._lay_it_out(), location=(600, 200), icon=b64.SOCCER_BALL_ORANGE, border_depth=0
+            f"XCV - {XCV_VERSION}",
+            layout=self._lay_it_out(),
+            location=(600, 200),
+            icon=b64.Microsoft_Xbox_Emoji_Icon,
+            border_depth=0,
         )
-
-
 
         # OpenCV
         self.cap = cv2.VideoCapture(0)
@@ -71,7 +148,9 @@ class GUI:
                 f"Video Captured - Size: {self.frame_width} x {self.frame_height}\n"
             )
             if self.frame_width >= 641:
-                logger.warning("OpenCV values are currently hard-coded for a 640x480 frame.")
+                logger.warning(
+                    "OpenCV values are currently hard-coded for a 640x480 frame."
+                )
 
             fps.start()
 
@@ -86,11 +165,37 @@ class GUI:
                     A
                 """
         _row3_xcontroller_action_buttons = [
-            [sg.Image(data_base64=b64.BTN_Y_ON, key="_y_", enable_events=True, pad=(40, 0, 0, 0),)],
-            [sg.Image(data_base64=b64.BTN_A_OFF, key="_a_", enable_events=True, pad=(0, 0, 0, 0),),
-            sg.Image(data_base64=b64.BTN_B_OFF, key="_b_", enable_events=True, pad=(0, 0, 0, 0),)],
-            [sg.Image(data_base64=b64.BTN_X_OFF, key="_x_", enable_events=True, pad=(40, 0, 0, 0))],
+            [
+                sg.Image(
+                    data_base64=self.button_y["off_image"],
+                    key="_y_",
+                    enable_events=True,
+                    pad=(35, 0, 0, 0),
+                )
+            ],
+            [
+                sg.Image(
+                    data_base64=self.button_x["off_image"],
+                    key="_x_",
+                    enable_events=True,
+                    pad=(5, 0, 0, 0),
+                ),
+                sg.Image(
+                    data_base64=self.button_b["off_image"],
+                    key="_b_",
+                    enable_events=True,
+                    pad=(0, 0, 0, 0),
+                ),
+            ],
+            [
+                sg.Image(
+                    data_base64=self.button_a["off_image"],
+                    key="_a_",
+                    enable_events=True,
+                    pad=(35, 0, 0, 0),
+                ),
 
+            ],
         ]
 
         """
@@ -106,11 +211,11 @@ class GUI:
                     data_base64=b64.DU_WHITE,
                     key="_du_",
                     enable_events=True,
-                    pad=(40, 0, 0, 0),
+                    pad=(80, 0, 0, 0),
                 )
             ],
             [
-                sg.Image(data_base64=b64.DL_WHITE, key="_dl_", enable_events=True),
+                sg.Image(data_base64=b64.DL_WHITE, key="_dl_", enable_events=True, pad=(50, 0, 0, 0)),
                 sg.Image(
                     data_base64=b64.DR_WHITE,
                     key="_dr_",
@@ -123,23 +228,42 @@ class GUI:
                     data_base64=b64.DU_WHITE,
                     key="_left_stick_gif_",
                     enable_events=True,
-                    pad=(40, 0, 0, 0),
+                    pad=(80, 0, 0, 0),
                 )
             ],
         ]
 
         _row3_xcontroller_other = [
-            [sg.Image(data_base64=b64.BTN_LT_OFF, key="_lt_", enable_events=True), sg.Image(data_base64=b64.BTN_RT_OFF, key="_rt_", enable_events=True)],
-            [sg.Image(data_base64=b64.BTN_LB_OFF, key="_lb_", enable_events=True), sg.Image(data_base64=b64.BTN_RB_OFF, key="_rb_", enable_events=True)],
-            [sg.Image(data_base64=b64.SELECT_OFF, key="_select_", enable_events=True),
-             sg.Image(data_base64=b64.XBOX_LOADING, key="_xbox_", enable_events=True, pad=(40, 40, 0, 0)),
-             sg.Image(data_base64=b64.START_OFF, key="_start_", enable_events=True),
+            [
+                sg.Image(data_base64=self.button_lt["off_image"], key="_lt_", enable_events=True),
+                sg.Image(
+                    data_base64=b64.XBOX_LOADING,
+                    key="_xbox_",
+                    enable_events=True,
+                    pad=(16, 16, 0, 0),
+                ),
+                sg.Image(data_base64=self.button_rt["off_image"], key="_rt_", enable_events=True),
             ],
+            [
+                sg.Image(data_base64=self.button_lb["off_image"], key="_lb_", enable_events=True),
+                sg.Image(data_base64=self.button_start["off_image"], key="_start_", enable_events=True),
+                sg.Image(data_base64=self.button_select["off_image"], key="_select_", enable_events=True),
+                sg.Image(data_base64=self.button_rb["off_image"], key="_rb_", enable_events=True),
+            ],
+            [
+                sg.Image(data_base64=b64.JOYSTICK_GIF),
+                sg.Text("LSX 188\nLSY 1289"),
+                sg.Image(data_base64=b64.JOYSTICK_GIF),
+                sg.Text("RSX 178\nRSY 179"),
+            ]
         ]
 
-        return [sg.Column(_row3_xcontroller_dpad),
-                sg.Column(_row3_xcontroller_other),
-                sg.Column(_row3_xcontroller_action_buttons)]
+
+        return [
+            sg.Column(_row3_xcontroller_dpad),
+            sg.Column(_row3_xcontroller_other),
+            sg.Column(_row3_xcontroller_action_buttons),
+        ]
 
     def _layout_maintab_row4_connection_status(self):
         """
@@ -147,22 +271,26 @@ class GUI:
         return [
             sg.Image(data_base64=b64.GAMEPAD_GREY, key="_gamepad_connection_status_"),
             sg.Text(
-                "No Connection", key="_gamepad_usb_port_", text_color=self.TEXT_COLOR, justification="left"
+                "No Connection",
+                key="_gamepad_usb_port_",
+                text_color=self.TEXT_COLOR,
+                justification="left",
             ),
             sg.Image(data_base64=b64.FILM_GREY, key="_opencv_fps_icon_"),
+            sg.Text("FPS:"),
             sg.Text("", key="_opencv_fps_", text_color=self.TEXT_COLOR),
-            sg.Image(data_base64=b64.FILM_YELLOW, key="_elapsed_icon_"),
+            # sg.Image(data_base64=b64.FILM_YELLOW, key="_elapsed_icon_"),
+            sg.Text("Elapsed:"),
             sg.Text("", key="_elapsed_"),
         ]
 
     def _output_console(selfs):
         return [
-            sg.Output(size=(640, 100), background_color="#16161F", text_color="#A6A4AF")
+            sg.Output(size=(640, 50), background_color="#16161F", text_color="#A6A4AF")
         ]
 
     def _row0_video_frame(self):
         return [sg.Image(filename="", key="_video_frame_")]
-
 
     def _row2_game_stats(self):
         """ --------------------------------------------------------------------------
@@ -173,27 +301,46 @@ class GUI:
                 _tactic_ = Our AI's current gameplan/status
         """
         return [
-            sg.Text("\n\n\n\n"),
-            sg.Text("0 - 0", key="_score_", text_color=self.GREEN, font="Helvetica 12"),
-            sg.Image(data_base64=b64.soccer_shirt),
+            sg.Text("\n\t"),
+            sg.Text("0 - 0", key="_score_", text_color=self.GREEN, font="Helvetica-Bold 16"),
             sg.Text("Home", key="_home_away_"),
-            sg.Text("Defending", key="_defending_side_", text_color=self.YELLOW),
+            # sg.Text("Defending", key="_defending_side_", text_color=self.YELLOW),
             sg.Image(data_base64=b64.goal),
             sg.Text("", key="_possession_"),
-            sg.Image(data_base64=b64.football_field_in_perspective),
             sg.Text("No Tactic", key="_tactic_"),
             sg.Text("\n"),
         ]
 
     def _row1_detected_state(self):
-        return [sg.Text("Unknown State", key="_detected_state_", font="Helvetica 16", justification="center")]
+        return [
+            sg.Text("\n"),
+            sg.Text(
+                "Unknown State",
+                key="_detected_state_",
+                font="Helvetica 16",
+                justification="center",
+            ),
+            sg.Text("\n"),
+        ]
 
     def _row5_gui_menu_buttons(self):
         return [
-            sg.Image(data_base64="", key="_save_logs_"),
-            sg.Image(data_base64=b64.SAVE_NULL, key="_save_screenshot_"),
-            sg.Image(data_base64="", key="_start_record_"),
-            sg.Image(data_base64=b64.POWER_NULL, key="_EXIT_"),
+            sg.Text("\n"),
+            sg.Image(
+                data_base64=b64.CHECK_SERIAL_OFF,
+                key="_check_serial_",
+                enable_events=True,
+            ),
+            sg.Image(
+                data_base64=b64.SCREENSHOT_OFF,
+                key="_save_screenshot_",
+                enable_events=True,
+            ),
+            sg.Image(
+                data_base64=b64.RECORD_OFF, key="_start_record_", enable_events=True
+            ),
+            sg.Image(data_base64=b64.EXIT_OFF, key="_EXIT_", enable_events=True),
+            sg.Text("\n"),
         ]
 
     def _layout_maintab(self):
@@ -205,8 +352,8 @@ class GUI:
             self._row2_game_stats(),
             self._layout_mainttab_row3_buttons(),
             self._layout_maintab_row4_connection_status(),
-            self._row5_gui_menu_buttons(),
             self._output_console(),
+            self._row5_gui_menu_buttons(),
         ]
         return _full_layout
 
@@ -291,8 +438,18 @@ class GUI:
             [sg.Image(data_base64=b64.BOO, pad=(240, 0))],
             [sg.Text(f"{xcv.__author__}\n", justification="center")],
             [sg.Text(f"{xcv.__email__}\n", justification="center")],
-            [sg.Text(f"XCV VERSION: {xcv.version.XCV_VERSION}\n", justification="center")],
-            [sg.Text("\n\n\tSPECIAL THANKS TO", font=("Helvetica", 16), justification="left")],
+            [
+                sg.Text(
+                    f"XCV VERSION: {xcv.version.XCV_VERSION}\n", justification="center"
+                )
+            ],
+            [
+                sg.Text(
+                    "\n\n\tSPECIAL THANKS TO\n",
+                    font=("Helvetica", 16),
+                    justification="left",
+                )
+            ],
             [sg.Text(f"\tIcons from: https://www.flaticon.com/authors/freepik \n")],
             [sg.Text(f"\thttps://github.com/PySimpleGUI/PySimpleGUI\n")],
             [sg.Text(f"\thttps://www.youtube.com/user/sentdexv\n")],
@@ -306,38 +463,35 @@ class GUI:
                         [
                             sg.Tab("Main", layout=self._layout_maintab()),
                             sg.Tab("Image Controls", layout=self._layout_imagetab()),
-                            sg.Tab("About", layout=self._layout_about_tab())
+                            sg.Tab("About", layout=self._layout_about_tab()),
                         ]
                     ],
                     background_color=self.BKG_COLOR,
                     title_color=self.TEXT_COLOR,
                     selected_title_color=self.GREY2,
                     border_width=0,
-
                 )
             ]
         ]
 
     def _event_checker(self, _event):
-        if _event == "Exit" or _event is None:
+        if _event == "_EXIT_" or _event is None:
             self.close_all(self.window)
             sys.exit(0)
 
         if _event != "timeout":
             logger.debug(_event)
-        #
-        # for b in self._all_buttons:
-        #     if _event == b["btn_name"]:
-        #         self.window.FindElement(b["btn_name"]).Update(
-        #             data_base64=b["on_image"])
-        #         xcontroller.single_btn_press(b["btn_name"])
-        #         print(_event)
+
+        for b in self._all_buttons:
+            if _event == b["key"]:
+                print(f"{b['name']} pressed!")
+                self.window.FindElement(b["key"]).Update(data_base64=b["on_image"])
+                # xcv.xcontroller.single_btn_press(btn["key"])
 
         # if not being pressed: reset the button image
-        # for b in self._all_buttons:
-        #     if _event != b["btn_name"]:
-        #         self.window.FindElement(b["btn_name"]).Update(
-        #             data_base64=b["off_image"])
+        for b in self._all_buttons:
+            if _event != b["key"]:
+                self.window.FindElement(b["key"]).Update(data_base64=b["off_image"])
 
     def _values_checker(self, _values, frame):
         if _values["thresh"]:
@@ -395,8 +549,12 @@ class GUI:
 
                 # draw_HUD_FPS(frame, 7)
 
+            TemplateMatcher(frame).find_all()
+
+            mins, secs = divmod(fps.elapsed, 60)
+            str_elapsed = '{:02d}:{:02d}'.format(mins, secs)
             imgbytes = cv2.imencode(".png", frame)[1].tobytes()  # ditto
-            self.window.Element("_elapsed_").Update(fps.elapsed)
+            self.window.Element("_elapsed_").Update(str_elapsed)
             self.window.Element("_opencv_fps_").Update(fps.fps)
             self.window.Element("_video_frame_").Update(data=imgbytes)
             self.window.Element("imagetab_image").Update(data=imgbytes)

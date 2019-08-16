@@ -21,35 +21,64 @@ from commands import XcvError
 import cli
 from emojis import HAZARD
 
+# @dataclass(order=True)
+# class Buttons:
+#     aBtn: int = 0
+#     bBtn: int = 0
+#     xBtn: int = 0
+#     yBtn: int = 0
+    # lbBtn: int = 0
+    # rbBtn: int = 0
+    # duBtn: int = 0
+    # ddBtn: int = 0
+    # dlBtn: int = 0
+    # drBtn: int = 0
+    # ltBtn: float = 0.0
+    # rtBtn: float = 0.0
+    # lsx: float = 0.0
+    # lsy: float = 0.0
+    # rsx: float = 0.0
+    # rsy: float = 0.0
+    # startBtn: int = 0
+    # selectBtn: int = 0
+    # xboxBtn: int = 0
 
-@dataclass(order=True)
-class Buttons:
-    aBtn: int = 0
-    bBtn: int = 0
-    xBtn: int = 0
-    yBtn: int = 0
-    lbBtn: int = 0
-    rbBtn: int = 0
-    duBtn: int = 0
-    ddBtn: int = 0
-    dlBtn: int = 0
-    drBtn: int = 0
-    ltBtn: float = 0.0
-    rtBtn: float = 0.0
-    lsx: float = 0.0
-    lsy: float = 0.0
-    rsx: float = 0.0
-    rsy: float = 0.0
-    startBtn: int = 0
-    selectBtn: int = 0
-    xboxBtn: int = 0
-
-    def show(self):
-        for k, v in self.__dict__.items():
-            print(k, v)
-
-    def make_string(self):
-        return str(list(self.__dict__.values()))
+#     def show(self):
+#         for k, v in self.__dict__.items():
+#             print(k, v)
+#
+#     def make_string(self):
+#         return str(list(self.__dict__.values()))
+# #
+#
+# @dataclass(order=True)
+# class Buttons:
+#     aBtn: int = 0
+#     bBtn: int = 0
+#     xBtn: int = 0
+#     yBtn: int = 0
+#     lbBtn: int = 0
+#     rbBtn: int = 0
+#     duBtn: int = 0
+#     ddBtn: int = 0
+#     dlBtn: int = 0
+#     drBtn: int = 0
+#     ltBtn: float = 0.0
+#     rtBtn: float = 0.0
+#     lsx: float = 0.0
+#     lsy: float = 0.0
+#     rsx: float = 0.0
+#     rsy: float = 0.0
+#     startBtn: int = 0
+#     selectBtn: int = 0
+#     xboxBtn: int = 0
+#
+#     def show(self):
+#         for k, v in self.__dict__.items():
+#             print(k, v)
+#
+#     def make_string(self):
+#         return str(list(self.__dict__.values()))
 
 
 def single_btn_press(btnInput: object):
