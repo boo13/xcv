@@ -6,20 +6,21 @@ import base64
     Base64 Encoder - encodes a folder of PNG files and creates a .py file with definitions
 '''
 
-OUTPUT_FILENAME = 'output.py'
+
 
 def main():
-    # folder = r'C:\Python\PycharmProjects\GooeyGUI\Uno Cards'
     folder=''
-    folder = sg.PopupGetFolder('Source folder for images\nImages will be encoded and results saved to %s'%OUTPUT_FILENAME,
+    folder = sg.PopupGetFolder('Source folder for images\nImages will be encoded and results saved to the same folder.',
                                title='Base64 Encoder',
                                default_path=folder, initial_folder=folder )
+
+    OUTPUT_FILENAME = 'base64_output.py'
 
     if folder is None or folder == '':
         sg.PopupCancel('Cancelled - No valid folder entered')
         return
     try:
-        namesonly = [f for f in os.listdir(folder) if f.endswith('.png') or f.endswith('.ico')]
+        namesonly = [f for f in os.listdir(folder) if f.endswith('.png') or f.endswith('.ico') or f.endswith('.gif')]
     except:
         sg.PopupCancel('Cancelled - No valid folder entered')
         return
