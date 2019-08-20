@@ -94,4 +94,3 @@ def main_input(
 
 if __name__ == "__main__":
     main_input()
-    print(HAZARD, STARS)
