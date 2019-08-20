@@ -54,7 +54,7 @@ class serial_api:
             self._port = "/dev/cu.SLAB_USBtoUART"
             self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
         else:
-            serial_config = os_is_other()
+            self._port = input("Enter Serial Port: ")
 
     @property
     def port(self):
@@ -64,7 +64,7 @@ class serial_api:
         try:
             self._port = self._ports.pop()
         except IndexError:
-            pass
+            logger.warning(("No other known serial ports, returning the last port"))
         return self._port
 
     def port_add(self, ser):
