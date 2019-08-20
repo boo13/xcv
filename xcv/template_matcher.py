@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from loguru import logger
 
-class TemplateMatcher(CVManager):
+class TemplateMatcher:
     """Take in an OpenCV frame, process it, find templates a pop it out again.
 
         :param template: template image we're going to search for
@@ -123,18 +123,3 @@ class TemplateMatcher(CVManager):
                 if_is_found()
 
         return _find_frame
-
-
-if __name__ == "__main__":
-
-    # if ok:
-    #
-
-    #     # #################################################
-    #     #   Quit                     Keyboard key 'q' quits
-    #     # #################################################
-    #     key = cv2.waitKey(1) & 0xFF
-    #     if key == ord("q"):
-    #         cap.release()
-    #         cv2.destroyAllWindows()
-    #         exit()
