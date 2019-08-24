@@ -1,3 +1,4 @@
+import os
 from time import sleep
 from dataclasses import dataclass
 from textwrap import TextWrapper
@@ -7,8 +8,8 @@ wrapper = TextWrapper()
 import click
 from loguru import logger
 
-import xcv.settings
-from xcv.emojis import (
+import settings
+from emojis import (
     HAZARD,
     STARS,
     ROBOT,
@@ -23,6 +24,7 @@ from xcv.emojis import (
 )
 
 
+
 # Main CLI
 _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
 
@@ -31,8 +33,8 @@ _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
 @click.option("--verbose", "-v", is_flag=True, help="Display debug information")
 @click.option(
     "--port",
-    default=xcv.settings.serial_api.port,
-    help=f"Controller port, default is {xcv.settings.serial_api.port}",
+    default=settings.serial_api.port,
+    help=f"Controller port, default is {settings.serial_api.port}",
 )
 @click.option("--autopilot", "-auto", is_flag=True, help="Initiate xcv sequence")
 @click.option("--push", type=click.Choice(_btnList), help="Enter button to push")
@@ -69,9 +71,9 @@ def main_input(
         click.echo(f"{ROBOT}XCV go...{BOO}Try to do things...\n")
 
     elif debug:
-        from xcv.tools import list_ports
+        from tools import list_usb_ports
 
-        list_ports.list_ports()
+        list_usb_ports.list_usb_ports()
 
     elif push:
         import xcontroller
@@ -82,9 +84,8 @@ def main_input(
         print("WIP feature")
 
     elif gui:
-        from gui import mainGUI
-
-        mainGUI()
+        from gui import VideoCapture
+        VideoCapture()
 
     else:
         click.echo(f"{HAZARD}No options passed. Try --help or --gui\n")
