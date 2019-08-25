@@ -4,6 +4,10 @@ xcv_env/*
 # Photoshop files
 *.psd
 
+# Video files
+*.avi
+*.mp4
+
 # Output files
 data/Output/*
 
