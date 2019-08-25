@@ -71,11 +71,11 @@ class TemplateMatcher:
                 If we found our template we use `state`({self.state}) or `func`({self.func}) to set the appropriate `game_state` flags."""
 
     def find_all(self):
-        self.find(cv2.imread("../templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft)
-        self.find(cv2.imread("../templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight)
-        self.find(cv2.imread("../templates/myTeamScoreboardName.png", 0), self.ROI_AwayTeamName)
-        self.find(cv2.imread("../templates/myTeamScoreboardName.png", 0), self.ROI_HomeTeamName)
-        self.find(cv2.imread("../templates/SquadManage.png", 0), self.ROI_SquadManage)
+        self.find(cv2.imread("templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft)
+        self.find(cv2.imread("templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight)
+        self.find(cv2.imread("templates/myTeamScoreboardName.png", 0), self.ROI_AwayTeamName)
+        self.find(cv2.imread("templates/myTeamScoreboardName.png", 0), self.ROI_HomeTeamName)
+        self.find(cv2.imread("templates/SquadManage.png", 0), self.ROI_SquadManage)
 
 
     def find(self, template, roi, if_is_found=None):
