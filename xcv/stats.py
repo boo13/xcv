@@ -1,4 +1,6 @@
 from xcv.clock import Clock
+from loguru import logger
+import cv2
 
 # ======================
 class GameSession:
@@ -13,11 +15,19 @@ class GameSession:
             "fifa_home": 0,
         }
 
-    # def find_if_in_fifa(self):
-    #     return
+    def check_video_source_size(self, cap):
 
-    # def find_if_in_menu(self):
-    #     return
+        _width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        _height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+        if not cap.isOpened():
+            logger.warning("Unable to read camera feed")
+        elif _width >= 641 or _height >= 481:
+            logger.warning(
+                f"OpenCV values are currently hard-coded for a 640x480 frame, but your frame is {_width}x{_height}"
+            )
+        else:
+            logger.debug(f"Frame {_width}x{_height}")
 
     def state(self):
         if True:
@@ -40,8 +50,6 @@ class FifaSession:
     def __init__(self, game_session):
         self.fifa_session_clock = Clock()
 
-        self.menu_states = {"fut": self.fut_menu_states}
-
         self.fut_menu_states = {
             "fut_loading": 0,
             "fut_central_tab_selected": 0,
@@ -60,6 +68,8 @@ class FifaSession:
             "continue_screen_press_down_and_a": 0,
             "continue_screen_press_start": 0,
         }
+
+        self.menu_states = {"fut": self.fut_menu_states}
 
     def state(self):
         if True:
@@ -111,6 +121,12 @@ class FifaMatch:
     def reset_clock(self):
         self.fifa_match_clock.reset()
 
+    def detected_clock(self):
+        return
+
+    def last_detected_clock(self):
+        return
+
 
 # ======================
 
@@ -155,6 +171,9 @@ class FifaPlayer:
 
 # ======================
 class Scoreboard:
+    home_score = 0
+    away_score = 0
+
     def find_score(self, fifa_session, fifa_match):
         return
 
