@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from loguru import logger
+from xcv.game import Game, Match
 
 class TemplateMatcher:
     """Take in an OpenCV frame, process it, find templates a pop it out again.
@@ -71,11 +72,11 @@ class TemplateMatcher:
                 If we found our template we use `state`({self.state}) or `func`({self.func}) to set the appropriate `game_state` flags."""
 
     def find_all(self):
-        self.find(cv2.imread("templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft)
-        self.find(cv2.imread("templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight)
-        self.find(cv2.imread("templates/myTeamScoreboardName.png", 0), self.ROI_AwayTeamName)
-        self.find(cv2.imread("templates/myTeamScoreboardName.png", 0), self.ROI_HomeTeamName)
-        self.find(cv2.imread("templates/SquadManage.png", 0), self.ROI_SquadManage)
+        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft)
+        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight)
+        self.find(cv2.imread("./templates/myTeamScoreboardName.png", 0), self.ROI_AwayTeamName, Game.found_scoreboard_team_is_away)
+        self.find(cv2.imread("./templates/myTeamScoreboardName.png", 0), self.ROI_HomeTeamName, Game.found_scoreboard_team_is_home)
+        self.find(cv2.imread("./templates/SquadManage.png", 0), self.ROI_SquadManage, Game.found_squad_manage_screen)
 
 
     def find(self, template, roi, if_is_found=None):
