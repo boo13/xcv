@@ -8,6 +8,7 @@ PYTHON = "🐍"
 WORK = ""
 MAGIC = "✨"
 OPENCV = "👾"
+SUGGEST = "💡 "
 
 import sys
 
@@ -22,3 +23,4 @@ if sys.platform.startswith("win"):
     WORK = ""
     MAGIC = ""
     OPENCV = ""
+    SUGGEST = ""
