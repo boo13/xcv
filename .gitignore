@@ -18,6 +18,7 @@ photoshop/*
 
 # Virtual Env
 xcv_venv/*
+venv_win/*
 
 # Extra blog files
 blog/images/200pxWide/*
