@@ -11,14 +11,14 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = ["Click>=6.0"]
+requirements = ["Click>=6.0", "opencv-contrib-python", "PySimpleGuiQT", "loguru", "pyserial", "Pillow", "imutils"]
 
 setup_requirements = ["pytest-runner"]
 
 test_requirements = ["pytest"]
 
 setup(
-    author="Randy Boo13 Boo",
+    author="Randy Boo13",
     author_email="boo13bot@gmail.com",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
@@ -29,6 +29,7 @@ setup(
     ],
     description="xcv is a project that pushes buttons on a controller.",
     entry_points={"console_scripts": ["xcv=xcv.cli:main_input"]},
+    python_requires='>=3.7',
     install_requires=requirements,
     license="MIT license",
     long_description=readme + "\n\n" + history,
@@ -40,6 +41,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/boo13/xcv",
-    version="0.1.2",
+    version="0.1.3",
     zip_safe=False,
 )
