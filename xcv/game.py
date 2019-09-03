@@ -3,6 +3,7 @@ try:
     import pytz
     from time import sleep
     from datetime import datetime
+    from dataclasses import dataclass
 
     # Local_____________________________________
     # from xcv.fps import fps
@@ -57,8 +58,10 @@ class MenuManager:
         return cls._detected_menu
 
 
+
 class Game:
 
+    _is_playing_fifa = False
     is_alive = False
     is_in_game = False
     _num_games_started = 0
@@ -67,9 +70,12 @@ class Game:
     _losses = 0
     _ties = 0
     frame_counter = 0
+    _game_state_game = None
+    _game_state_state = None
+    _game_state_substate = None
 
     def __init__(self):
-        Game._num_of_games += 1
+        Game._num_games_started += 1
 
         self.game_start_time = self.stopwatch_start()
 
@@ -117,6 +123,9 @@ class Game:
         """Class holds all detected stats for Fifa games, based on OpenCV detections and basic logic.
         """
 
+    def game_state(self):
+        return self._game_state_game, self._game_state_state, self._game_state_substate
+
     @classmethod
     def num_games_started(cls):
         return Game._num_games_completed
@@ -143,6 +152,32 @@ class Game:
 
     def set_game_state(self, new_state):
         self.game_state = new_state
+
+    def _playing_fifa(self):
+        Game._game_state_game = "Fifa"
+        Game._playing_fifa = True
+
+    def _in_game(self):
+        # Game._playing_fifa()
+        Game._game_state_game = "Fifa"
+        Game._game_state_state = "In Game"
+        Game.is_in_game = True
+
+    def found_scoreboard_team_is_home(self):
+        Game._game_state_game = "Fifa"
+        Game._game_state_state = "In Game"
+        Game.is_in_game = True
+        print("found Home")
+
+    def found_scoreboard_team_is_away(self):
+        Game._game_state_game = "Fifa"
+        Game._game_state_state = "In Game"
+        Game.is_in_game = True
+
+    def found_squad_manage_screen(self):
+        self._playing_fifa = True
+        self.is_in_game = False
+        print("found squad manage")
 
     def status(self):
         if Game.is_alive and Game.is_in_game:
@@ -189,6 +224,22 @@ class Game:
 
     def detected_match_clock(self):
         return
+
+@dataclass
+class Match:
+    _playing_fifa = False
+    _in_match = False
+    _in_menu = False
+
+    def in_match(self):
+        return self._in_match
+
+    def in_menu(self):
+        return self._in_menu
+
+    @classmethod
+    def found_menu(cls):
+        cls._in_menu = True
 
 
 if __name__ == "__main__":
