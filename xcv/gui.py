@@ -1,18 +1,12 @@
 # TODO: Implement switch for `cap = cv2.VideoCapture(0)` and `streamlink` stream from twitch, mixer, etc.
 import os
-import sys
 import random
 import string
 from pathlib import Path
 
 # _________________ Local
-import xcv
-from xcv.template_matcher import TemplateMatcher
-import xcv.xcontroller
-from xcv.fps import fps
 import xcv.base64_icons as b64
 from xcv.version import XCV_VERSION
-from xcv.hud import draw_HUD_FPS
 from xcv.stats import GameSession, FifaSession, FifaMatch
 from xcv.event_loop import EventLoop
 from xcv.gui_layout import GUILayout
@@ -20,15 +14,13 @@ from xcv.gui_layout import GUILayout
 # _________________ `pip install` _________________
 import PySimpleGUIQt as sg
 import cv2
-import numpy as np
-from loguru import logger
 
+from loguru import logger
 
 def random_string(stringLength=10):
     """Generate a random string of fixed length """
     letters = string.ascii_lowercase
     return "".join(random.choice(letters) for i in range(stringLength))
-
 
 @logger.catch()
 class VideoCapture:
@@ -140,11 +132,7 @@ class VideoCapture:
                 border_depth=0,
             )
 
-        # self.cap = cv2.VideoCapture(0)
-        # self.game_session.check_video_source_size(self.cap)
-        # fps.start()
-        _loop = EventLoop()
-        _loop.event_loop(gui_window=self.window)
+        EventLoop().event_loop(gui_window=self.window)
 
     def scoreboard_processor(self, gray_frame, save=False):
         _clock_y1 = 92
