@@ -7,42 +7,52 @@ from xcv.print_info import print_package_info
 import xcv.base64_icons as b64
 from xcv.fps import fps
 from xcv.template_matcher import TemplateMatcher
-from xcv.stats import GameSession, FifaSession, FifaMatch
-from xcv.version import XCV_VERSION
+from xcv.stats import GameSession, FifaSession, FifaMatch, Scoreboard
 
 from time import sleep
-
 
 class EventLoopError(Exception):
     pass
 
+class GuiButtonEventChecker:
+    def __init__(self):
+        pass
+
+    def make(self):
+        return
 
 class EventLoop:
     def __init__(self):
         self.game_session = GameSession()
         self.fifa_session = FifaSession(self.game_session)
         self.fifa_match = FifaMatch(self.fifa_session)
+        self.scoreboard = Scoreboard(self.fifa_match)
         self.frame = None
+        self.use_cv = True
         self.show_menu = False
+        self.show_game_stats = False
         self.show_gui_buttons = False
         self.show_output_console = False
         self.show_video = True
         self.show_about_info = False
+        fps.start()
         sleep(1)
+
+
 
     def event_loop(self, gui_window=None):
         vs = VideoStream(src=0).start()
-        fps.start()
 
         while True:
             self.frame = vs.read()
             key = cv2.waitKey(1) & 0xFF
             fps.update()
 
-            # self.gray_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
-            TemplateMatcher(self.frame).find_all(self.fifa_match)
+            if key == ord('q'):
+                break
 
-            # # self.scoreboard_processor(gray_frame)
+            if self.use_cv:
+                TemplateMatcher(vs).find_all(self.fifa_match, self.scoreboard)
 
             # # self._event_checker(_event)
             if gui_window is not None:
@@ -59,9 +69,6 @@ class EventLoop:
         str_elapsed = "{:02d}:{:02d}".format(mins, secs)
         # draw_HUD_FPS(frame, fps.fps)
 
-        imgbytes = cv2.imencode(".png", self.frame)[1].tobytes()
-
-        gui_window.Element("_video_frame_").Update(data=imgbytes)
         gui_window.Element("_screen_side_").Update(self.fifa_match.show_screen_side())
         # gui_window.Element("_fifa_match_clock_").Update(self.fifa_match.clock())
         # gui_window.Element("_fifa_session_clock_").Update(self.fifa_session.clock())
@@ -75,33 +82,70 @@ class EventLoop:
         # gui_window.Element("_elapsed_").Update(str_elapsed)
         gui_window.Element("_opencv_fps_").Update(fps.fps)
         gui_window.Element("_opencv_fps_").Update(visible=self.show_output_console)
-        if fps.fps <= 6:
-            gui_window.Element("_fps_icon_").Update(data_base64=b64.FILM_RED)
-        elif 6 < fps.fps < 10:
+        self._update_fps_icon(gui_window)
+        # self.window.Element("imagetab_image").Update(data=imgbytes)
+
+    def _update_fps_icon(self, gui_window):
+        if fps.fps > 19:
+            gui_window.Element("_fps_icon_").Update(data_base64=b64.FILM_NULL)
+        elif fps.fps > 15:
+            gui_window.Element("_fps_icon_").Update(data_base64=b64.FILM_GREEN)
+        elif fps.fps > 7:
             gui_window.Element("_fps_icon_").Update(data_base64=b64.FILM_YELLOW)
         else:
-            gui_window.Element("_fps_icon_").Update(data_base64=b64.FILM_GREEN)
-
-        # self.window.Element("imagetab_image").Update(data=imgbytes)
+            gui_window.Element("_fps_icon_").Update(data_base64=b64.FILM_RED)
 
     def _event_checker(self, _event, gui_window):
         if _event == "_EXIT_" or _event is None:
             self.close_all(gui_window)
             sys.exit(0)
 
+        if self.show_video:
+            gui_window.Element("_cctv_").Update(data_base64=b64.CCTV_ON)
+            imgbytes = cv2.imencode(".png", self.frame)[1].tobytes()
+            gui_window.Element("_video_frame_").Update(data=imgbytes)
+        else:
+            gui_window.Element("_cctv_").Update(data_base64=b64.CCTV_OFF)
+
+        if _event == "_use_cv_":
+            self.use_cv = not self.use_cv
+            if self.use_cv:
+                gui_window.Element("_use_cv_").Update(data_base64=b64.POWER_ON)
+            else:
+                gui_window.Element("_use_cv_").Update(data_base64=b64.POWER_OFF)
+
+        if _event == "_trophy_icon_":
+            self.show_game_stats = not self.show_game_stats
+            if self.show_game_stats:
+                gui_window.Element("_use_cv_").Update(data_base64=b64.TROPHY_ON)
+            else:
+                gui_window.Element("_use_cv_").Update(data_base64=b64.TROPHY_OFF)
+
         if _event == "_menu_icon_":
             self.show_menu = not self.show_menu
+            if self.show_menu:
+                gui_window.Element("_menu_icon_").Update(data_base64=b64.MENU_ON)
+            else:
+                gui_window.Element("_menu_icon_").Update(data_base64=b64.MENU_OFF)
+
             gui_window.Element("_info_icon_").Update(visible=self.show_menu)
             gui_window.Element("_cctv_").Update(visible=self.show_menu)
             gui_window.Element("_gamepad_connection_status_").Update(
                 visible=self.show_menu
             )
             gui_window.Element("_trophy_icon_").Update(visible=self.show_menu)
+            gui_window.Element("_use_cv_").Update(visible=self.show_menu)
             gui_window.Element("_pie_chart_icon_").Update(visible=self.show_menu)
             gui_window.Element("_EXIT_").Update(visible=self.show_menu)
 
         if _event == "_info_icon_":
             self.show_output_console = not self.show_output_console
+
+            if self.show_output_console:
+                gui_window.Element("_info_icon_").Update(data_base64=b64.INFO_ON)
+            else:
+                gui_window.Element("_info_icon_").Update(data_base64=b64.INFO_OFF)
+
             gui_window.Element("_output_console_").Update(
                 visible=self.show_output_console
             )
@@ -110,11 +154,6 @@ class EventLoop:
         if _event == "_cctv_":
             self.show_video = not self.show_video
             gui_window.Element("_video_frame_").Update(visible=self.show_video)
-
-            if self.show_video:
-                gui_window.Element("_cctv_").Update(data_base64=b64.CCTV_ON)
-            else:
-                gui_window.Element("_cctv_").Update(data_base64=b64.CCTV_OFF)
 
         # Display the GUI controller buttons if we press the Game Controller Icon
         if _event == "_gamepad_connection_status_":
