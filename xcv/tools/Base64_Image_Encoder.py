@@ -26,7 +26,7 @@ def main():
     for i, file in enumerate(namesonly):
         contents = open(os.path.join("input", file), "rb").read()
         encoded = base64.b64encode(contents)
-        outfile.write("\n{} = {}\n\n".format(file[: file.index(".")], encoded))
+        outfile.write("\n{} = {}".format(file[: file.index(".")], encoded))
         sg.OneLineProgressMeter("Base64 Encoding", i + 1,
                                 len(namesonly), key="_METER_")
 
