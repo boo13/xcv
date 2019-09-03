@@ -8,8 +8,8 @@ wrapper = TextWrapper()
 import click
 from loguru import logger
 
-import settings
-from emojis import (
+import xcv.settings
+from xcv.emojis import (
     HAZARD,
     STARS,
     ROBOT,
@@ -33,8 +33,8 @@ _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
 @click.option("--verbose", "-v", is_flag=True, help="Display debug information")
 @click.option(
     "--port",
-    default=settings.serial_api.port,
-    help=f"Controller port, default is {settings.serial_api.port}",
+    default=xcv.settings.serial_api.port,
+    help=f"Controller port, default is {xcv.settings.serial_api.port}",
 )
 @click.option("--autopilot", "-auto", is_flag=True, help="Initiate xcv sequence")
 @click.option("--push", type=click.Choice(_btnList), help="Enter button to push")
@@ -76,15 +76,15 @@ def main_input(
         list_usb_ports.list_usb_ports()
 
     elif push:
-        import xcontroller
+        import xcv.xcontroller
 
-        xcontroller.single_btn_press(push)
+        xcv.xcontroller.single_btn_press(push)
 
     elif autopilot:
         print("WIP feature")
 
     elif gui:
-        from gui import VideoCapture
+        from xcv.gui import VideoCapture
         VideoCapture()
 
     else:
