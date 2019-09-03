@@ -107,12 +107,6 @@ class GUILayout:
     def _top_status(self):
         _gui_display_info = [
 
-            [
-                sg.Text("", key="_home_away_"),
-            ],
-            [
-                sg.Text("", key="_screen_side_")
-            ],
             # [
             #     sg.Text("Elapsed: "),
             #     sg.Text("", key="_game_session_clock_")
@@ -146,52 +140,61 @@ class GUILayout:
             # ],
         ]
 
-        _serial_connection_info = [[sg.Text(
-                "No Connection",
-                key="_gamepad_usb_port_",
-                pad=(0, 0),
-                text_color=self.TEXT_COLOR,
-                justification="left",
-            )]]
+        _serial_connection_info = [[]]
 
-        return [sg.Column([[sg.Image(data_base64=b64.FILM_GREY, key="_fps_icon_", tooltip="FPS")],
-                     [sg.Text("", key="_opencv_fps_", visible=False, justification="left", tooltip="FPS")]]),
-                sg.Column(_serial_connection_info),
-                sg.Column(_gui_display_info),
-                ]
+        return [
+            sg.Column(_serial_connection_info),
+            sg.Column(_gui_display_info),
+        ]
 
     def _video_frame(self):
         return [sg.Image(filename="", key="_video_frame_")]
 
     def _detected_state(self):
-        return [sg.Text("",
-                key="_detected_state_",
-                pad=(0, 50),
-                font="Helvetica 16",
-                justification="center",)
+        return [sg.Text(" ",
+                        key="_detected_state_",
+                        font="Helvetica 16",
+                        justification="center", )
                 ]
+
+    def _detected_substate(self):
+        return [
+            sg.Column([[sg.Image(data_base64=b64.FILM_GREY, key="_fps_icon_",
+                                 tooltip="FPS")],
+                       [sg.Text("", key="_opencv_fps_", visible=False, justification="left", tooltip="FPS")]]),
+            sg.Text(
+                "No Connection",
+                key="_gamepad_usb_port_",
+                pad=(0, 0),
+                text_color=self.TEXT_COLOR,
+                justification="left",
+            ),
+            sg.Text(" ", key="_screen_side_"),
+            sg.Text("", key="_home_away_"),
+        ]
 
     def _vert_spacer(self):
         return [sg.Image(data_base64=b64.VERT_SPACER)]
 
     def _gui_work_area(self):
         _gui_menu = [
-                     [sg.Image(data_base64=b64.MENU, key="_menu_icon_", tooltip="Show/Hide Menu", visible=True,
-                               pad=((0, 5), 2), enable_events=True)],
-                     [sg.Image(data_base64=b64.INFO, key="_info_icon_", visible=False, pad=((0, 5), 2),
-                               tooltip="XCV Info", enable_events=True)],
-                     [sg.Image(data_base64=b64.CCTV_ON, key="_cctv_", visible=False, pad=((0, 5), 2),
-                               enable_events=True, tooltip="Show/Hide Video")],
-                     [sg.Image(data_base64=b64.CONTROLLER_GREY, key="_gamepad_connection_status_", visible=False,
-                               pad=((0, 5), 2), enable_events=True, tooltip="Controller IO")],
-                     [sg.Image(data_base64=b64.TROPHY, key="_trophy_icon_", visible=False, pad=((0, 5), 2),
-                               enable_events=True, tooltip="Game Stats")],
-                     [sg.Image(data_base64=b64.PIE_CHART, key="_pie_chart_icon_", visible=False, pad=((0, 5), 2),
-                               enable_events=True, tooltip="Data Analysis (Long-Term)")],
-                     [sg.Image(data_base64=b64.EXIT, key="_EXIT_", visible=False, pad=(0, 0), enable_events=True,
-                         tooltip="Close XCV")]
-                     ]
-
+            [sg.Image(data_base64=b64.MENU_OFF, key="_menu_icon_", tooltip="Show/Hide Menu", visible=True,
+                      pad=((0, 5), 2), enable_events=True)],
+            [sg.Image(data_base64=b64.POWER_ON, key="_use_cv_", visible=False, pad=((0, 5), 2),
+                      enable_events=True, tooltip="OpenCV On/Off")],
+            [sg.Image(data_base64=b64.CONTROLLER_OFF, key="_gamepad_connection_status_", visible=False,
+                      pad=((0, 5), 2), enable_events=True, tooltip="Controller IO")],
+            [sg.Image(data_base64=b64.TROPHY_OFF, key="_trophy_icon_", visible=False, pad=((0, 5), 2),
+                      enable_events=True, tooltip="Game Stats")],
+            [sg.Image(data_base64=b64.PIE_CHART_OFF, key="_pie_chart_icon_", visible=False, pad=((0, 5), 2),
+                      enable_events=True, tooltip="Data Analysis (Long-Term)")],
+            [sg.Image(data_base64=b64.CCTV_ON, key="_cctv_", visible=False, pad=((0, 5), 2),
+                      enable_events=True, tooltip="Show/Hide Video")],
+            [sg.Image(data_base64=b64.INFO_OFF, key="_info_icon_", visible=False, pad=((0, 5), 2),
+                      tooltip="XCV Info", enable_events=True)],
+            [sg.Image(data_base64=b64.EXIT_OFF, key="_EXIT_", visible=False, pad=(0, 0), enable_events=True,
+                      tooltip="Close XCV")],
+        ]
 
         _xcontroller_action_buttons = [
             [
@@ -318,6 +321,7 @@ class GUILayout:
         ]
 
         return [sg.Column(_gui_menu),
+
                 # sg.Column(_gui_display_info),
                 sg.Column(_xcontroller_dpad),
                 sg.Column(_xcontroller_other),
@@ -327,12 +331,10 @@ class GUILayout:
     def _layout(self):
         # define the window layout
         _full_layout = [
-            self._top_status(),
-            self._vert_spacer(),
-            self._video_frame(),
             self._vert_spacer(),
             self._detected_state(),
-            self._vert_spacer(),
+            self._detected_substate(),
+            self._video_frame(),
             self._gui_work_area(),
             self._output_console(),
             self._vert_spacer(),
