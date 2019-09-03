@@ -1,7 +1,7 @@
 
 **XCV**
 ===========
-🕹 XCV uses 👾OpenCV for 🐍Python to 👷‍operate a ✨magic 🤖robot 🎮controller
+XCV uses OpenCV for Python to operate a magic robot controller
 
 ----
 
@@ -27,7 +27,7 @@ By avoiding controller-driver nonsense and just hacking into controllers and con
    :alt: GitHub repo size
 
 
-:Authors: 👻
+:Authors: Boo
 :Version: 0.1.0
 :Documentation: https://xcv.readthedocs.io
 :History: HISTORY.rst_
@@ -210,11 +210,20 @@ cookiecutter_
 ________________
 This package was created with a version of this Cookiecutter project template
 
+_flaticons_
+_______________
+Icon images thanks to FlatIcon_, in particular users:
+
+- BogDanRosu_
+- FreePik_
 
 
 
 .. Links
 
+.. _FlatIcon: https://www.flaticon.com
+.. _FreePik: https://www.flaticon.com/authors/freepik
+.. _BogDanRosu: https://www.flaticon.com/authors/bogdan-rosu
 .. _Sentdex: https://github.com/Sentdex/pygta5
 .. _PyImageSearch: http://www.pyimagesearch.com 
 .. _imutils: https://github.com/jrosebr1/imutils
