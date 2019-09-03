@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 from loguru import logger
 from xcv.game import Game, Match
+from xcv.stats import GameSession, FifaSession, FifaMatch
 
 class TemplateMatcher:
     """Take in an OpenCV frame, process it, find templates a pop it out again.
@@ -71,13 +72,20 @@ class TemplateMatcher:
                 We ouput the visual information to `ogFrame`.
                 If we found our template we use `state`({self.state}) or `func`({self.func}) to set the appropriate `game_state` flags."""
 
-    def find_all(self):
-        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft)
-        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight)
-        self.find(cv2.imread("./templates/myTeamScoreboardName.png", 0), self.ROI_AwayTeamName, Game.found_scoreboard_team_is_away)
-        self.find(cv2.imread("./templates/myTeamScoreboardName.png", 0), self.ROI_HomeTeamName, Game.found_scoreboard_team_is_home)
-        self.find(cv2.imread("./templates/SquadManage.png", 0), self.ROI_SquadManage, Game.found_squad_manage_screen)
+    def find_all(self, fifa_match):
+        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft, fifa_match.set_side_left)
+        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight, fifa_match.set_side_right)
+        self.find(cv2.imread("./templates/myTeamScoreboardName.png", 0), self.ROI_AwayTeamName, fifa_match.set_away_team)
+        self.find(cv2.imread("./templates/myTeamScoreboardName.png", 0), self.ROI_HomeTeamName, fifa_match.set_home_team)
+        self.find(cv2.imread("./templates/SquadManage.png", 0), self.ROI_SquadManage, fifa_match.set_in_squad_menu)
 
+    def find_pending_game(self, fifa_session, fifa_match):
+        self.find(cv2.imread("./templates/SquadManage.png", 0), self.ROI_SquadManage, fifa_match.set_in_squad_menu)
+
+
+    def find_scoreboard_team_badge(self, fifa_session, fifa_match):
+        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft, fifa_match.set_side_left)
+        self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight, fifa_match.set_side_right)
 
     def find(self, template, roi, if_is_found=None):
 
@@ -115,7 +123,7 @@ class TemplateMatcher:
                 self.frame,
                 pt,
                 (pt[0] + _tplateW, pt[1] + _tplateH),
-                (0, 0, 255),
+                (0, 0, 0),
                 -1,
             )
 
