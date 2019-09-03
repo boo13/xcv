@@ -190,6 +190,9 @@ class FifaMatch:
     def set_in_squad_menu(self):
         self.fifa_session.set_in_menu()
 
+    def set_found_zero(self):
+        print("Found a 0!")
+
     def clock(self, print_it=False):
         if print_it:
             print(f"Fifa Match Elapsed: {self.fifa_match_clock.elapsed_no_microseconds()}")
@@ -261,21 +264,27 @@ class Scoreboard:
     home_score = 0
     away_score = 0
 
-    def find_score(self, fifa_session, fifa_match):
+    def __init__(self, fifa_match):
+        self.fifa_match = fifa_match
+
+    def find_score(self):
         return
 
-    def last_known_score(self, fifa_match):
+    def last_known_score(self):
         return
 
-    def find_clock(self, fifa_match):
+    def find_clock(self):
         return
 
-    def last_known_clock(self, fifa_match):
+    def last_known_clock(self):
         return
 
-    def home_away(self, fifa_match):
+    def home_away(self):
         return
 
+    def found_digit(self, found):
+        num, pos = found
+        print(f"num {num} at {pos}")
 
 # ======================
 class WinLossRecord:
