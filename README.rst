@@ -216,6 +216,7 @@ Icon images thanks to FlatIcon_, in particular users:
 
 - BogDanRosu_
 - FreePik_
+- Power Icon: dave-gandy_
 
 
 
@@ -223,6 +224,7 @@ Icon images thanks to FlatIcon_, in particular users:
 
 .. _FlatIcon: https://www.flaticon.com
 .. _FreePik: https://www.flaticon.com/authors/freepik
+.. _dave-gandy: https://www.flaticon.com/authors/dave-gandy
 .. _BogDanRosu: https://www.flaticon.com/authors/bogdan-rosu
 .. _Sentdex: https://github.com/Sentdex/pygta5
 .. _PyImageSearch: http://www.pyimagesearch.com 
