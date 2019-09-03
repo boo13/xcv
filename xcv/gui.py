@@ -140,10 +140,10 @@ class VideoCapture:
                 border_depth=0,
             )
 
-        self.cap = cv2.VideoCapture(0)
-        self.game_session.check_video_source_size(self.cap)
-        fps.start()
-        _loop = EventLoop(self.cap)
+        # self.cap = cv2.VideoCapture(0)
+        # self.game_session.check_video_source_size(self.cap)
+        # fps.start()
+        _loop = EventLoop()
         _loop.event_loop(gui_window=self.window)
 
     def scoreboard_processor(self, gray_frame, save=False):

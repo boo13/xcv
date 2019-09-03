@@ -2,6 +2,7 @@ import sys
 import cv2
 from loguru import logger
 
+from xcv.video_stream import VideoStream
 from xcv.print_info import print_package_info
 import xcv.base64_icons as b64
 from xcv.fps import fps
@@ -11,16 +12,16 @@ from xcv.version import XCV_VERSION
 
 from time import sleep
 
+
 class EventLoopError(Exception):
     pass
 
 
 class EventLoop:
-    def __init__(self, cap):
+    def __init__(self):
         self.game_session = GameSession()
         self.fifa_session = FifaSession(self.game_session)
         self.fifa_match = FifaMatch(self.fifa_session)
-        self.cap = cap
         self.frame = None
         self.show_menu = False
         self.show_gui_buttons = False
@@ -29,26 +30,28 @@ class EventLoop:
         self.show_about_info = False
         sleep(1)
 
+    def event_loop(self, gui_window=None):
+        vs = VideoStream(src=0).start()
+        fps.start()
 
-
-    def event_loop(self,  gui_window=None):
         while True:
+            self.frame = vs.read()
+            key = cv2.waitKey(1) & 0xFF
             fps.update()
-            ok, self.frame = self.cap.read()
 
-            if not ok:
-                raise EventLoopError("No Video Frame found")
-
-            self.gray_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+            # self.gray_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
             TemplateMatcher(self.frame).find_all(self.fifa_match)
 
-            # self.scoreboard_processor(gray_frame)
+            # # self.scoreboard_processor(gray_frame)
 
-            # self._event_checker(_event)
+            # # self._event_checker(_event)
             if gui_window is not None:
                 _event, _values = gui_window.Read(timeout=20, timeout_key="timeout")
                 self._event_checker(_event, gui_window)
                 self.gui_returns(gui_window)
+        fps.stop()
+        cv2.destroyAllWindows()
+        vs.stop()
 
     def gui_returns(self, gui_window):
 
@@ -65,7 +68,9 @@ class EventLoop:
         # gui_window.Element("_game_session_clock_").Update(self.game_session.clock())
         # gui_window.Element("_command_countdown_").Update(self.game_session.clock())
 
-        gui_window.Element("_detected_state_").Update(self.fifa_session.display_status())
+        gui_window.Element("_detected_state_").Update(
+            self.fifa_session.display_status()
+        )
         gui_window.Element("_home_away_").Update(self.fifa_match.show_home_or_away())
         # gui_window.Element("_elapsed_").Update(str_elapsed)
         gui_window.Element("_opencv_fps_").Update(fps.fps)
@@ -88,14 +93,18 @@ class EventLoop:
             self.show_menu = not self.show_menu
             gui_window.Element("_info_icon_").Update(visible=self.show_menu)
             gui_window.Element("_cctv_").Update(visible=self.show_menu)
-            gui_window.Element("_gamepad_connection_status_").Update(visible=self.show_menu)
+            gui_window.Element("_gamepad_connection_status_").Update(
+                visible=self.show_menu
+            )
             gui_window.Element("_trophy_icon_").Update(visible=self.show_menu)
             gui_window.Element("_pie_chart_icon_").Update(visible=self.show_menu)
             gui_window.Element("_EXIT_").Update(visible=self.show_menu)
 
         if _event == "_info_icon_":
             self.show_output_console = not self.show_output_console
-            gui_window.Element("_output_console_").Update(visible=self.show_output_console)
+            gui_window.Element("_output_console_").Update(
+                visible=self.show_output_console
+            )
             print_package_info()
 
         if _event == "_cctv_":
@@ -126,9 +135,13 @@ class EventLoop:
             gui_window.Element("_lb_").Update(visible=self.show_gui_buttons)
             gui_window.Element("_rb_").Update(visible=self.show_gui_buttons)
             if self.show_gui_buttons:
-                gui_window.Element("_gamepad_connection_status_").Update(data_base64=b64.CONTROLLER_ON)
+                gui_window.Element("_gamepad_connection_status_").Update(
+                    data_base64=b64.CONTROLLER_ON
+                )
             else:
-                gui_window.Element("_gamepad_connection_status_").Update(data_base64=b64.CONTROLLER_OFF)
+                gui_window.Element("_gamepad_connection_status_").Update(
+                    data_base64=b64.CONTROLLER_OFF
+                )
 
         if _event != "timeout":
             logger.debug(_event)
@@ -151,7 +164,7 @@ class EventLoop:
         """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
         fps.stop()
         logger.debug(f"fps: {fps.fps}  elapsed: {fps.elapsed}")
-        self.cap.release()
+        # self.cap.release()
         cv2.destroyAllWindows()
         window.Close()
         logger.debug("Nice! You closed the windows on exit.")
