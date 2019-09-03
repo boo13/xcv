@@ -6,6 +6,7 @@ import string
 from pathlib import Path
 
 # _________________ Local
+import xcv
 from xcv.template_matcher import TemplateMatcher
 import xcv.xcontroller
 from xcv.fps import fps
@@ -142,8 +143,8 @@ class VideoCapture:
         self.cap = cv2.VideoCapture(0)
         self.game_session.check_video_source_size(self.cap)
         fps.start()
-        _loop = EventLoop()
-        _loop.event_loop(self.cap, self.window)
+        _loop = EventLoop(self.cap)
+        _loop.event_loop(gui_window=self.window)
 
     def scoreboard_processor(self, gray_frame, save=False):
         _clock_y1 = 92
