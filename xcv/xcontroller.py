@@ -15,11 +15,10 @@ from time import sleep
 from dataclasses import dataclass
 from typing import List
 
-from settings import serial_session
-from commands import XcvError
+from xcv.settings import serial_session
 
-import cli
-from emojis import HAZARD
+import xcv.cli
+from xcv.emojis import HAZARD
 
 # @dataclass(order=True)
 # class Buttons:
