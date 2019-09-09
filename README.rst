@@ -98,11 +98,6 @@ Menu Tracking
 Hardware
 =============
 
-.. image:: blog/images/Pins_Image.png
-   :alt: Pins_Image
-   :width: 200pt
-
-
 CaptureCard_
 
 I use this to send a videostream into OpenCV. It's not the greatest, I tried others that didn't work, this isn't an affiliate-link, so don't take my word for it. Originally, I used the python package `streamlink` to feed the data in via Twitch or Mixer(xbox's slightly-faster version of Twitch), but I found the lag time tough to work with as it created more oppurtunities for miscommunication and visual artifacting. I will probably, eventually, try and reimplement the ability to stream in the videos once I get some functions to handle timing of commands. That way, I'll just reduce the frequency of the command sends to something like once every 10 seconds. 
@@ -125,58 +120,13 @@ Options:
   --debug                              List USB ports and check the serial connection
 
 
-Project Structure
-=================
-
-**Step 1 - __init__.py**
-  - assert python version >= 3.7
-  - ``__version__, __author__, __email__``
-  - I still don't really understand ``__all__``
-
-
-**Step 2 - __main__.py**
-  - ``startTime``
-
-**Step 3 - /cli/cli.py**
-  - ``main_input()``
-  - ``countdown(secs)``
-  - Also: if ``WINDOWS`` emoji-handling
-
-
-**Step 4 - /game/game.py**
-  - ``class Game``
-  - ``class GameClock(Game)``
-  - ``main()`` - This is old code, need to refactor
-
-**Step 5 - /xcontroller/xcontroller.py**
-  - ``serial_send``
-  - ``single_btn_press``
-  - @dataclass ``Buttons``
-  - @dataclass ``Settings``
-    * ``timerFlag``
-    * ``verbose``
-
-
-**commands.py**
-  - XcvError
-  - HUD
-
-**constants.py**
-  - ``SERIAL_BAUD, WIN_DEFAULT_SERIAL_PORT, SERIAL_PORT``  etc.
-
 TO-DO
 =====
-
-- [ ] **GUI** - Re-implement HUD
-- [ ] **GAMEEE** Re-implement OpenCV tracking/template matching
-- [ ] **GUI** - Implement new, framed, GUI (using PysimpleGui)
-- [ ] **GUI** - Implement Button Press Received by Game Controller script (via Martin O'Hanlon)
-- [ ] **README** - Add more screenshots
-- [ ] **TESTS** - Get tests working again
+- [ ] **GAME** - In-Game Clock Tracking (implement fastai model)
+- [ ] **GAME** - In-Game Score Tracking
+- [ ] **GAME** - In-Game Player Tracking
 - [ ] **CLI** - Implement Dry-Run
 - [ ] **CLI** - Fix problem with Start button not responding (check wiring)
-- [ ] **GAME** - In-Game Player Tracking
-
 
 Thanks
 =======
@@ -210,7 +160,7 @@ cookiecutter_
 ________________
 This package was created with a version of this Cookiecutter project template
 
-_flaticons_
+flaticons_
 _______________
 Icon images thanks to FlatIcon_, in particular users:
 
