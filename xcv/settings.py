@@ -38,7 +38,7 @@ class serial_api:
     """Serial API for handling a list of possible ports (class contains no data)
 
 
-        :attribute port: return current serial port
+    Attribute port: return current serial port
         :attribute BAUD: defaults to 115200
         :attribute btn: single value change
         :attribute buttons: multiple value changes

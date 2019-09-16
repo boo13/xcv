@@ -5,21 +5,30 @@ from xcv.game import Game, Match
 from xcv.stats import GameSession, FifaSession, FifaMatch
 from xcv.video_stream import VideoStream
 
+#TODO: Try using a namedtuple for ROI's?
+
 
 # class ROI:
 #     def __init__(self, x1, y1, x2, y2):
 #         return np.array([[(30, 400), (60, 400), (60, 375), (30, 375)]])
 
+roi_dict = {
+    "HomeTeamScore":(110, 101, 123, 92),
+}
+
 class TemplateMatcher:
     """Take in an OpenCV frame, process it, find templates a pop it out again.
 
-        :param template: template image we're going to search for
-        :param ROI: region-of-interest to search for that template in
-        :param cvFrame: the maluable computer vision frame
-        :param ogFrame: the original frame, we use it to display information back to the user
-        :option func: a function to run if we do find that template (e.g. we are defending the left side of the screen)
-        :param threshold (float): opencv param for template threshold
-        :option state (int): an optional flag that will be switched if we found our template (a simplified version of `func`)
+        Parameters:
+            template: template image we're going to search for
+            ROI: region-of-interest to search for that template in
+            cvFrame: the maluable computer vision frame
+            ogFrame: the original frame, we use it to display information back to the user
+            threshold (float): opencv param for template threshold (default=0.8)
+
+        Options:
+            func: a function to run if we do find that template (e.g. we are defending the left side of the screen)
+
         """
 
     def __init__(self, video_stream) -> None:
@@ -126,13 +135,15 @@ class TemplateMatcher:
         self.clock = np.array([[(484, 81), (506, 81), (506, 94), (484, 94)]])
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.template}), {self.ROI}, {self.cvFrame}, {self.ogFrame}, threshold={self.threshold}, state={self.state}, func={self.func})"
+        return f"{self.__class__.__name__}(self.template), {self.ROI}, self.cvFrame, self.ogFrame, threshold={self.threshold}, state={self.state}, func={self.func})"
 
     def __str__(self):
         return f"""
                 Matching `template` in `ROI` of `cvFrame`, beyond the chosen `threshold`: {self.threshold}.
                 We ouput the visual information to `ogFrame`.
-                If we found our template we use `state`({self.state}) or `func`({self.func}) to set the appropriate `game_state` flags."""
+                
+                If we found our template we use `state`({self.state})
+                or `func`({self.func}) to set the appropriate `game_state` flags."""
 
     def useless_function(self, num):
         self.game_clock_secs_ones = num
@@ -148,9 +159,9 @@ class TemplateMatcher:
                   fifa_match.set_home_team)
         self.find(cv2.imread("./templates/SquadManage.png", 0), self.ROI_SquadManage, fifa_match.set_in_squad_menu)
 
-        for n in range(10):
-            self.find(cv2.imread(f"./templates/clock/{n}.png", 0), self.roi_game_clock_digit1, scoreboard.found_digit,
-                      (n, 1))
+        # for n in range(10):
+        #     self.find(cv2.imread(f"./templates/clock/{n}.png", 0), self.roi_game_clock_digit1, scoreboard.found_digit,
+        #               (n, 1))
 
     def find_pending_game(self, fifa_session, fifa_match):
         self.find(cv2.imread("./templates/SquadManage.png", 0), self.ROI_SquadManage, fifa_match.set_in_squad_menu)

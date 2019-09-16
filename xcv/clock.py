@@ -4,6 +4,10 @@ from loguru import logger
 
 
 class Clock:
+    """Simple wrapper of datetime.
+    
+    Delivers pretty-string versions of formatted timedeltas.
+    """
     def __init__(self, timezone="US/Eastern"):
         self.timezone = timezone
         self._start = self.now()

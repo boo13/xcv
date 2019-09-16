@@ -1,6 +1,7 @@
+# FPS class is mostly courtesy of imutils
+
 import datetime
 
-# FPS class is mostly courtesy of imutils
 class FPS:
     """Frames Per Second for OpenCV Videos. 
     Code is courtesy of https://github.com/jrosebr1/imutils, with a few minor changes.
@@ -47,10 +48,9 @@ class FPS:
     def str_elapsed(self):
         try:
             mins, secs = divmod(round((self._end - self._start).total_seconds()), 60)
-            print("here")
             return '{:02d}:{:02d}'.format(mins, secs)
         except:
-            pass
+            return
 
     @property
     def fps(self):
@@ -58,7 +58,7 @@ class FPS:
         try:
             return round(self._numFrames / self.elapsed)
         except ZeroDivisionError:
-            pass
+            return
 
 
 fps = FPS()

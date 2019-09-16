@@ -1,10 +1,5 @@
 import os
 from time import sleep
-from dataclasses import dataclass
-from textwrap import TextWrapper
-
-wrapper = TextWrapper()
-
 import click
 from loguru import logger
 
@@ -24,7 +19,6 @@ from xcv.emojis import (
 )
 
 
-
 # Main CLI
 _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
 
@@ -34,10 +28,13 @@ _btnList = ["A", "B", "X", "Y", "S", "l", "r", "w", "a", "s", "d", "o", "p"]
 @click.option(
     "--port",
     default=xcv.settings.serial_api.port,
-    help=f"Controller port, default is {xcv.settings.serial_api.port}",
+    help=f"Controller port, default is 0",
 )
-@click.option("--autopilot", "-auto", is_flag=True, help="Initiate xcv sequence")
-@click.option("--push", type=click.Choice(_btnList), help="Enter button to push")
+@click.option(
+    "--push",
+    type=click.Choice(_btnList),
+    help="Enter character code for button to push",
+)
 @click.option("--gui", is_flag=True, help="Show the GUI")
 @click.option(
     "--debug", is_flag=True, help="List USB ports and check the serial connection"
@@ -53,14 +50,28 @@ def main_input(
 ):
     """XCV uses OpenCV to push controller buttons with PySerial.
 
-    The project's goal is to make OpenCV experiments easier, by avoiding controller-driver nonsense and just hacking into controllers and connecting the buttons to an arduino/teensy/whatever. On the arduino/teensy side of things, we then just parse out the commands and send some high/low signals to I/O pins (other bits and bobs to handle all the I/O) and then a fancy display output to make things more fancy.
+    The project's goal is to make OpenCV experiments easier.
+    This app avoids all controller-driver nonsense and just
+    hacks into the gaming controller, and connects the buttons
+    to an arduino/teensy/whatever. 
+    
+    On the arduino/teensy side of things, we then just parse out
+    the commands and send some high/low signals to I/O pins.
+    
+    Joystick/trigger values (potentiometers on the controller) are
+    not implemented yet. Intending to use 10k digi-pots to handle.
 
     \n
-    \n\t _______________________ Xbox Commands _______________________                               
-    \n\t ⒮ tart   ⒳ box    s⒠ lect Ⓐ = A  Ⓑ = B  Ⓧ = X  Ⓨ =Y                               
-    \n\t      DU = w   
-    \n\tDL = a      DR = d     Ⓛ Stick      Ⓡ Stick
-    \n\t      DD = s 
+    \n\t ____________ Xbox Commands ____________                               
+    \n\t        ⒮ tart   ⒳ box    s⒠ lect 
+    \n
+    \n\t        Ⓐ = A  Ⓑ = B  Ⓧ = X  Ⓨ =Y                               
+    \n
+    \n\t                 DU = w   
+    \n\t           DL = a      DR = d     
+    \n\t                 DD = s 
+    \n
+    \n\t          Ⓛ Stick      Ⓡ Stick
     """
 
     if verbose:
@@ -80,12 +91,10 @@ def main_input(
 
         xcv.xcontroller.single_btn_press(push)
 
-    elif autopilot:
-        print("WIP feature")
-
     elif gui:
-        from xcv.gui import VideoCapture
-        VideoCapture()
+        from xcv.gui import GUI
+
+        GUI()
 
     else:
         click.echo(f"{HAZARD}No options passed. Try --help or --gui\n")

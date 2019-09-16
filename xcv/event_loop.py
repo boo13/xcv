@@ -21,49 +21,68 @@ class GuiButtonEventChecker:
     def make(self):
         return
 
+class GuiFindAndUpdate:
+    pass
+
 class EventLoop:
+    """Take video frames from xcv.VideoStream, initiate opencv processing, then send resulting commands to xcv.Controller.
+
+
+    If the GUI is enabled, we also display it and handle those button command, speficially, updating the current data to the GUI.
+
+    Arguments:
+            gui_window  --  PySimpleGUI window object (optional)
+
+
+    FIXME: Clock processing and resulting FPS problem
+    TODO: Add video source switching to streamlink
+    """
+
     def __init__(self):
+        # Create instances of the game sessions
         self.game_session = GameSession()
         self.fifa_session = FifaSession(self.game_session)
         self.fifa_match = FifaMatch(self.fifa_session)
         self.scoreboard = Scoreboard(self.fifa_match)
+        
+        # Initialize main frame var
         self.frame = None
+
+        # Initialize default GUI values (all false, except show_video and use_cv)
         self.use_cv = True
+        self.show_video = True
         self.show_menu = False
         self.show_game_stats = False
         self.show_gui_buttons = False
         self.show_output_console = False
-        self.show_video = True
         self.show_about_info = False
+        
+        # Give the camera et al time to warm up
         fps.start()
         sleep(1)
-
-
+        self.vs = VideoStream().start()
+        sleep(1)
 
     def event_loop(self, gui_window=None):
-        vs = VideoStream(src=0).start()
 
         while True:
-            self.frame = vs.read()
-            key = cv2.waitKey(1) & 0xFF
+            self.frame = self.vs.read()
+            # key = cv2.waitKey(1) & 0xFF
             fps.update()
 
-            if key == ord('q'):
-                break
-
             if self.use_cv:
-                TemplateMatcher(vs).find_all(self.fifa_match, self.scoreboard)
+                TemplateMatcher(self.vs).find_all(self.fifa_match, self.scoreboard)
 
             # # self._event_checker(_event)
             if gui_window is not None:
                 _event, _values = gui_window.Read(timeout=20, timeout_key="timeout")
                 self._event_checker(_event, gui_window)
-                self.gui_returns(gui_window)
+                self._update_gui(gui_window)
         fps.stop()
         cv2.destroyAllWindows()
         vs.stop()
 
-    def gui_returns(self, gui_window):
+    def _update_gui(self, gui_window):
 
         mins, secs = divmod(fps.elapsed, 60)
         str_elapsed = "{:02d}:{:02d}".format(mins, secs)
@@ -83,7 +102,6 @@ class EventLoop:
         gui_window.Element("_opencv_fps_").Update(fps.fps)
         gui_window.Element("_opencv_fps_").Update(visible=self.show_output_console)
         self._update_fps_icon(gui_window)
-        # self.window.Element("imagetab_image").Update(data=imgbytes)
 
     def _update_fps_icon(self, gui_window):
         if fps.fps > 19:
@@ -103,6 +121,8 @@ class EventLoop:
         if self.show_video:
             gui_window.Element("_cctv_").Update(data_base64=b64.CCTV_ON)
             imgbytes = cv2.imencode(".png", self.frame)[1].tobytes()
+            # imgbytes = cv2.imencode(".png", UnthreadedVideoStream()
+            #                         )[1].tobytes()
             gui_window.Element("_video_frame_").Update(data=imgbytes)
         else:
             gui_window.Element("_cctv_").Update(data_base64=b64.CCTV_OFF)
@@ -200,11 +220,10 @@ class EventLoop:
         return _values, frame
 
     def close_all(self, window):
-        """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows"""
+        """Release the camera feed, close all OpenCV windows and close all pysimpleGUI windows."""
         fps.stop()
         logger.debug(f"fps: {fps.fps}  elapsed: {fps.elapsed}")
         # self.cap.release()
         cv2.destroyAllWindows()
         window.Close()
         logger.debug("Nice! You closed the windows on exit.")
-
