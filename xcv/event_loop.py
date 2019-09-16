@@ -21,9 +21,6 @@ class GuiButtonEventChecker:
     def make(self):
         return
 
-class GuiFindAndUpdate:
-    pass
-
 class EventLoop:
     """Take video frames from xcv.VideoStream, initiate opencv processing, then send resulting commands to xcv.Controller.
 

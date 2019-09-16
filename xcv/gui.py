@@ -3,6 +3,7 @@ import os
 import random
 import string
 from pathlib import Path
+import numpy as np
 
 # _________________ Local
 import xcv.base64_icons as b64
@@ -61,59 +62,59 @@ class GUI:
 
         EventLoop().event_loop(gui_window=self.window)
 
-    def scoreboard_processor(self, gray_frame, save=False):
-        _clock_y1 = 92
-        _clock_y2 = 100
+    # def scoreboard_processor(self, gray_frame, save=False):
+    #     _clock_y1 = 92
+    #     _clock_y2 = 100
 
-        _digit1_x1 = 36
-        _digit1_x2 = 41
-        _digit2_x1 = 41
-        _digit2_x2 = 46
-        _digit3_x1 = 49
-        _digit3_x2 = 54
-        _digit4_x1 = 54
-        _digit4_x2 = 59
+    #     _digit1_x1 = 36
+    #     _digit1_x2 = 41
+    #     _digit2_x1 = 41
+    #     _digit2_x2 = 46
+    #     _digit3_x1 = 49
+    #     _digit3_x2 = 54
+    #     _digit4_x1 = 54
+    #     _digit4_x2 = 59
 
-        _score_y1 = 92
-        _score_y2 = 101
+    #     _score_y1 = 92
+    #     _score_y2 = 101
 
-        _score1_x1 = 117
-        _score1_x2 = 123
+    #     _score1_x1 = 117
+    #     _score1_x2 = 123
 
-        _score2_x1 = 128
-        _score2_x2 = 134
-        roi_game_clock_digit1 = gray_frame[_clock_y1:_clock_y2, _digit1_x1:_digit1_x2]
+    #     _score2_x1 = 128
+    #     _score2_x2 = 134
+    #     roi_game_clock_digit1 = gray_frame[_clock_y1:_clock_y2, _digit1_x1:_digit1_x2]
 
-        roi_game_clock_digit2 = gray_frame[_clock_y1:_clock_y2, _digit2_x1:_digit2_x2]
+    #     roi_game_clock_digit2 = gray_frame[_clock_y1:_clock_y2, _digit2_x1:_digit2_x2]
 
-        roi_game_clock_digit3 = gray_frame[_clock_y1:_clock_y2, _digit3_x1:_digit3_x2]
-        roi_game_clock_digit4 = gray_frame[_clock_y1:_clock_y2, _digit4_x1:_digit4_x2]
+    #     roi_game_clock_digit3 = gray_frame[_clock_y1:_clock_y2, _digit3_x1:_digit3_x2]
+    #     roi_game_clock_digit4 = gray_frame[_clock_y1:_clock_y2, _digit4_x1:_digit4_x2]
 
-        roi_game_score1_digit1 = gray_frame[_score_y1:_score_y2, _score1_x1:_score1_x2]
-        roi_game_score2_digit1 = gray_frame[_score_y1:_score_y2, _score2_x1:_score2_x2]
+    #     roi_game_score1_digit1 = gray_frame[_score_y1:_score_y2, _score1_x1:_score1_x2]
+    #     roi_game_score2_digit1 = gray_frame[_score_y1:_score_y2, _score2_x1:_score2_x2]
 
-        if save:
-            filename = random_string() + ".png"
+    #     if save:
+    #         filename = random_string() + ".png"
 
-            cv2.imwrite(
-                os.path.join(self.clock_image_path, filename), roi_game_clock_digit1
-            )
-            cv2.imwrite(
-                os.path.join(self.clock_image_path, filename), roi_game_clock_digit2
-            )
-            cv2.imwrite(
-                os.path.join(self.clock_image_path, filename), roi_game_clock_digit3
-            )
-            cv2.imwrite(
-                os.path.join(self.clock_image_path, filename), roi_game_clock_digit4
-            )
+    #         cv2.imwrite(
+    #             os.path.join(self.clock_image_path, filename), roi_game_clock_digit1
+    #         )
+    #         cv2.imwrite(
+    #             os.path.join(self.clock_image_path, filename), roi_game_clock_digit2
+    #         )
+    #         cv2.imwrite(
+    #             os.path.join(self.clock_image_path, filename), roi_game_clock_digit3
+    #         )
+    #         cv2.imwrite(
+    #             os.path.join(self.clock_image_path, filename), roi_game_clock_digit4
+    #         )
 
-            cv2.imwrite(
-                os.path.join(self.score_image_path, filename), roi_game_score1_digit1
-            )
-            cv2.imwrite(
-                os.path.join(self.score_image_path, filename), roi_game_score2_digit1
-            )
+    #         cv2.imwrite(
+    #             os.path.join(self.score_image_path, filename), roi_game_score1_digit1
+    #         )
+    #         cv2.imwrite(
+    #             os.path.join(self.score_image_path, filename), roi_game_score2_digit1
+    #         )
         #
         # cropped_imgbytes = cv2.imencode(".png", roi_game_clock_digit1)[1].tobytes()
         # cropped_imgbytes2 = cv2.imencode(".png", roi_game_clock_digit2)[1].tobytes()
