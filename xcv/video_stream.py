@@ -3,26 +3,42 @@ from threading import Thread, Lock
 import cv2
 from loguru import logger
 
-class VideoStreamError(Exception):
-    pass
-
 @logger.catch
 class VideoStream:
     """Create a thread and read frames from video source.
+        
+    If we can't find video on the hardware camera, try streamlink.
 
     Keyword arguments:
         src -- a camera or video, defaults to hardware-connected webcam (default 0)
+        fps -- (float) (default 30.0)
+        streamlink_url -- (default https://www.mixer.com/)
+        streamlink_quality -- useful values include 'audio_only', '480p', 'best', 'worst' (default '480p')
+
     """
 
-    def __init__(self, src=0):
-        """Initialize the video camera stream and read the first frame from the stream."""
+    def __init__(self, src=0, fps=30.0, use_streamlink_backup=True, streamlink_url="https://www.twitch.tv/coinsmaffia", streamlink_quality='480p'):
+        """Initialize the video camera stream and read the first frame from the stream to test it."""
         logger.debug(f"Setting VideoStream to: {src}")
 
         self.stream = cv2.VideoCapture(src)
         (_ok, self.frame) = self.stream.read()
 
         if not _ok:
-            raise VideoStreamError("No video input found using source")
+            logger.warning("No video input found using source")
+            logger.debug("Trying streamlink source...")
+            
+            import streamlink
+
+            streams = streamlink.streams(streamlink_url)
+
+            if streams:
+                logger.debug(f"Streamlink found the following streams at {streamlink_url}\n\n{streams}\n")
+                stream_url = streams[streamlink_quality].to_url()
+            else:
+                raise VideoStreamError("No streams were available")
+
+            self.stream = cv2.VideoCapture(stream_url)
 
         self.grabbed = None
         self.thread = None
@@ -62,6 +78,9 @@ class VideoStream:
         self.started = False
         self.thread.join()
 
+
+class VideoStreamError(Exception):
+    pass
 
 if __name__ == "__main__":
     vs = VideoStream().start()
