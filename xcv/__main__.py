@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import cli
 import sys
 
