@@ -18,16 +18,6 @@ import sys
 class XcvError(Exception):
     pass
 
-class serial_port:
-    """Iterator"""
-    def __iter__(self):
-        self.a = 1
-        return self
-
-    def __next__(self):
-        x = self.a
-        self.a += 1
-        return x
 
 class serial_api:
     """Serial API for handling a list of possible ports (class contains no data)

@@ -17,6 +17,32 @@ import sys
 class SerialApiError(Exception):
     pass
 
+serial_session = serial_api()
+
+@logger.catch
+class serial_port:
+    """Iterator"""
+    def __init__(self):
+        if sys.platform.startswith("win"):
+            self._port = "COM17"
+            self._ports = ["COM18", "COM19", "COM20", "COM21"]
+        elif sys.platform.startswith("darwin"):
+            self._port = "/dev/cu.SLAB_USBtoUART"
+            self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
+        else:
+            self._port = input("Enter Serial Port: ")
+
+    def __iter__(self):
+        i = 0
+        self.port = self._ports[i]
+        return self
+
+    def __next__(self):
+        x = self.port
+        i += 1
+        return x
+
+
 @logger.catch
 class SerialApi:
     """Serial API for handling a list of possible ports (class contains no data)
@@ -83,9 +109,6 @@ class SerialApi:
 
             FYI: The arduino script uses the [brackets] on the string as the
             start/end markers
-
-            - Probably won't ever really bother with fixing-up the arduino
-            script too much, unless others feel compelled.
             """
 
         # In case things go bad
@@ -109,7 +132,3 @@ class SerialApi:
             raise SerialApiError(serial_error)
         except Exception as e:
             raise SerialApiError(f"\n\n{HAZARD} I have no idea - CHECK the logs\n\n{str(e)}")
-
-    #
-
-serial_session = serial_api()
