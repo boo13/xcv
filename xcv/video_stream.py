@@ -17,7 +17,7 @@ class VideoStream:
 
     """
 
-    def __init__(self, src=0, fps=30.0, use_streamlink_backup=True, streamlink_url="https://www.twitch.tv/coinsmaffia", streamlink_quality='480p'):
+    def __init__(self, src=0, fps=30.0, use_streamlink_backup=True, streamlink_url="https://www.twitch.tv/PistolPete2506", streamlink_quality='480p'):
         """Initialize the video camera stream and read the first frame from the stream to test it."""
         logger.debug(f"Setting VideoStream to: {src}")
 

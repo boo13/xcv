@@ -8,6 +8,6 @@ my_team_badge_path = path / "myTeamBadge.jpg"
 print(path.exists())
 print(my_team_badge_path.is_file())
 
-my_team_badge = cv2.imread(my_team_badge_path, 0)
+my_team_badge = cv2.imread(my_team_badge_path)
 
 # cv2.imshow("image", my_team_badge)

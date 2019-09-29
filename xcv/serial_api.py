@@ -14,6 +14,7 @@ from xcv.emojis import HAZARD
 
 import sys
 
+
 class SerialApiError(Exception):
     pass
 
@@ -22,15 +23,22 @@ serial_session = serial_api()
 @logger.catch
 class serial_port:
     """Iterator"""
+
     def __init__(self):
+        WIN_WHITE_LIST = ["COM17", "COM18", "COM19", "COM20", "COM21"]
+        MAC_WHITE_LIST = ["/dev/cu.SLAB_USBtoUART", "/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
+        BLACK_LIST = ["/dev/cu.Bluetooth", "/dev/cu.rara"]
+        HWID_WHITE_LIST = []
+        HWID_BLACK_LIST = []
+
         if sys.platform.startswith("win"):
-            self._port = "COM17"
-            self._ports = ["COM18", "COM19", "COM20", "COM21"]
+            self._ports = WIN_WHITE_LIST
         elif sys.platform.startswith("darwin"):
-            self._port = "/dev/cu.SLAB_USBtoUART"
-            self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
+            self._ports = MAC_WHITE_LIST
         else:
-            self._port = input("Enter Serial Port: ")
+            self._ports = [input("Enter Serial Port: ")]
+
+        self._port = self._ports[0]
 
     def __iter__(self):
         i = 0
@@ -41,6 +49,27 @@ class serial_port:
         x = self.port
         i += 1
         return x
+
+    def port_add(self, ser):
+        self._ports.append(ser)
+
+    def port_set(self, ser):
+        self._port = ser
+
+    def print_ports(self):
+        [print(_sp) for _sp in self._ports]
+
+    def list_available_ports(self):
+        import serial.tools.list_ports
+
+        ports = serial.tools.list_ports.comports()
+
+        for port, desc, hwid in sorted(ports):
+            if desc != "n/a":
+                logger.debug(f"\n\t{port}\n\t  DESC: {desc}\n\t  HWID: {hwid}")
+            else:
+                for b in BLACK_LIST if not port.startswith(b):
+                    logger.debug("\t", port)
 
 
 @logger.catch
@@ -54,38 +83,21 @@ class SerialApi:
             buttons: multiple value changes
     """
 
-    def __init__(self):
-
-        self.BAUD = 115200
-
-        if sys.platform.startswith("win"):
-            self._port = "COM17"
-            self._ports = ["COM18", "COM19", "COM20", "COM21"]
-        elif sys.platform.startswith("darwin"):
-            self._port = "/dev/cu.SLAB_USBtoUART"
-            self._ports = ["/dev/cu.usbmodem5821674", "/dev/cu.usbmodem5821675"]
-        else:
-            self._port = input("Enter Serial Port: ")
+    self.BAUD = 115200
 
     @property
     def port(self):
         return self._port
 
     def port_next(self):
-        try:
-            self._port = self._ports.pop()
-        except IndexError:
-            logger.warning(("No other known serial ports, returning the last port"))
-        return self._port
+        p = serial_port()
+        p.next()
+        # try:
+        #     self._port = self._ports.pop()
+        # except IndexError:
+        #     logger.warning(("No other known serial ports, returning the last port"))
+        # return self._port
 
-    def port_add(self, ser):
-        self._ports.append(ser)
-
-    def port_set(self, ser):
-        self._port = ser
-
-    def print_ports(self):
-        [print(_sp) for _sp in self._ports]
 
     def send(self, **kwargs):
         """Convert button/stick command value to expected list, `buttons`.
@@ -94,21 +106,22 @@ class SerialApi:
         print(kwargs)
 
     def _check_pending_send(self, buttons):
+        """ String order matters!
+            ⚠️ CAREFUL ...The command string is sent to the arduino script, 
+            which parses it out, but it's hardcoded.
+
+            Also, the arduino script uses the [brackets] on the string as the
+            start/end markers
+        """
         pass
 
     def _send_pending_send(self, checkedbuttons):
+        """
+        """
         pass
 
     def serial_send(self, btns_sending):
-        """🎯 Send the commands as a dict converted into a list, 
-            converted into a string.
-
-            ⚠️ CAREFUL - string order matters!
-            ...The command string is sent to the arduino script, which parses 
-            it out, but it's hardcoded.
-
-            FYI: The arduino script uses the [brackets] on the string as the
-            start/end markers
+        """Send the commands as a dict converted into a list, converted into a string.
             """
 
         # In case things go bad

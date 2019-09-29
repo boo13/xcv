@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+# import pytesseract
 from loguru import logger
 from xcv.game import Game, Match
 from xcv.stats import GameSession, FifaSession, FifaMatch
@@ -54,6 +55,12 @@ class TemplateMatcher:
 
     def find_all(self, fifa_match, scoreboard):
         self.frame = self.video_stream.read()
+        testing_it_out_frame = self.frame.copy()
+        
+        # ret_str = pytesseract.image_to_string(self.frame, lang=None, config='tessedit_char_whitelist=0123456789', timeout=10)
+
+        # logger.debug(f"Pytesseract found: {ret_str}")
+
         # self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeLeft, fifa_match.set_side_left)
         # self.find(cv2.imread("./templates/myTeamBadge.jpg", 0), self.ROI_TeamBadgeRight, fifa_match.set_side_right)
         # self.find(cv2.imread("./templates/myTeamScoreboardName.png", 0), self.ROI_AwayTeamName,

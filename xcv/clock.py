@@ -36,5 +36,5 @@ if __name__ == "__main__":
 
     c = Clock()
     sleep(2)
-    print(c.elapsed())
-    print(c.elapsed_no_microseconds())
+    print(f"Elapsed: {c.elapsed()}")
+    print(f"Elapsed no microseconds: {c.elapsed_no_microseconds()}")

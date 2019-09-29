@@ -1,3 +1,4 @@
+import os
 import sys
 import cv2
 from loguru import logger
@@ -10,6 +11,7 @@ from xcv.template_matcher import TemplateMatcher
 from xcv.stats import GameSession, FifaSession, FifaMatch, Scoreboard
 
 from time import sleep
+from pathlib import Path
 
 class EventLoopError(Exception):
     pass
@@ -53,6 +55,9 @@ class EventLoop:
         self.show_gui_buttons = False
         self.show_output_console = False
         self.show_about_info = False
+
+        self.path = Path()
+        self.output_path = self.path / "output"
         
         # Give the camera et al time to warm up
         fps.start()
@@ -60,12 +65,17 @@ class EventLoop:
         self.vs = VideoStream().start()
         sleep(1)
 
-    def event_loop(self, gui_window=None):
+    def event_loop(self, gui_window=None, save_screenshots=True):
 
         while True:
             self.frame = self.vs.read()
             # key = cv2.waitKey(1) & 0xFF
             fps.update()
+
+            if save_screenshots:
+                # filename = random_string() + ".png"
+                cv2.imwrite(os.path.join(self.output_path, "testing_output_01.png"), self.frame)
+
 
             if self.use_cv:
                 TemplateMatcher(self.vs).find_all(self.fifa_match, self.scoreboard)
