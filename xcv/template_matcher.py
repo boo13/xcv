@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 # import pytesseract
 from loguru import logger
-from xcv.game import Game, Match
+# from xcv.game import Game, Match
 from xcv.stats import GameSession, FifaSession, FifaMatch
 from xcv.video_stream import VideoStream
 from xcv.roi import ROI
