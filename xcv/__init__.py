@@ -4,6 +4,7 @@ XCV - Using PySerial and Opencv-Python to take a video feed and send commands to
 """
 __author__ = """Boo13"""
 __email__ = "boo13bot@gmail.com"
+__version__ = "0.1.4"
 
 import sys
 
