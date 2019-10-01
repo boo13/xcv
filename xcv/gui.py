@@ -9,6 +9,7 @@ from dataclasses import dataclass
 
 # _________________ Local  _________________
 import xcv
+from xcv.clock import Clock
 from xcv.emojis import BOO
 from xcv.stats import GameSession, FifaSession, FifaMatch
 from xcv.video_stream import VideoStream
@@ -555,6 +556,7 @@ class EventLoop:
 
         # Initialize main frame var
         self.frame = None
+        self.frame_num = 0
 
         # Initialize default GUI values (all false, except show_video and use_cv)
         self.use_cv = True
@@ -567,12 +569,16 @@ class EventLoop:
 
         self.path = Path()
         self.output_path = self.path / "output"
+        self.session_output_path = self.output_path / random_string()
+        os.mkdir(self.session_output_path)
 
         # Give the camera et al time to warm up
         fps.start()
         sleep(1)
         self.vs = VideoStream().start()
         sleep(1)
+
+        self.screenshot_timer = Clock()
 
     def event_loop(self, gui_window=None, save_screenshots=True):
 
@@ -581,9 +587,12 @@ class EventLoop:
             # key = cv2.waitKey(1) & 0xFF
             fps.update()
 
-            if save_screenshots:
-                # filename = random_string() + ".png"
-                cv2.imwrite(os.path.join(self.output_path, "testing_output_01.png"), self.frame)
+            if save_screenshots and self.screenshot_timer.elapsed_seconds >= 30:
+                filename = str(self.frame_num) + ".png"
+                logger.info(f"Saving screenshot: {filename} at {Clock().now()}")
+                cv2.imwrite(os.path.join(self.session_output_path, filename), self.frame)
+                self.frame_num += 1
+                self.screenshot_timer.reset()
 
             if self.use_cv:
                 TemplateMatcher(self.vs).find_all(self.fifa_match, self.scoreboard)

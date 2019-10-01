@@ -15,15 +15,18 @@ class Clock:
     def now(self):
         return datetime.now(tz=pytz.UTC).astimezone(pytz.timezone(self.timezone))
 
+    @property
     def elapsed(self):
         return self.now() - self._start
 
+    @property
     def elapsed_no_microseconds(self):
-        _e = self.elapsed()
+        _e = self.elapsed
         return _e - timedelta(microseconds=_e.microseconds)
 
+    @property
     def elapsed_seconds(self):
-        _e = self.elapsed()
+        _e = self.elapsed
         return int(_e.total_seconds())
 
     def reset(self):
@@ -36,5 +39,6 @@ if __name__ == "__main__":
 
     c = Clock()
     sleep(2)
-    print(f"Elapsed: {c.elapsed()}")
-    print(f"Elapsed no microseconds: {c.elapsed_no_microseconds()}")
+    print(f"Elapsed: {c.elapsed}")
+    print(f"Elapsed Seconds: {c.elapsed_seconds}")
+    print(f"Elapsed no microseconds: {c.elapsed_no_microseconds}")
