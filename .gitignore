@@ -10,6 +10,7 @@ xcv_env/*
 
 # Output files
 data/Output/*
+output/*
 
 # Folder of icons and other images which have been converted into base64 already
 icons/*
