@@ -23,7 +23,7 @@ iso-639==0.4.5
 iso3166==1.0
 isodate==0.6.0
 isort==4.3.21
-Jinja2==2.10.1
+Jinja2==2.11.3
 lazy-object-proxy==1.4.1
 loguru==0.3.2
 MarkupSafe==1.1.1
